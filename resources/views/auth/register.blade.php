@@ -9,6 +9,13 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- Cedula -->
+        <div>
+            <x-input-label for="cedula" :value="__('cedula')" />
+            <x-text-input id="cedula" class="block mt-1 w-full" type="text" name="name" :value="old('cedula')" required autofocus autocomplete="cedula" />
+            <x-input-error :messages="$errors->get('cedula')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
