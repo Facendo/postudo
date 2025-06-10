@@ -1,47 +1,54 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="shortcut icon" href="{{asset('iconopagina.png')}}" type="image/x-icon">
+    <title>Login</title>
+</head>
+<body>
+    
 
-    <form method="POST" action="{{ route('login') }}">
+
+<div class="login-page-container">
+    <form method="POST" action="{{ route('login') }}" class="login-form">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <h2 class="login-form-title">Iniciar Sesión</h2>
+
+        <div class="form-group">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input id="email" class="form-input" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="tu.correo@ejemplo.com">
+            @error('email')
+                <span class="form-error-message">{{ $message }}</span>
+            @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <input id="password" class="form-input" type="password" name="password" required autocomplete="current-password" placeholder="Ingresa tu contraseña">
+            @error('password')
+                <span class="form-error-message">{{ $message }}</span>
+            @enderror
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
+        <div class="form-group-checkbox">
+            <input id="remember_me" type="checkbox" name="remember" class="form-checkbox">
+            <label for="remember_me" class="checkbox-label">Recordarme</label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="form-actions">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
+                <a class="forgot-password-link" href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+            <button type="submit" class="submit-button">
+                Iniciar Sesión
+            </button>
         </div>
     </form>
-</x-guest-layout>
+</div>
+</body>
+</html>

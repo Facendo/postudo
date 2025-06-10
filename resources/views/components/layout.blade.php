@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="shortcut icon" href="{{asset('iconopagina.png')}}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <title>{{$title}}</title>
 </head>
 <body>
@@ -14,16 +17,22 @@
                 <div class="contenedor">
                     <img src="{{asset('Logo_UDO.png')}}" class="logo">
                 </div>
-                <div class="titulo_barra">
-                    PostUDO
+                <div >
+                    <img src="{{asset('tituloLogo.png')}}" class="logo_barra">
                 </div>
                 
                 
-                <a href="/" class="button_barra">Inicio</a>
+                <a href="{{route($ruta??'inicio')}}" class="button_barra">Inicio</a>
                     @auth
-                    <a href="{{route('logout')}}" class="button_barra">Cerrar sesion</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="cerrar_sesion">
+                                Cerrar Sesión
+                            </button>
+                        </form>
                     @endauth
                     @guest
+                        <a href="{{route('register')}}" class="button_barra">Registrarse</a>
                         <a href="{{route('login')}}" class="button_barra">Iniciar sesion</a>
                     @endguest
                 
@@ -33,12 +42,29 @@
     </header>
 
     <main>
+        <div >
+         {{-- ***** AQUÍ AGREGAS LA PARTE DE LOS MENSAJES FLASH ***** --}}
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">¡Éxito!</strong>
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">¡Error!</strong>
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+        @endif
+        </div>
         {{$slot}}
+        
     </main>
 
     <footer id="pie">
             <div class="contenido_pie">
-                <p>Pie de pagina</p>
+                <p>&copy; PostUDO</p>
             </div>
     </footer>
 </body>
