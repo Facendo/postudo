@@ -34,10 +34,7 @@
             @enderror
         </div>
 
-        <div class="form-group-checkbox">
-            <input id="remember_me" type="checkbox" name="remember" class="form-checkbox">
-            <label for="remember_me" class="checkbox-label">Recordarme</label>
-        </div>
+        <a href="{{ route('register') }}" class="register-link">¿No te has Registrado? Regístrate</a>
 
         <div class="form-actions">
             @if (Route::has('password.request'))
