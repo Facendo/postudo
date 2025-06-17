@@ -28,9 +28,7 @@
                             </button>
                         </form>
                     @endauth
-                    @guest
-                        <a href="{{route('login')}}" class="button_barra">Iniciar sesion</a>
-                    @endguest
+                    
                 
                 
             </nav>
