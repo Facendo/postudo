@@ -5,6 +5,7 @@
                 <img src="{{ asset('fondo.jpg') }}" alt="Imagen de bienvenida PostUDO" class="welcome-image">
             </div>
             <div class="welcome-text-content">
+                
                 <p>
                     <strong>Bienvenidos a PostUDO</strong>, tu portal de acceso a un mundo de oportunidades académicas de posgrado.
                     En un entorno profesional en constante evolución, la especialización y la formación continua son pilares
