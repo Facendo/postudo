@@ -11,7 +11,7 @@
             <a href="#" class="button_body">
                 <i class="fa-solid fa-users icon-left"></i> Cohortes inscritos
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('pago.index') }}" class="button_body">
                 <i class="fa-solid fa-credit-card icon-left"></i> Historico de Pagos
             </a>
             <a href="#" class="button_body">

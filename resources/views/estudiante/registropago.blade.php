@@ -1,14 +1,13 @@
-<x-layout>
-    <x-layout title="Registrar Pago">
+<x-layout title="Registrar Pago">
     <div class="registration-page-container">
-        <form action="{{ route('pagos.store') }}" method="POST" class="registration-form">
+        <form action="{{ route('pago.store') }}" method="POST" class="registration-form">
             @csrf
             <h2 class="registration-form-title">Registrar Nuevo Pago</h2>
 
             <div class="form-group">
                 <label for="cedula_pago" class="form-label">Cédula del Pagador</label>
-                <input type="text" id="cedula_pago" name="cedula_pago" class="form-input" placeholder="Ej: V-12345678" required>
-                @error('cedula_pago')
+                <input type="text" id="cedula" name="cedula" class="form-input" placeholder="Ej: V-12345678" required>
+                @error('cedula')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror
             </div>
@@ -16,7 +15,7 @@
             <div class="form-group">
                 <label for="nombre" class="form-label">Nombre Completo del Pagador</label>
                 <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Ej: Juan Pérez" required>
-                {@error('nombre')
+                @error('nombre')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror
             </div>
@@ -24,7 +23,7 @@
             <div class="form-group">
                 <label for="banco_emisor" class="form-label">Banco Emisor</label>
                 <input type="text" id="banco_emisor" name="banco_emisor" class="form-input" placeholder="Ej: Banco de Venezuela" required>
-                {@error('banco_emisor')
+                @error('banco_emisor')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror 
             </div>
@@ -38,9 +37,9 @@
             </div>
 
             <div class="form-group">
-                <label for="referencia_pago" class="form-label">Referencia de Pago</label>
-                <input type="text" id="referencia_pago" name="referencia_pago" class="form-input" placeholder="Ej: 000123456789" required>
-                @error('referencia_pago')
+                <label for="referencia" class="form-label">Referencia de Pago</label>
+                <input type="text" id="referencia" name="referencia" class="form-input" placeholder="Ej: 000123456789" required>
+                @error('referencia')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror 
             </div>
