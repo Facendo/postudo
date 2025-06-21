@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pago', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('cedula');
             $table->string('nombre');
             $table->string('banco_emisor');
@@ -22,11 +22,6 @@ return new class extends Migration
             $table->string('asunto');
             $table->date('fecha_pago');
             $table->timestamps();
-        
-            $table->foreign('cedula')
-                  ->references('cedula') 
-                  ->on('estudiantes') 
-                  ->onDelete('cascade'); 
         });
 
 

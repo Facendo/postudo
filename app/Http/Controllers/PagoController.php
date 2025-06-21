@@ -35,10 +35,14 @@ class PagoController extends Controller
         $pago= new Pagos();
         $pago->nombre=$user->name;
         $pago->cedula=$user->cedula;
-        $pago->banco_emisor=$request->pago_emisor;
+        $pago->banco_emisor=$request->banco_emisor;
+        $pago->banco_receptor=$request->banco_receptor;
+        $pago->monto=$request->monto;
+        $pago->asunto=$request->asunto;
+        $pago->fecha_pago=$request->fecha_pago;
         $pago->referencia=$request->referencia;
-
-
+        $pago->save();
+        return redirect()->route('pago.index')->with('success', 'Pago registrado exitosamente');
     }
 
     /**
