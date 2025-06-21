@@ -651,3 +651,97 @@ footer#pie {
     font-size: 18px;
     color: #333;
 }
+
+
+.dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .dashboard-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-card-icon {
+            font-size: 50px;
+            color: #024994; /* Your navy blue */
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card-value {
+            font-family: 'Roboto', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #28a745; /* Your green */
+        }
+
+        .dashboard-card-description {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 15px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #f0fdf4; /* Lighter green background for welcome */
+            border-radius: 10px;
+            border: 1px solid #d1e7dd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #024994; /* Match nav bar color */
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #155724; /* Darker green from content_texto_bienvenida */
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
