@@ -41,6 +41,8 @@ class PagoController extends Controller
         $pago->asunto=$request->asunto;
         $pago->fecha_pago=$request->fecha_pago;
         $pago->referencia=$request->referencia;
+        $pago->estado="Pendiente";
+        
         $pago->save();
         return redirect()->route('pago.index')->with('success', 'Pago registrado exitosamente');
     }

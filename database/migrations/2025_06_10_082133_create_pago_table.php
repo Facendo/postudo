@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('monto');
             $table->string('asunto');
             $table->date('fecha_pago');
+            $table->string(column: 'estado');
             $table->timestamps();
         });
 

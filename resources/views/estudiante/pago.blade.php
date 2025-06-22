@@ -16,6 +16,7 @@
                         <th>Monto (Bs.)</th>
                         <th>Asunto</th>
                         <th>Fecha de Registro</th>
+                        <th>Estado de Pago</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,6 +30,7 @@
                             <td>{{ number_format($pago->monto, 2, ',', '.') }}</td>
                             <td>{{ $pago->asunto }}</td>
                             <td>{{ $pago->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $pago->estado }}</td>
                         </tr>
                     @endforeach
                 </tbody>
