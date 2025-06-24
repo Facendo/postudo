@@ -36,9 +36,10 @@ class EstudianteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Estudiante $estudiante)
+    public function showPerfil()
     {
-        //
+        $user = Auth::user();
+        return view('estudiante.perfil_estudiante', compact('user'));
     }
 
     /**

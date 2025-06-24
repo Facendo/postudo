@@ -1,5 +1,5 @@
 <x-layout title="Panel de Pago">
-        <h1>Lista de Pagos</h1>
+        <h1 class="titulo">Lista de Pagos</h1>
         <div class="action-buttons-container">
             <a href="{{ route('pago.create') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Registrar Nuevo Pago
