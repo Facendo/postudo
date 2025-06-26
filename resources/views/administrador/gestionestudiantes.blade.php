@@ -5,7 +5,7 @@
             </div>
 
             <div class="new-student-button-container">
-                <a href="#" class="button_body">
+                <a href="{{ route('registro_estudiante.index') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Estudiante
             </a>
             </div>
