@@ -17,4 +17,3 @@ require __DIR__.'/estudiante.php';
 require __DIR__.'/pago.php';
 require __DIR__.'/profesor.php';
 require __DIR__.'/administrador.php';
-require __DIR__.'/gestionestu.php';
