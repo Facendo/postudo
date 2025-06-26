@@ -1,4 +1,4 @@
-<x-layout title='PostUDO || Inicio'>
+<x-layout title='PostUDO || Administrador'>
     <style>
 
         
