@@ -46,6 +46,12 @@ class EstudianteController extends Controller
         return view('administrador.gestionestudiantes', compact('user'));
     }
 
+    public function list()
+    {
+        $estudiante=Estudiante::all();
+        return view('estudiante.lista',compact('estudiantes'));
+    }
+
     /**
      * Display the specified resource.
      */
