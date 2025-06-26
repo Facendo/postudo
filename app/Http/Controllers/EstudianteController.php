@@ -15,6 +15,7 @@ class EstudianteController extends Controller
     {
         $user=Auth::user();
         return view('estudiante.index', compact('user'));
+        
     }
 
     /**
@@ -22,7 +23,7 @@ class EstudianteController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -30,7 +31,19 @@ class EstudianteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user=Auth::user();
+        $estudiantes= new Estudiante();
+        $estudiantes->cedula=$request->cedula;
+        $estudiantes->nombre=$request->name;
+        $estudiantes->apellido=$request->apellido;
+        $estudiantes->correo=$request->correo;
+        $estudiantes->carrera=$request->carrera;
+        $estudiantes->especialidad=$request->especialidad;
+        $estudiantes->edad=$request->edad;
+      
+        
+        $estudiantes->save();
+        return view('administrador.gestionestudiantes', compact('user'));
     }
 
     public function list()
@@ -42,9 +55,10 @@ class EstudianteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Estudiante $estudiante)
+    public function showPerfil()
     {
-        //
+        $user = Auth::user();
+        return view('estudiante.perfil_estudiante', compact('user'));
     }
 
     /**

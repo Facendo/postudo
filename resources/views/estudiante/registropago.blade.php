@@ -85,7 +85,7 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="submit-button">
+                <button type="submit" class="button_body">
                     <i class="fa-solid fa-paper-plane icon-left"></i> Registrar Pago
                 </button>
             </div>

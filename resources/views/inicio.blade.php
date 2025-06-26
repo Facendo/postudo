@@ -1,26 +1,910 @@
-<x-layout title='PostUDO || Inicio'>
-    <div class="page-content">
-        <div class="main-content-section">
-            <div class="welcome-image-container">
-                <img src="{{ asset('fondo.jpg') }}" alt="Imagen de bienvenida PostUDO" class="welcome-image">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{{asset('iconopagina.png')}}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>PostUDO || Inicio</title>
+    <style>
+        /* --- General Body Styles --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- Global Section Styling --- */
+        .page-content {
+            padding-top: 0; /* No padding at the top if nav is fixed */
+        }
+
+        .hero-section, .about-us-section, .offerings-section, .why-choose-us-section, .cta-section {
+            padding: 100px 40px; /* Generous padding for all major sections */
+            max-width: 1400px; /* Max width for content container */
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #0a1128; /* Dark blue, matching nav */
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 3.8em;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 1em;
+        }
+
+        .section-description {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 50px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Navigation Bar Styles --- */
+        nav {
+            width: 100%;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(to right, #0a1128, #001f54);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3),
+                        0px 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 0 60px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contenedor {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            margin-left: 0;
+        }
+
+        .logo {
+            width: 60px;
+            height: auto;
+            margin-right: 10px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1));
+        }
+
+        /* The .logo_barra was likely for a different context or a larger logo.
+           It's kept for completeness but not directly used in the current nav structure. */
+        .logo_barra {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            border-radius: 100%;
+            object-fit: cover;
+        }
+
+        .titulo_barra {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            color: #e0e7e9;
+            text-align: left;
+            flex-grow: 1;
+            text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+            margin-left: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .button_barra {
+            margin: 0 20px;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #a7d9ef;
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            border-radius: 10px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            border: 1px solid transparent;
+        }
+
+        .button_barra::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #7abedb;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: translateX(-50%);
+        }
+
+        .button_barra:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .button_barra:hover::before {
+            width: 80%;
+        }
+
+        .cerrar_sesion {
+            background: linear-gradient(to right, #ef233c, #d90429);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-right: 0;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .cerrar_sesion:hover {
+            background: linear-gradient(to right, #d90429, #ef233c);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            position: relative;
+            height: 85vh; /* Taller hero section for impact */
+            background: url('{{ asset('fondo.jpg') }}') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-section::before { /* Dark overlay for text readability */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 20px;
+            animation: fadeInScale 1s ease-out forwards;
+        }
+
+        .hero-content h1 {
+            color: white;
+            font-size: 4.5em; /* Larger, more commanding title */
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.8);
+            letter-spacing: -1.5px;
+        }
+
+        .hero-content p {
+            color: #e0e7e9;
+            font-size: 1.4em;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 50px; /* Pill shape for modern look */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease-in-out; /* Smooth transition for general changes */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Bright blue */
+            color: white;
+            border: 2px solid #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            animation: pulse-button 0.8s infinite alternate; /* Apply pulse animation */
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            animation: pulse-button 0.8s infinite alternate; /* Apply pulse animation */
+        }
+
+        /* --- New Keyframe Animation for Buttons --- */
+        @keyframes pulse-button {
+            0% {
+                transform: translateY(-5px) scale(1);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                transform: translateY(-7px) scale(1.02); /* Slightly higher lift and larger */
+                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* More prominent shadow */
+            }
+            100% {
+                transform: translateY(-5px) scale(1);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        /* --- About Us Section --- */
+        .about-us-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 80px; /* More space for a clean layout */
+            text-align: left;
+            background-color: #fff; /* White background */
+            border-radius: 15px; /* Subtle rounded corners for the section */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Soft shadow */
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 80px; /* Adjusted padding for internal content */
+        }
+
+        .about-text-content {
+            flex: 2; /* Text takes more space */
+            padding-right: 30px;
+        }
+
+        .about-text-content h2 {
+            text-align: left; /* Align title to left */
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            color: #001f54;
+        }
+
+        .about-text-content p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .about-image-container {
+            flex: 1; /* Image takes less space */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px; /* More rounded corners */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15); /* More pronounced shadow */
+            object-fit: cover;
+        }
+
+        /* --- Our Offerings Section --- */
+        .offerings-section {
+            background-color: #f0f8ff; /* Light blue background */
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .program-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px; /* Increased gap */
+            margin-top: 60px;
+        }
+
+        .program-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+        }
+
+        .program-card:hover {
+            transform: translateY(-15px); /* More pronounced lift */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-color: #007bff; /* Highlight border on hover */
+        }
+
+        .program-card h3 {
+            color: #001f54; /* Dark blue */
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .program-card p {
+            font-size: 1.05em;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .card-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .card-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #007bff;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+
+        .card-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* --- Why Choose Us Section --- */
+        .why-choose-us-section {
+            background-color: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .benefit-item {
+            background-color: #fdfdfd;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .benefit-icon {
+            width: 70px; /* Size for SVG icons */
+            height: 70px;
+            margin-bottom: 25px;
+            display: inline-block; /* For centering */
+            filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
+        }
+
+        .benefit-item h3 {
+            font-size: 1.6em;
+            color: #0a1128;
+            margin-bottom: 10px;
+        }
+
+        .benefit-item p {
+            font-size: 1em;
+            color: #666;
+        }
+
+        /* --- Call to Action Section --- */
+        .cta-section {
+            background: linear-gradient(to right, #001f54, #0a1128); /* Dark blue gradient */
+            color: white;
+            padding: 120px 40px;
+            text-align: center;
+            border-radius: 15px; /* Rounded corners for the whole section */
+            margin: 50px auto; /* Center the section with margin */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .cta-content h2 {
+            color: white;
+            font-size: 3.2em;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .cta-content p {
+            color: #e0e7e9;
+            font-size: 1.3em;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-cta {
+            background-color: #28a745; /* Success green */
+            color: white;
+            font-size: 1.3em;
+            padding: 18px 45px;
+            border-radius: 50px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .btn-cta:hover {
+            background-color: #218838;
+            transform: translateY(-7px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Custom Alert Styles (from your original code) --- */
+        .my-alert-style {
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green text */
+            border: 1px solid #c3e6cb;
+            border-radius: 0.25rem;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .my-red-alert-style {
+            background-color: #f8d7da; /* Light red */
+            color: #721c24; /* Dark red text */
+            border: 1px solid #f5c6cb;
+            border-radius: 0.25rem;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .block {
+            display: block;
+        }
+
+        .sm\:inline {
+            display: inline;
+        }
+
+
+        /* --- Animations --- */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* --- Footer Styles (Sophisticated) --- */
+        #pie {
+            background-color: #0a1128; /* Dark blue, matching nav */
+            color: #a7d9ef; /* Light blue text */
+            padding: 40px 60px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .contenido_pie p {
+            margin: 0;
+            color: inherit; /* Inherit color from parent */
+            font-size: 1.05em;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            nav {
+                padding: 0 30px;
+                height: 80px;
+            }
+
+            .titulo_barra {
+                font-size: 26px;
+                margin-left: 10px;
+            }
+
+            .button_barra {
+                margin: 0 10px;
+                padding: 10px 18px;
+                font-size: 16px;
+            }
+
+            .hero-content h1 {
+                font-size: 3.5em;
+            }
+
+            .hero-content p {
+                font-size: 1.2em;
+            }
+
+            .about-us-section {
+                flex-direction: column;
+                gap: 40px;
+                padding: 60px 30px;
+            }
+
+            .about-text-content, .about-image-container {
+                flex: none;
+                width: 100%;
+                padding-right: 0;
+            }
+
+            .about-text-content h2 {
+                text-align: center;
+            }
+
+            .program-cards-container, .benefits-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 30px;
+            }
+
+            h2 {
+                font-size: 2.2em;
+            }
+
+            .cta-content h2 {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 20px;
+                height: 70px;
+            }
+
+            .logo {
+                width: 50px;
+            }
+
+            .titulo_barra {
+                font-size: 22px;
+                margin-left: 5px;
+            }
+
+            .button_barra {
+                font-size: 14px;
+                padding: 8px 15px;
+                margin: 0 5px;
+            }
+
+            .cerrar_sesion {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .hero-section {
+                height: 75vh;
+                padding: 80px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.8em;
+            }
+
+            .hero-content p {
+                font-size: 1em;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+                width: 80%; /* Make buttons full width on small screens */
+                max-width: 300px;
+            }
+
+            .about-us-section, .offerings-section, .why-choose-us-section, .cta-section {
+                padding: 60px 20px;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .section-description {
+                font-size: 1em;
+                margin-bottom: 30px;
+            }
+
+            .program-cards-container, .benefits-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+                gap: 25px;
+            }
+
+            .program-card, .benefit-item {
+                padding: 30px;
+            }
+
+            .cta-content h2 {
+                font-size: 2em;
+            }
+
+            .cta-content p {
+                font-size: 1.1em;
+                margin-bottom: 40px;
+            }
+
+            .btn-cta {
+                font-size: 1.1em;
+                padding: 15px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 0 10px;
+                height: 60px;
+            }
+
+            .logo {
+                width: 40px;
+                margin-right: 5px;
+            }
+
+            .titulo_barra {
+                font-size: 18px;
+            }
+
+            .button_barra {
+                display: none; /* Hide nav links on very small screens, consider a hamburger menu */
+            }
+
+            .cerrar_sesion {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .hero-section {
+                height: 65vh;
+                padding: 50px 15px;
+            }
+
+            .hero-content h1 {
+                font-size: 2em;
+            }
+
+            .hero-content p {
+                font-size: 0.9em;
+            }
+
+            .about-us-section, .offerings-section, .why-choose-us-section, .cta-section {
+                padding: 40px 15px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .program-card h3 {
+                font-size: 1.6em;
+            }
+
+            .benefit-item h3 {
+                font-size: 1.4em;
+            }
+
+            .btn-cta {
+                font-size: 1em;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="contenedor">
+                <img src="{{ asset('../Logo_UDO.png') }}" alt="PostUDO Logo" class="logo">
+                <h1 class="titulo_barra">PostUDO</h1>
             </div>
-            <div class="welcome-text-content">
-                
-                <p>
-                    <strong>Bienvenidos a PostUDO</strong>, tu portal de acceso a un mundo de oportunidades académicas de posgrado.
-                    En un entorno profesional en constante evolución, la especialización y la formación continua son pilares
-                    fundamentales para el éxito y el avance.
-                </p>
-                <p>
-                    Hemos diseñado esta plataforma pensando en ti: el profesional ambicioso que busca trascender, el investigador
-                    apasionado en pos de nuevos horizontes, o el recién graduado listo para dar el siguiente gran paso en su carrera.
-                    Aquí, encontrarás una oferta académica diversa y de vanguardia, cuidadosamente seleccionada para cubrir las
-                    demandas de las industrias más relevantes y emergentes. Desde maestrías que consolidarán tus conocimientos,
-                    hasta doctorados que te impulsarán a la frontera del saber, cada programa está pensado para brindarte las
-                    herramientas, habilidades y la red de contactos que necesitas para destacar. Explora nuestras opciones,
-                    descubre cómo la educación de posgrado puede transformar tu futuro y prepárate para alcanzar tus metas más ambiciosas.
-                </p>
+            <div>
+                <a href="{{ url('/') }}" class="button_barra">Inicio</a>
+                <a href="{{ url('/programas') }}" class="button_barra">Programas</a>
+                <a href="{{ url('/contacto') }}" class="button_barra">Contacto</a>
+                @auth
+                    <a href="{{ url('/perfil') }}" class="button_barra">Perfil</a>
+                    <button class="cerrar_sesion">Cerrar Sesión</button>
+                     
+                @endauth
+                @guest
+                    <a href="{{ url('/login') }}" class="button_barra">Iniciar Sesión</a>
+                    <a href="{{ url('/register') }}" class="button_barra">Registrarse</a>
+                @endguest
+               
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="flash-messages">
+            @if (session('success'))
+                <div class="my-alert-style" role="alert">
+                    <strong class="font-bold">¡Éxito!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="my-red-alert-style" role="alert">
+                    <strong class="font-bold">¡Error!</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
+        </div>
+
+        <div class="page-content">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>Desbloquea Tu Futuro Profesional con PostUDO</h1>
+                    <p>Tu plataforma integral para acceder a posgrados de vanguardia y especialización que transformarán tu carrera.</p>
+                    <div class="hero-buttons">
+                        <a href="#about-us" class="btn btn-primary">Conoce Más</a>
+                        <a href="#offerings" class="btn btn-secondary">Explora Programas</a>
+                    </div>
+                </div>
+                </div>
+
+            <div id="about-us" class="about-us-section">
+                <div class="about-text-content">
+                    <h2>Nuestra Misión: Impulsar Tu Éxito</h2>
+                    <p>
+                        En **PostUDO**, estamos comprometidos con tu crecimiento profesional y académico. Hemos diseñado esta plataforma pensando en ti: el profesional ambicioso que busca trascender, el investigador apasionado en pos de nuevos horizontes, o el recién graduado listo para dar el siguiente gran paso en su carrera.
+                    </p>
+                    <p>
+                        Creemos que la especialización y la formación continua son pilares fundamentales para el éxito en un entorno profesional en constante evolución. Por eso, te ofrecemos acceso a programas de posgrado de alta calidad que te equiparán con las herramientas y el conocimiento para liderar en tu campo.
+                    </p>
+                </div>
+                <div class="about-image-container">
+                    <img src="{{ asset('Profesionales_investigando.jpg') }}" alt="Profesionales investigando" class="about-image">
+                </div>
+            </div>
+
+            <div id="offerings" class="offerings-section">
+                <h2>Nuestra Oferta Académica</h2>
+                <p class="section-description">Descubre programas de posgrado diseñados para las demandas del mercado actual y futuro.</p>
+                <div class="program-cards-container">
+                    <div class="program-card">
+                        <h3>Maestrías</h3>
+                        <p>Consolida tus conocimientos y adquiere habilidades avanzadas en diversas áreas. Perfectas para la especialización.</p>
+                        <a href="{{ url('/maestrias') }}" class="card-link">Ver Maestrías &rarr;</a>
+                    </div>
+                    <div class="program-card">
+                        <h3>Doctorados</h3>
+                        <p>Impulsa la frontera del saber y conviértete en un investigador líder. Ideal para la innovación y la academia.</p>
+                        <a href="{{ url('/doctorados') }}" class="card-link">Ver Doctorados &rarr;</a>
+                    </div>
+                    <div class="program-card">
+                        <h3>Diplomados y Especializaciones</h3>
+                        <p>Formación intensiva y específica para potenciar habilidades clave en corto tiempo. Actualízate rápidamente.</p>
+                        <a href="{{ url('/diplomados') }}" class="card-link">Ver Diplomados &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-choose-us-section">
+                <h2>¿Por Qué Elegir PostUDO?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <img src="{{ asset('images/icon-quality.svg') }}" alt="Icono de calidad" class="benefit-icon">
+                        <h3>Excelencia Académica</h3>
+                        <p>Programas impartidos por docentes de alto nivel y con reconocimiento en sus campos.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="{{ asset('images/icon-flexibility.svg') }}" alt="Icono de flexibilidad" class="benefit-icon">
+                        <h3>Modalidades Flexibles</h3>
+                        <p>Opciones de estudio que se adaptan a tu ritmo de vida profesional.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="{{ asset('images/icon-networking.svg') }}" alt="Icono de networking" class="benefit-icon">
+                        <h3>Red de Contactos</h3>
+                        <p>Conecta con profesionales, investigadores y líderes de la industria.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="{{ asset('images/icon-innovation.svg') }}" alt="Icono de innovación" class="benefit-icon">
+                        <h3>Enfoque Innovador</h3>
+                        <p>Contenidos actualizados y relevantes para los desafíos del mañana.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <div class="cta-content">
+                    <h2>Comienza Tu Viaje Hacia la Maestría</h2>
+                    <p>Miles de profesionales ya están transformando sus carreras con PostUDO. ¿Serás el siguiente?</p>
+                </div>
             </div>
         </div>
-    </div>
-</x-layout>
+        </main>
+
+    <footer id="pie">
+        <div class="contenido_pie">
+            <p>&copy; 2025 PostUDO. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
