@@ -33,6 +33,12 @@ class EstudianteController extends Controller
         //
     }
 
+    public function list()
+    {
+        $estudiante=Estudiante::all();
+        return view('estudiante.lista',compact('estudiantes'));
+    }
+
     /**
      * Display the specified resource.
      */
