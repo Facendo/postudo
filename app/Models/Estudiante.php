@@ -11,7 +11,7 @@ class Estudiante extends Model
     protected $table= 'estudiante';
     protected $primaryKey= 'cedula';
     public $keyType= 'string';
-    
+
     public function pago(){
         return $this->hasMany(Pagos::class,'cedula','cedula');
     }
