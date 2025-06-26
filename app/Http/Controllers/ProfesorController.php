@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profesor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfesorController extends Controller
 {
@@ -36,7 +37,7 @@ class ProfesorController extends Controller
      */
     public function show(Profesor $profesor)
     {
-        //
+        
     }
 
     /**
