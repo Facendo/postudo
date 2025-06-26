@@ -1,9 +1,4 @@
 <x-layout title='PostUDO || Inicio'>
-    <style>
-        /* Agrega estilos específicos si los necesitas, aunque la mayoría deberían venir de tu CSS */
-        
-    </style>
- <main>
         <section class="login-page-container">
             <div class="registration-form">
                 <h2 class="registration-form-title">Registro de Estudiante</h2>
@@ -64,7 +59,7 @@
                 </form>
             </div>
         </section>
-    </main>
+    
 
     <script>
         // Define las especialidades por carrera
@@ -156,8 +151,7 @@
         // Ejecutar la función una vez al cargar la página para inicializar
         actualizarEspecialidades();
     </script>
-</body>
-</html>
+
 
 </x-layout>
 

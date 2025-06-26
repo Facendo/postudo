@@ -48,8 +48,8 @@ class EstudianteController extends Controller
 
     public function list()
     {
-        $estudiante=Estudiante::all();
-        return view('estudiante.lista',compact('estudiantes'));
+        $estudiantes=Estudiante::all();
+        return view('administrador.gestionestudiantes',compact('estudiantes'));
     }
 
     /**

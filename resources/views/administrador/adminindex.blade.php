@@ -1,10 +1,5 @@
-<x-layout title='PostUDO || Administrador'>
-    <style>
-
-        
-    </style>
-
-    <main>
+<x-layout title='PostUDO || Inicio'>
+    
         <section class="main-content-section">
             <div class="profile-section">
                 <img src="a" alt="Avatar del Administrador" class="profile-avatar">
@@ -17,7 +12,7 @@
             <a href="#" class="button_body">
                 <i class="fa-solid fa-square-poll-vertical icon-left"></i> Editar Perfil
             </a>
-            <a href="{{ route('gestionestu.index')}}" class="button_body">
+            <a href="{{ route('estudiante.list')}}" class="button_body">
                 <i class="fa-solid fa-users icon-left"></i> Gestion de Estudiantes
             </a>
             <a href="#" class="button_body">
