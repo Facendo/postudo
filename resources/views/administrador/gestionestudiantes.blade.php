@@ -1,12 +1,4 @@
 <x-layout title='PostUDO || Inicio'>
-    <style>
-        /* Agrega estilos específicos si los necesitas, aunque la mayoría deberían venir de tu CSS */
-        
-    </style>
-
-<body>
-
-    <main>
         <section class="main-content-section page-content">
             <div class="content_texto_bienvenida">
                 <label>Listado de Estudiantes</label>
@@ -65,15 +57,5 @@
                 </tbody>
             </table>
         </section>
-    </main>
-
-    <footer id="pie">
-        <div class="contenido_pie">
-            <p>&copy; 2025 PostUDO. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-</body>
-</html>
-
-
+    
 </x-layout>
