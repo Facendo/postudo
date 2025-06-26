@@ -17,3 +17,8 @@ require __DIR__.'/estudiante.php';
 require __DIR__.'/pago.php';
 require __DIR__.'/profesor.php';
 require __DIR__.'/administrador.php';
+<<<<<<< HEAD
+=======
+require __DIR__.'/gestionestu.php';
+require __DIR__.'/registroestudiante.php';
+>>>>>>> 29d5dcc6144ca1b59191d876c8bce087fe544e12
