@@ -14,16 +14,14 @@ class EstudianteController extends Controller
     public function index()
     {
         $user=Auth::user();
-
-        $estudiantes = Estudiante::all();
-        return view('administrador.gestionestudiantes')->with('estudiantes', $estudiantes);
+        return view('estudiante.index', compact('user'));
         
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
         
     }
