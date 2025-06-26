@@ -8,3 +8,4 @@ use App\Http\Middleware\CheckRole;
 
 Route::view(("/administrador"), 'administrador.adminindex')->name(name: 'administrador.index');
 Route::get(("/administrador/gestion_estudiante"),[ EstudianteController::class, 'list'] )->name('estudiante.list');
+Route::view(("/administrador/registro_estudiante"), 'administrador.registroestudiante')->name('registro_estudiante.index');
