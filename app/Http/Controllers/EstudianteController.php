@@ -51,7 +51,7 @@ class EstudianteController extends Controller
         $estudiantes=Estudiante::all();
         return view('administrador.gestionestudiantes',compact('estudiantes'));
     }
-
+    
     /**
      * Display the specified resource.
      */
