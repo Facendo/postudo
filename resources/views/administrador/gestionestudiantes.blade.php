@@ -1,19 +1,11 @@
 <x-layout title='PostUDO || Inicio'>
-    <style>
-        /* Agrega estilos específicos si los necesitas, aunque la mayoría deberían venir de tu CSS */
-        
-    </style>
-
-<body>
-
-    <main>
         <section class="main-content-section page-content">
             <div class="content_texto_bienvenida">
                 <label>Listado de Estudiantes</label>
             </div>
 
             <div class="new-student-button-container">
-                <a href="#" class="button_body">
+                <a href="{{ route('registro_estudiante.index') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Estudiante
             </a>
             </div>
@@ -65,15 +57,5 @@
                 </tbody>
             </table>
         </section>
-    </main>
-
-    <footer id="pie">
-        <div class="contenido_pie">
-            <p>&copy; 2025 PostUDO. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-</body>
-</html>
-
-
+    
 </x-layout>
