@@ -16,7 +16,12 @@ class Seccion extends Model
     {
         return $this->hasMany(Estudiante::class, 'id_seccion', 'id_seccion');
     }
-    public function profesor(){
+    public function profesor()
+    {
         return $this->hasOne(Profesor::class, 'id_profesor', 'id_profesor');
+    }
+    public function materia()
+    {
+        return $this->belongsTo(Materias::class, 'codigo materia', 'codigo materia');
     }
 }
