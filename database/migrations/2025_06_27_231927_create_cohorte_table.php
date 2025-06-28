@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materias', function (Blueprint $table) {
-            $table->integer('Codigo_materia')->primary();
-            $table->string('codigo cohorte');
-            $table->integer('nro_seccion');
-            $table->string('Nombre');
-            $table->integer('Prelacion');
+        Schema::create('cohorte', function (Blueprint $table) {
+            $table->string('codigo_cohorte')->primary();
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->integer('nro_de_cohortes');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('materias');
+        Schema::dropIfExists('cohorte');
     }
 };

@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Evaluacion extends Model
 {
     use HasFactory;
-    protected $table = 'Evaluacion';
-    protected $primaryKey = 'Id_evaluacion';
+    protected $table = 'evaluacion';
+    protected $primaryKey = 'id_evaluacion';
     public $keyType = 'interger';
 
     public function Materias(){
-        return $this->belongsTo(Materias::class, 'codigo materia', 'codigo materia');
+        return $this->belongsTo(Materias::class, 'codigo_materia', 'codigo_materia');
     }
 }
