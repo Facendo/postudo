@@ -28,7 +28,10 @@ class EspecialidadesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $especialidad=new Especialidades();
+        $especialidad->codigo_especialidad = $request->codigo_especialidad;
+        $especialidad->nombre = $request->nombre;
+        $especialidad->save();
     }
 
     /**
@@ -52,7 +55,9 @@ class EspecialidadesController extends Controller
      */
     public function update(Request $request, Especialidades $especialidades)
     {
-        //
+        $especialidades->codigo_especialidad = $request->codigo_especialidad;
+        $especialidades->nombre = $request->nombre;
+        $especialidades->save();
     }
 
     /**

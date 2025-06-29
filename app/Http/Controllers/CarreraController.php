@@ -28,7 +28,11 @@ class CarreraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $carrera = new Carrera();
+        $carrera->id_carrera = $request->id_carrera;
+        $carrera->codigo_especialidad = $request->codigo_especialidad;
+        $carrera->nombre = $request->nombre;
+        $carrera->save();
     }
 
     /**
@@ -52,7 +56,9 @@ class CarreraController extends Controller
      */
     public function update(Request $request, Carrera $carrera)
     {
-        //
+        $carrera->codigo_especialidad = $request->codigo_especialidad;
+        $carrera->nombre = $request->nombre;
+        $carrera->save();
     }
 
     /**

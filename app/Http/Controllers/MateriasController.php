@@ -28,7 +28,13 @@ class MateriasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $materia= new Materias();
+        $materia->Codigo_materia = $request->Codigo_materia;
+        $materia->codigo_cohorte = $request->codigo_cohorte;
+        $materia->nro_seccion = $request->nro_seccion;
+        $materia->Nombre = $request->Nombre;
+        $materia->Prelacion = $request->Prelacion;
+        $materia->save();
     }
 
     /**
