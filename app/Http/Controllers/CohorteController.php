@@ -28,7 +28,12 @@ class CohorteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cohorte = new Cohorte();
+        $cohorte->codigo_cohorte = $request->codigo_cohorte;
+        $cohorte->fecha_inicio = $request->fecha_inicio;
+        $cohorte->fecha_fin = $request->fecha_fin;
+        $cohorte->nro_de_cohorte = $request->nro_de_cohorte; // Ensure this matches your migration
+        $cohorte->save();
     }
 
     /**
@@ -52,7 +57,11 @@ class CohorteController extends Controller
      */
     public function update(Request $request, Cohorte $cohorte)
     {
-        //
+        $cohorte->codigo_cohorte = $request->codigo_cohorte;
+        $cohorte->fecha_inicio = $request->fecha_inicio;
+        $cohorte->fecha_fin = $request->fecha_fin;
+        $cohorte->nro_de_cohorte = $request->nro_de_cohorte; // Ensure this matches your migration
+        $cohorte->save();
     }
 
     /**
