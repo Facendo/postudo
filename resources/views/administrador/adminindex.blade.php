@@ -22,7 +22,10 @@
                 <i class="fa-solid fa-calendar-alt icon-left"></i> Gestor de Reportes
             </a>
             <a href="#" class="button_body">
-                <i class="fa-solid fa-book icon-left"></i> Consultar Horario Profesor 
+                <i class="fa-solid fa-book icon-left"></i> Creacion pancho esta loco
+            </a>
+            <a href="{{ route('administrador.creacion.index') }}" class="button_body">
+                <i class="fa-solid fa-book icon-left"></i> Creacion de A,C,E
             </a>
             
 
