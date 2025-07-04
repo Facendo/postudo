@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('banco_receptor');
             $table->string('referencia');
             $table->double('monto');
-            $table->string('asunto');
+            $table->string('asunto'); 
             $table->date('fecha_pago');
             $table->string('estado');
             $table->timestamps();
