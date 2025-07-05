@@ -34,14 +34,30 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'cedula' => ['string','max:8','required'],
-            'rol' => ['string','required']
+            'rol' => ['string','required'],
         ]);
+        if(empty($foto_perfil) ){
+            $foto_perfil = 'foto_perfil/default.png'; // Default profile picture
+        }
+        else{
+            $foto_perfil;
+        }
+        $foto_perfil = 'foto_perfil/default.png'; // Default profile picture
+        if ($request->hasFile('foto_perfil')) {
+            $image = $request->file('foto_perfil');
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $image->getClientOriginalExtension();
+            $filename = $originalName . "_" . $request->cedula . '.' . $extension;
+            $path = $image->storeAs('foto_perfil', $filename, 'public');
+            $foto_perfil = 'foto_perfil/' . $filename;
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'cedula' => $request->cedula,
-            'rol' => $request->rol
+            'rol' => $request->rol,
+            'foto_perfil' => $foto_perfil
         ]);
 
         event(new Registered($user));
