@@ -41,16 +41,6 @@
         </div>
 
         <div class="form-group">
-            <label for="rol" class="form-label">Rol</label>
-            <select id="rol" name="rol" class="form-select" required>
-                <option value="estudiante" {{ old('rol') == 'estudiante' ? 'selected' : '' }}>Estudiante</option>
-                </select>
-            @error('rol')
-                <span class="form-error-message">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <div class="form-group">
             <label for="password" class="form-label">Contraseña</label>
             <input id="password" class="form-input" type="password" name="password" required autocomplete="new-password" placeholder="Crea tu contraseña">
             @error('password')
@@ -67,7 +57,7 @@
         </div>
         <div class="form-group">
             <label for="foto_perfil" class="form-label">Foto de Perfil</label>
-            <input id="foto_perfil" class="form-input" type="file" name="foto_perfil" accept="image/*" required>
+            <input id="foto_perfil" class="form-input" type="file" name="foto_perfil" accept="image/*">
             @error('foto_perfil')
                 <span class="form-error-message">{{ $message }}</span>
             @enderror
