@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->string('cedula')->primary();
+            $table->integer('nro_seccion');
             $table->string('nombre');
             $table->string('apellido');
             $table->string('carrera');
@@ -20,6 +21,13 @@ return new class extends Migration
             $table->string('correo');
             $table->integer('edad');
             $table->timestamps();
+
+            $table->foreign('nro_seccion')
+                ->references('nro_seccion')
+                ->on('seccion')
+                ->onDelete('cascade');
+
+            
         });
     }
 

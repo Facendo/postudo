@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cohorte', function (Blueprint $table) {
-            $table->string('codigo_cohorte')->primary();
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
-            $table->integer('nro_de_cohorte');
+        Schema::create('administrador', function (Blueprint $table) {
+            $table->string('cedula', 10)->primary();
+            $table->string('nombre');
+            $table->string('correo')->unique();
+            $table->string('telefono');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cohorte');
+        Schema::dropIfExists('administrador');
     }
 };

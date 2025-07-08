@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'rol',
-        'cedula'
+        'cedula',
+        'foto_perfil'
     ];
 
     /**
