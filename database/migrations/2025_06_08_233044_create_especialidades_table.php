@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('especialidades', function (Blueprint $table) {
             $table->integer('codigo_especialidad')->primary();
+            $table->integer('id_carrera');
             $table->string('nombre');
             $table->timestamps();
+
+            $table->foreign('id_carrera')
+                ->references('id_carrera')
+                ->on('carrera')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

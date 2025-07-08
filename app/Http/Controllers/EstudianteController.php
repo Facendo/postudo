@@ -23,7 +23,8 @@ class EstudianteController extends Controller
      */
     public function create()
     {
-        
+        $user = Auth::user();
+        return view('administrador.registroestudiante', compact('user'));
     }
 
     /**
@@ -32,18 +33,17 @@ class EstudianteController extends Controller
     public function store(Request $request)
     {
         $user=Auth::user();
-        $estudiantes= new Estudiante();
-        $estudiantes->cedula=$request->cedula;
-        $estudiantes->nombre=$request->name;
-        $estudiantes->apellido=$request->apellido;
-        $estudiantes->correo=$request->correo;
-        $estudiantes->carrera=$request->carrera;
-        $estudiantes->especialidad=$request->especialidad;
-        $estudiantes->edad=$request->edad;
-      
-        
-        $estudiantes->save();
-        return view('administrador.gestionestudiantes', compact('user'));
+        $estudiante= new Estudiante();
+        $estudiante->cedula=$request->cedula;
+        $estudiante->nombre=$request->nombre;
+        $estudiante->apellido=$request->apellido;
+        $estudiante->correo=$request->correo;
+        $estudiante->carrera=$request->carrera;
+        $estudiante->especialidad=$request->especialidad;
+        $estudiante->edad=$request->edad;
+        $estudiante->save();
+        $estudiantes=Estudiante::all();
+        return view('administrador.gestionestudiantes', compact('user', 'estudiantes'));
     }
 
     public function list()

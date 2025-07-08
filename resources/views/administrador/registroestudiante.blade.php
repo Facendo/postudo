@@ -3,7 +3,8 @@
             <div class="registration-form">
                 <h2 class="registration-form-title">Registro de Estudiante</h2>
 
-                <form action="#" method="POST">
+                <form action="{{ route('estudiante.store') }}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="cedula" class="form-label">Cédula</label>
                         <input type="text" id="cedula" name="cedula" class="form-input" placeholder="Ej: V-12345678" required>

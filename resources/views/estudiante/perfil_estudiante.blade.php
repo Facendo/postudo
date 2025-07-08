@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Mi Perfil'>
-
+    
     <main>
         <div class="main-content-section">
             <h1 class="titulo">Bienvenido, Estudiante</h1>
@@ -12,9 +12,9 @@
 
             <div class="profile-section">
                 {{-- Replace with actual student's avatar URL from your backend --}}
-                <img src="https://via.placeholder.com/150/001f54/FFFFFF?text=Estudiante" alt="Avatar del Estudiante" class="profile-avatar">
-                <h2 class="profile-name">¡Hola, [Nombre del Estudiante]!</h2> {{-- Dynamic data placeholder (e.g., {{ $student->name }}) --}}
-                <p class="profile-role">Estudiante de [Carrera]</p> {{-- Dynamic data placeholder (e.g., {{ $student->career }}) --}}
+                <img src="{{ asset($user->foto_perfil) }}" alt="Avatar del Estudiante" class="profile-avatar">
+                <h2 class="profile-name">¡Hola, {{$user->name}}</h2> {{-- Dynamic data placeholder (e.g., {{ $student->name }}) --}}
+                <p class="profile-role">Estudiante de Carrera</p> {{-- Dynamic data placeholder (e.g., {{ $student->career }}) --}}
                 <div class="content_texto_bienvenida">
                     <label>
                         "Tu esfuerzo de hoy es el éxito de mañana."

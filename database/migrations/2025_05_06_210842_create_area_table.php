@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('administrador', function (Blueprint $table) {
-            $table->string('cedula')->primary();
-            $table->string('nombre');
-            $table->string('correo')->unique();
-            $table->string('telefono');
-            $table->timestamps();
+        Schema::create('area', function (Blueprint $table) {
+            $table->string("codigo")->primary();
+            $table->string("nombre");
+            $table->string("descripcion")->nullable();
         });
     }
 
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('administrador');
+        Schema::dropIfExists('area');
     }
 };

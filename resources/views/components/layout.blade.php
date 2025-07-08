@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <title>{{ $title ?? 'PostUDO' }}</title> {{-- Added a default title if $title is not set --}}
+     <script src="https://kit.fontawesome.com/your-font-awesome-kit-code.js" crossorigin="anonymous"></script> {{-- Reemplaza con tu propio código de kit --}}
+    {{-- Incluye tu archivo JavaScript externo --}}
+    <script src="{{ asset('js/admin_options.js') }}"></script>
 </head>
 <body>
     <header class="main-header"> {{-- Add a class for specific header styling if needed --}}

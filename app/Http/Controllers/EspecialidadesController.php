@@ -29,9 +29,11 @@ class EspecialidadesController extends Controller
     public function store(Request $request)
     {
         $especialidad=new Especialidades();
-        $especialidad->codigo_especialidad = $request->codigo_especialidad;
+        $especialidad->codigo_especialidad = $request->codigo;
+        $especialidad->id_carrera= $request->carrera_id;
         $especialidad->nombre = $request->nombre;
         $especialidad->save();
+        return redirect()->route('administrador.creacion.index')->with('success', 'Especialidad registrada correctamente.');
     }
 
     /**

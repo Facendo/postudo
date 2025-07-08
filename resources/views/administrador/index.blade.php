@@ -2,7 +2,7 @@
     
         <section class="main-content-section">
             <div class="profile-section">
-                <img src="a" alt="Avatar del Administrador" class="profile-avatar">
+                <img src="{{asset('foto_perfil/default.png')}}" alt="Avatar del Administrador" class="profile-avatar">
                 <h2 class="profile-name">¡Bienvenido, Administrador!</h2>
                 <p class="profile-role">Gestione todas las funciones del sistema desde aquí.</p>
             </div>
@@ -21,11 +21,8 @@
             <a href="#" class="button_body">
                 <i class="fa-solid fa-calendar-alt icon-left"></i> Gestor de Reportes
             </a>
-            <a href="#" class="button_body">
-                <i class="fa-solid fa-book icon-left"></i> Creacion pancho esta loco
-            </a>
             <a href="{{ route('administrador.creacion.index') }}" class="button_body">
-                <i class="fa-solid fa-book icon-left"></i> Creacion de A,C,E
+                <i class="fa-solid fa-book icon-left"></i> Gestion de Areas, Carreras y Especialidades
             </a>
             
 
