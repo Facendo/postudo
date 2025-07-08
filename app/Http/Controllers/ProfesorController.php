@@ -13,7 +13,8 @@ class ProfesorController extends Controller
      */
     public function index()
     {
-        //
+        $profesores = Profesor::all();
+        return view('administrador.gestionprofesor', compact('profesores'));
     }
 
     /**
@@ -21,7 +22,7 @@ class ProfesorController extends Controller
      */
     public function create()
     {
-        //
+        return view('administrador.registroprofesor');
     }
 
     /**
@@ -31,13 +32,13 @@ class ProfesorController extends Controller
     {
         $profesor = new Profesor();
         $profesor->cedula = $request->cedula;
-        $profesor->nro_seccion = $request->nro_seccion;
         $profesor->nombre = $request->nombre;
         $profesor->apellido = $request->apellido;
         $profesor->telefono = $request->telefono;
         $profesor->correo = $request->correo;
         $profesor->edad = $request->edad;
         $profesor->save();
+        return redirect()->route('administrador.gestion_profesor')->with('success', 'Profesor registrado exitosamente.');
     }
 
     /**
@@ -53,7 +54,7 @@ class ProfesorController extends Controller
      */
     public function edit(Profesor $profesor)
     {
-        //
+        return view('administrador.editarprofesor', compact('profesor'));
     }
 
     /**
@@ -62,13 +63,13 @@ class ProfesorController extends Controller
     public function update(Request $request, Profesor $profesor)
     {
         $profesor->cedula = $request->cedula;
-        $profesor->nro_seccion = $request->nro_seccion;
         $profesor->nombre = $request->nombre;
         $profesor->apellido = $request->apellido;
         $profesor->telefono = $request->telefono;
         $profesor->correo = $request->correo;
         $profesor->edad = $request->edad;
         $profesor->save();
+        return redirect()->route('administrador.gestion_profesor')->with('success', 'Profesor actualizado exitosamente.');
     }
 
     /**
@@ -76,6 +77,7 @@ class ProfesorController extends Controller
      */
     public function destroy(Profesor $profesor)
     {
-        //
+        $profesor->delete();
+        return redirect()->route('administrador.gestion_profesor')->with('success', 'Profesor eliminado exitosamente.');
     }
 }

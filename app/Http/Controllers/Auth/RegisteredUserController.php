@@ -38,7 +38,6 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'cedula' => ['string','max:8','required'],
         ]);
-        
         if ($request->hasFile('foto_perfil')) {
             $image = $request->file('foto_perfil');
             $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
@@ -49,7 +48,7 @@ class RegisteredUserController extends Controller
             
         }
         else{
-            $foto_perfil = 'foto_perfil/default.png'; // Default profile picture
+            $foto_perfil = 'foto_perfil/default.png'; 
         }
 
         if(Estudiante::where('cedula', $request->cedula)->exists()){
