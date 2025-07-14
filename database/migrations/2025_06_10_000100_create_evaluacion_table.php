@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('evaluacion', function (Blueprint $table) {
             $table->integer('id_evaluacion')->primary();
-            $table->integer('Codigo_materia');
+            $table->integer('codigo_materia');
             $table->string('titulo');
             $table->integer('porcentaje');
             $table->string('metodologia');
             $table->integer('nota');
             $table->timestamps();
 
-            $table->foreign('Codigo_materia')
-                ->references('Codigo_materia')
-                ->on('materias')
+            $table->foreign('codigo_materia')
+                ->references('codigo_materia')
+                ->on('materia')
                 ->onDelete('cascade');
         });
     }

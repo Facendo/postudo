@@ -12,6 +12,9 @@ class Carrera extends Model
     protected $primaryKey = 'id_carrera';
     protected $keyType = 'integer';
 
+    public function area(){
+        return $this->belongsTo(Area::class, 'codigo_area', 'codigo');
+    }
     public function Especialidades(){
         return $this->belongsToMany(Especialidades::class, 'codigo_especialidad', 'codigo_especialidad');
     }

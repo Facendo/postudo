@@ -28,7 +28,12 @@ class SeccionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $seccion = new Seccion();
+        $seccion->nro_seccion = $request->nro_seccion;
+        $seccion->hora_inicio = $request->hora_inicio;
+        $seccion->hora_fin = $request->hora_fin;
+        $seccion->aula = $request->aula;
+        $seccion->save();
     }
 
     /**
@@ -52,7 +57,11 @@ class SeccionController extends Controller
      */
     public function update(Request $request, Seccion $seccion)
     {
-        //
+        $seccion->nro_seccion = $request->nro_seccion;
+        $seccion->hora_inicio = $request->hora_inicio;
+        $seccion->hora_fin = $request->hora_fin;
+        $seccion->aula = $request->aula;
+        $seccion->save();
     }
 
     /**
@@ -60,6 +69,6 @@ class SeccionController extends Controller
      */
     public function destroy(Seccion $seccion)
     {
-        //
+        $seccion->delete();
     }
 }

@@ -29,7 +29,15 @@ class ProfesorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $profesor = new Profesor();
+        $profesor->cedula = $request->cedula;
+        $profesor->nro_seccion = $request->nro_seccion;
+        $profesor->nombre = $request->nombre;
+        $profesor->apellido = $request->apellido;
+        $profesor->telefono = $request->telefono;
+        $profesor->correo = $request->correo;
+        $profesor->edad = $request->edad;
+        $profesor->save();
     }
 
     /**
@@ -53,7 +61,14 @@ class ProfesorController extends Controller
      */
     public function update(Request $request, Profesor $profesor)
     {
-        //
+        $profesor->cedula = $request->cedula;
+        $profesor->nro_seccion = $request->nro_seccion;
+        $profesor->nombre = $request->nombre;
+        $profesor->apellido = $request->apellido;
+        $profesor->telefono = $request->telefono;
+        $profesor->correo = $request->correo;
+        $profesor->edad = $request->edad;
+        $profesor->save();
     }
 
     /**

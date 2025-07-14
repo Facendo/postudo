@@ -31,9 +31,14 @@ class AuthenticatedSessionController extends Controller
         
         if($user->rol == "estudiante"){
             return redirect()->intended(route('estudiante.index', absolute: false));
+        } elseif ($user->rol === 'profesor') {
+            return redirect(route('profesor.index', absolute: false));
+        } elseif ($user->rol === 'administrador') {
+            return redirect(route('administrador.index', absolute: false));
+        } else {
+            // Si el rol no es reconocido, redirigir a una página de error o inicio
+            return redirect(route('inicio', absolute: false))->withErrors(['rol' => 'Rol no reconocido.']);
         }
-        else
-            return redirect()->intended(route('inicio', absolute: false));
     }
 
     /**

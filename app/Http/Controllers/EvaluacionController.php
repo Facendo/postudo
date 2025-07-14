@@ -28,7 +28,14 @@ class EvaluacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $evaluacion = new Evaluacion();
+        $evaluacion->id_evaluacion = $request->id_evaluacion;
+        $evaluacion->Codigo_materia = $request->Codigo_materia;
+        $evaluacion->titulo = $request->titulo;
+        $evaluacion->porcentaje = $request->porcentaje;
+        $evaluacion->metodologia = $request->metodologia;
+        $evaluacion->nota = $request->nota;
+        $evaluacion->save();
     }
 
     /**
@@ -52,7 +59,13 @@ class EvaluacionController extends Controller
      */
     public function update(Request $request, Evaluacion $evaluacion)
     {
-        //
+        $evaluacion->id_evaluacion = $request->id_evaluacion;
+        $evaluacion->Codigo_materia = $request->Codigo_materia;
+        $evaluacion->titulo = $request->titulo;
+        $evaluacion->porcentaje = $request->porcentaje;
+        $evaluacion->metodologia = $request->metodologia;
+        $evaluacion->nota = $request->nota;
+        $evaluacion->save();
     }
 
     /**

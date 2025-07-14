@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seccion', function (Blueprint $table) {
-            $table->integer('nro_seccion')->primary();
-            $table->date('hora_inicio');
-            $table->date('hora_fin');
-            $table->string('aula');
+        Schema::create('pensum', function (Blueprint $table) {
+            $table->integer('codigo_pensum')->primary();
             $table->timestamps();
-
         });
     }
 
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seccion');
+        Schema::dropIfExists('pensum');
     }
 };

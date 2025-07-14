@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materias', function (Blueprint $table) {
-            $table->integer('Codigo_materia')->primary();
-            $table->string('codigo cohorte');
+        Schema::create('materia', function (Blueprint $table) {
+            $table->integer('codigo_materia')->primary();
+            $table->string('codigo_cohorte');
             $table->integer('nro_seccion');
             $table->string('Nombre');
             $table->integer('Prelacion');
             $table->timestamps();
+
+            $table->foreign('codigo_cohorte')
+                ->references('codigo_cohorte')
+                ->on('cohorte')
+                ->onDelete('cascade');
         });
     }
 

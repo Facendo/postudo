@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('cohorte', function (Blueprint $table) {
             $table->string('codigo_cohorte')->primary();
+            $table->string('codigo_postgrado');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->integer('nro_de_cohortes');
+            $table->integer('nro_de_cohorte');
             $table->timestamps();
+
+            $table->foreign('codigo_postgrado')
+                ->references('Id_postgrado')
+                ->on('postgrado')
+                ->onDelete('cascade');
         });
     }
 

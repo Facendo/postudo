@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carrera', function (Blueprint $table) {
-            $table->integer('id_carrera')->primary();
-            $table->integer('codigo_especialidad');
+        Schema::create('especialidades', function (Blueprint $table) {
+            $table->integer('codigo_especialidad')->primary();
+            $table->integer('id_carrera');
             $table->string('nombre');
             $table->timestamps();
+
+            $table->foreign('id_carrera')
+                ->references('id_carrera')
+                ->on('carrera')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carrera');
+        Schema::dropIfExists('especialidades');
     }
 };

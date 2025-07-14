@@ -788,8 +788,10 @@
                 <a href="{{ url('/contacto') }}" class="button_barra">Contacto</a>
                 @auth
                     <a href="{{ url('/perfil') }}" class="button_barra">Perfil</a>
-                    <button class="cerrar_sesion">Cerrar Sesión</button>
-                     
+                    <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="cerrar_sesion">Cerrar Sesión</button>
+                    </form>
                 @endauth
                 @guest
                     <a href="{{ url('/login') }}" class="button_barra">Iniciar Sesión</a>
