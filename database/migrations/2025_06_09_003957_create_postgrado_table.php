@@ -17,17 +17,13 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('duracion');
-
+          
             $table->foreign('codigo_especialidad')
                 ->references('codigo_especialidad')
                 ->on('especialidades')
                 ->onDelete('cascade');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('postgrado');

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const areaDetailsSection = document.getElementById('areaDetailsSection');
     const carreraDetailsSection = document.getElementById('carreraDetailsSection');
 
+
     // Formular container para formularios DELETE
     const deleteFormsContainer = document.getElementById('deleteFormsContainer');
     if (!deleteFormsContainer) {
@@ -25,9 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNewEspecialidad = document.getElementById('btnNewEspecialidad');
     const btnBackToAreas = document.getElementById('btnBackToAreas');
     const btnBackToCarreras = document.getElementById('btnBackToCarreras');
+
     const btnCancelArea = document.getElementById('btnCancelArea');
     const btnCancelCarrera = document.getElementById('btnCancelCarrera');
     const btnCancelEspecialidad = document.getElementById('btnCancelEspecialidad');
+
 
     // Agrupar todas las secciones para ocultar/mostrar
     const allSections = [
@@ -367,4 +370,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carga inicial
     loadAreas(); toggleMainButtonsActive(btnViewAreas);
+
 });

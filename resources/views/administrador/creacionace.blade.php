@@ -1,4 +1,5 @@
 <x-layout title="PostUDO || Gestión de Postgrados">
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- Script para los iconos de Font Awesome (si no lo tienes ya en tu layout) --}}
@@ -8,6 +9,7 @@
         window.initialAreas = @json($area);
         window.initialCarreras = @json($carrera);
         window.initialEspecialidades = @json($especialidad);
+
         window.routes = {
             deleteArea: "{{ url('/administrador/area') }}",
             deleteCarrera: "{{ url('/administrador/carrera') }}",
@@ -24,6 +26,7 @@
     <section class="action-buttons-container">
         <button id="btnViewAreas" class="button_body active">Ver Áreas</button>
         <button id="btnViewCarreras" class="button_body">Ver Carreras</button>
+
     </section>
 
     {{-- SECCIÓN PRINCIPAL PARA LISTAR ÁREAS --}}
@@ -35,7 +38,9 @@
             </button>
         </div>
         <div id="areasList" class="data-list-container">
+
             {{-- Aquí se cargarán las áreas dinámicamente con JS --}}
+
             <p>Cargando áreas...</p>
         </div>
         <div class="form-actions" style="justify-content: center; margin-top: 20px;">
@@ -52,7 +57,9 @@
             </button>
         </div>
         <div id="carrerasList" class="data-list-container">
+
             {{-- Aquí se cargarán las carreras dinámicamente con JS --}}
+
             <p>Cargando carreras...</p>
         </div>
         <div class="form-actions" style="justify-content: center; margin-top: 20px;">
@@ -74,7 +81,9 @@
 
             <h4>Carreras asociadas:</h4>
             <div id="areaCarrerasList" class="data-list-container nested-list">
+
                 {{-- Aquí se cargarán las carreras de esta área con JS --}}
+
                 <p>Cargando carreras asociadas...</p>
             </div>
         </div>
@@ -89,7 +98,9 @@
             </button>
         </div>
         <div class="detail-content">
+
             <h4>Código de Carrera:</h4> 
+
             <p id="carreraDetailId">Cargando código...</p>
 
             <h4>Especialidades asociadas:</h4>
@@ -99,7 +110,9 @@
                 </button>
             </div>
             <div id="carreraEspecialidadesList" class="data-list-container nested-list">
+
                 {{-- Aquí se cargarán las especialidades de esta carrera con JS --}}
+
                 <p>Cargando especialidades asociadas...</p>
             </div>
         </div>
@@ -110,12 +123,13 @@
         <h3>Registrar Nueva Área</h3>
         <form class="registration-form" action="{{ route('administrador.area.store') }}" method="POST">
             @csrf
-            <div class="form-group">
+            <div class="form-group"><<<<<<< José
                 <label for="codigo" class="form-label">Codigo del area:</label>
                 <input type="text" id="codigo" name="codigo" class="form-input" required>
             </div>
             <div class="form-group">
                 <label for="nombre" class="form-label">Nombre del Área:</label>
+
                 <input type="text" id="nombre" name="nombre" class="form-input" required>
             </div>
             <div class="form-group">
@@ -135,7 +149,9 @@
         <form class="registration-form" action="{{route('administrador.carrera.store')}}" method="POST">
             @csrf
             <div class="form-group">
+
                 <label for="carrera_id_new" class="form-label">ID de Carrera (Código único):</label> 
+
                 <input type="text" id="carrera_id_new" name="id_carrera" class="form-input" required>
             </div>
             <div class="form-group">
@@ -167,7 +183,9 @@
             </div>
             <div class="form-group">
                 <label for="especialidad_codigo_new" class="form-label">Código Único de la Especialidad:</label>
+
                 <input type="text" id="especialidad_codigo_new" name="codigo" class="form-input" required> 
+
             </div>
              <div class="form-group">
                 <label for="especialidad_carrera_id_new" class="form-label">Carrera a la que pertenece:</label>
