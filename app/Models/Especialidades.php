@@ -12,7 +12,9 @@ class Especialidades extends Model
     protected $primaryKey = 'codigo_especialidad';
     protected $keyType = 'integer';
 
-    public function Carreras(){
-        return $this->hasMany(Carrera::class, 'codigo_especialidad', 'codigo_especialidad');
+    // En Especialidades.php
+    public function carrera()
+    {
+        return $this->belongsTo(Carrera::class, 'id_carrera', 'id_carrera');
     }
 }

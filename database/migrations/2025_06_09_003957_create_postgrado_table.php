@@ -13,27 +13,17 @@ return new class extends Migration
     {
         Schema::create('postgrado', function (Blueprint $table) {
             $table->string('Id_postgrado')->primary();
-            $table->integer('codigo_pensum');
             $table->integer('codigo_especialidad');
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('duracion');
-
-            $table->foreign('codigo_pensum')
-                ->references('codigo_pensum')
-                ->on('pensum')
-                ->onDelete('cascade');
-
+          
             $table->foreign('codigo_especialidad')
                 ->references('codigo_especialidad')
                 ->on('especialidades')
                 ->onDelete('cascade');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('postgrado');

@@ -18,17 +18,16 @@
             <a href="{{route('administrador.gestion_profesor')}}" class="button_body">
                 <i class="fa-solid fa-credit-card icon-left"></i> Gestion de Profesores
             </a>
-            <a href="#" class="button_body">
-                <i class="fa-solid fa-calendar-alt icon-left"></i> Gestor de Postgrado
+
+            <a href="{{ route('administrador.gestion_postgrado') }}" class="button_body">
+                <i class="fa-solid fa-calendar-alt icon-left"></i> Gestion de Postgrados
+
             </a>
             <a href="{{ route('administrador.creacion.index') }}" class="button_body">
                 <i class="fa-solid fa-book icon-left"></i> Gestion de Areas, Carreras y Especialidades
             </a>
-            
 
         </div>
     </div>
-
-
 
 </x-layout>

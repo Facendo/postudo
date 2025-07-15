@@ -37,14 +37,18 @@
                           
                             <td class="table-actions">
                                 {{-- Botón de Editar --}}
-                                <a href="#" class="action-button edit" title="Editar">
+                                <a href="{{ route('administrador.gestion_estudiante.edit', $estudiante) }}" class="button_body" title="Editar">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
 
                                 {{-- Botón de Eliminar (usando un formulario para solicitudes DELETE) --}}
-                                 <a href="#" class="action-button eliminar" title="Eliminar">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
+                                <form action="{{ route('administrador.gestion_estudiante.destroy', $estudiante) }}" method="POST" class="inline-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="button_body" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
                                 
                             </td>
                         </tr>
