@@ -66,7 +66,7 @@ class EstudianteController extends Controller
      */
     public function edit(Estudiante $estudiante)
     {
-        //
+        return view('administrador.editarestudiante', compact('estudiante'));
     }
 
     /**
@@ -74,7 +74,15 @@ class EstudianteController extends Controller
      */
     public function update(Request $request, Estudiante $estudiante)
     {
-        //
+        $estudiante->cedula=$request->cedula;
+        $estudiante->nombre=$request->nombre;
+        $estudiante->apellido=$request->apellido;
+        $estudiante->correo=$request->correo;
+        $estudiante->carrera=$request->carrera;
+        $estudiante->especialidad=$request->especialidad;
+        $estudiante->edad=$request->edad;
+        $estudiante->save();
+        return redirect()->route('administrador.gestionestudiantes')->with('success', 'Estudiante actualizado exitosamente.');
     }
 
     /**
@@ -82,6 +90,7 @@ class EstudianteController extends Controller
      */
     public function destroy(Estudiante $estudiante)
     {
-        //
+        $estudiante->delete();
+        return redirect()->route('administrador.gestionestudiantes')->with('success', 'Estudiante eliminado exitosamente.');
     }
 }
