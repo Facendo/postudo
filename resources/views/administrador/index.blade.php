@@ -18,8 +18,10 @@
             <a href="{{route('administrador.gestion_profesor')}}" class="button_body">
                 <i class="fa-solid fa-briefcase icon-left"></i> Gestion de Profesores
             </a>
+
             <a href="{{ route('administrador.gestion_postgrado') }}" class="button_body">
                 <i class="fa-solid fa-calendar-alt icon-left"></i> Gestion de Postgrados
+
             </a>
             <a href="{{ route('administrador.creacion.index') }}" class="button_body">
                 <i class="fa-solid fa-building icon-left"></i> Gestion de Areas, Carreras y Especialidades
@@ -33,7 +35,5 @@
 
         </div>
     </div>
-
-
 
 </x-layout>
