@@ -31,19 +31,19 @@
 
                 <!-- Campo para codigo_especialidad (similar al de estudiante pero para postgrados) -->
                 <div class="form-group">
-                    <label for="codigo_especialidad" class="form-label">Especialidad</label>
-                    <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
-                        <option value="">Selecciona una especialidad</option>
-                        @foreach(App\Models\Especialidades::with('carrera')->get() as $especialidad)
-                            <option value="{{ $especialidad->codigo_especialidad }}">
-                                {{ $especialidad->nombre }} - {{ $especialidad->carrera->nombre ?? 'Sin carrera' }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('codigo_especialidad')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
-                </div>
+                <label for="codigo_especialidad" class="form-label">Especialidad</label>
+                <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
+                    <option value="">Selecciona una especialidad</option>
+                    @foreach(App\Models\Especialidades::with('carrera')->get() as $especialidad)
+                        <option value="{{ $especialidad->codigo_especialidad }}">
+                            {{ $especialidad->nombre }} - {{ $especialidad->carrera->nombre ?? 'Sin carrera' }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('codigo_especialidad')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+            </div>
                 
                 <div class="form-actions" style="justify-content: center;">
                     <button type="submit" class="submit-button">Registrar Postgrado</button>

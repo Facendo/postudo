@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\MateriasController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Materias;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EspecialidadesController;
@@ -44,3 +46,9 @@ Route::post("/administrador/gestion_postgrado", [PostgradoController::class, 'st
 Route::get("/administrador/gestion_postgrado/{postgrado}/edit", [PostgradoController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.edit');
 Route::delete("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.destroy');
 Route::put("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.update');
+Route::get("/administrador/gestionmaterias", [MateriasController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias');
+Route::get("/administrador/gestionmaterias/create", [MateriasController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.create');
+Route::post("/administrador/gestionmaterias", [MateriasController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.store');
+Route::get("/administrador/gestionmaterias/{materia}/edit", [MateriasController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.edit');
+Route::put("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.update');
+Route::delete("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.destroy');

@@ -16,13 +16,19 @@
                 <i class="fa-solid fa-users icon-left"></i> Gestion de Estudiantes
             </a>
             <a href="{{route('administrador.gestion_profesor')}}" class="button_body">
-                <i class="fa-solid fa-credit-card icon-left"></i> Gestion de Profesores
+                <i class="fa-solid fa-briefcase icon-left"></i> Gestion de Profesores
             </a>
             <a href="{{ route('administrador.gestion_postgrado') }}" class="button_body">
                 <i class="fa-solid fa-calendar-alt icon-left"></i> Gestion de Postgrados
             </a>
             <a href="{{ route('administrador.creacion.index') }}" class="button_body">
-                <i class="fa-solid fa-book icon-left"></i> Gestion de Areas, Carreras y Especialidades
+                <i class="fa-solid fa-building icon-left"></i> Gestion de Areas, Carreras y Especialidades
+            </a>
+            <a href="#" class="button_body">
+                <i class="fa-solid fa-archive icon-left"></i> Gestion de Cohortes
+            </a>
+            <a href="{{ route('administrador.gestionmaterias') }}" class="button_body">
+                <i class="fa-solid fa-book icon-left"></i> Gestion de Materias
             </a>
 
         </div>
