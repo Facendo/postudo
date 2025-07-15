@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Materias;
 use Illuminate\Http\Request;
+use App\Models\Especialidades;
 
 class MateriasController extends Controller
 {
@@ -12,7 +13,9 @@ class MateriasController extends Controller
      */
     public function index()
     {
-        //
+        $materias = Materias::all();
+        $especialidades = Especialidades::all();
+        return view('administrador.gestionmaterias', compact('materias', 'especialidades'));
     }
 
     /**
@@ -20,7 +23,7 @@ class MateriasController extends Controller
      */
     public function create()
     {
-        //
+        return view('administrador.registromateria');
     }
 
     /**
@@ -28,13 +31,16 @@ class MateriasController extends Controller
      */
     public function store(Request $request)
     {
-        $materia= new Materias();
-        $materia->Codigo_materia = $request->Codigo_materia;
-        $materia->codigo_cohorte = $request->codigo_cohorte;
+        $materia = new Materias();
+        $materia->codigo_materia = $request->codigo_materia;
+        $materia->nombre = $request->nombre;
+        $materia->nombre_carrera = $request->carrera;
+        $materia->nombre_especialidad = $request->codigo_especialidad;
         $materia->nro_seccion = $request->nro_seccion;
-        $materia->Nombre = $request->Nombre;
-        $materia->Prelacion = $request->Prelacion;
+        $materia->prelacion = $request->prelacion ?? 0; // Valor por defecto si es null
         $materia->save();
+
+        return redirect()->route('administrador.gestionmaterias')->with('success', 'Materia registrada exitosamente.');
     }
 
     /**
@@ -48,24 +54,48 @@ class MateriasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Materias $materias)
+    public function edit($codigo_materia)
     {
-        //
+        $materia = Materias::where('codigo_materia', $codigo_materia)->firstOrFail();
+        // ...otras variables si necesitas...
+        return view('administrador.editarmateria', compact('materia'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Materias $materias)
+    public function update(Request $request, Materias $materia)
     {
-        //
+        
+        $request->validate([
+            'codigo_materia' => 'required|integer',
+            'nombre' => 'required|string',
+            'carrera' => 'required|string',
+            'codigo_especialidad' => 'required|string',
+            'nro_seccion' => 'required|integer',
+            'prelacion' => 'nullable|integer', // Hacerlo nullable si es opcional
+        ]);
+
+        // Actualiza el registro existente
+        $materia->update([
+            'codigo_materia' => $request->codigo_materia,
+            'nombre' => $request->nombre,
+            'nombre_carrera' => $request->carrera,
+            'nombre_especialidad' => $request->codigo_especialidad,
+            'nro_seccion' => $request->nro_seccion,
+            'prelacion' => $request->prelacion ?? null, // Usar null si no se proporciona
+        ]);
+
+        return redirect()->route('administrador.gestionmaterias')
+            ->with('success', 'Materia actualizada exitosamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Materias $materias)
+    public function destroy(Materias $materia)
     {
-        //
+        $materia->delete();
+        return redirect()->route('administrador.gestionmaterias')->with('success', 'Materia eliminada exitosamente.');
     }
 }

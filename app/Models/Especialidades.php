@@ -17,4 +17,8 @@ class Especialidades extends Model
     {
         return $this->belongsTo(Carrera::class, 'id_carrera', 'id_carrera');
     }
+    public function materias()
+    {
+        return $this->hasMany(Materias::class, 'codigo_especialidad', 'codigo_especialidad');
+    }
 }
