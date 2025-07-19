@@ -50,6 +50,10 @@ class RegisteredUserController extends Controller
         else{
             $foto_perfil = 'foto_perfil/default.png'; 
         }
+        if(User::where('cedula',$request->cedula)->exists()){
+            return redirect(route('register'))->with("error","Esta cedula ya tiene un usuario creado");
+        }
+        else{
 
         if(Estudiante::where('cedula', $request->cedula)->exists()){
             $rol = "estudiante";
@@ -90,9 +94,9 @@ class RegisteredUserController extends Controller
         else{
             return redirect()->back()->withErrors(['cedula' => 'La cédula no está registrada en el sistema.']);
         }
-
+        
         event(new Registered($user));
-
+        
         Auth::login($user);
         if ($rol === 'estudiante') {
             return redirect(route('estudiante.index', absolute: false));
@@ -105,5 +109,7 @@ class RegisteredUserController extends Controller
             // Si el rol no es reconocido, redirigir a una página de error o inicio
             return redirect(route('inicio', absolute: false))->withErrors(['rol' => 'Rol no reconocido.']);
         }
+        }
+        
     }
 }

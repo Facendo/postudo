@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="{{asset('iconopagina.png')}}" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <title>PostUDO || Inicio</title>
-    <style>
+
         /* --- General Body Styles --- */
         body {
             font-family: 'Inter', sans-serif;
@@ -92,7 +82,6 @@
         }
 
         .contenedor {
-            margin: 0px;
             display: flex;
             align-items: center;
             gap: 35px;
@@ -102,7 +91,7 @@
         .logo {
             width: 60px;
             height: auto;
-            margin: 0px;
+            margin-right: 10px;
             filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1));
         }
 
@@ -774,136 +763,3 @@
                 padding: 12px 25px;
             }
         }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="contenedor">
-                <img src="{{ asset('../Logo_UDO.png') }}" alt="PostUDO Logo" class="logo">
-                <h1 class="titulo_barra">PostUDO</h1>
-            </div>
-            <div>
-                <a href="{{ url('/') }}" class="button_barra">Inicio</a>
-                <a href="{{ url('/programas') }}" class="button_barra">Programas</a>
-                <a href="{{ url('/contacto') }}" class="button_barra">Contacto</a>
-                @auth
-                    <a href="{{ url('/perfil') }}" class="button_barra">Perfil</a>
-                    <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="cerrar_sesion">Cerrar Sesión</button>
-                    </form>
-                @endauth
-                @guest
-                    <a href="{{ url('/login') }}" class="button_barra">Iniciar Sesión</a>
-                    <a href="{{ url('/register') }}" class="button_barra">Registrarse</a>
-                @endguest
-               
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <div class="flash-messages">
-            @if (session('success'))
-                <div class="my-alert-style" role="alert">
-                    <strong class="font-bold">¡Éxito!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="my-red-alert-style" role="alert">
-                    <strong class="font-bold">¡Error!</strong>
-                    <span class="block sm:inline">{{ session('error') }}</span>
-                </div>
-            @endif
-        </div>
-
-        <div class="page-content">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <h1>Desbloquea Tu Futuro Profesional con PostUDO</h1>
-                    <p>Tu plataforma integral para acceder a posgrados de vanguardia y especialización que transformarán tu carrera.</p>
-                    <div class="hero-buttons">
-                        <a href="#about-us" class="btn btn-primary">Conoce Más</a>
-                        <a href="/postgrado" class="btn btn-secondary">Explora Programas</a>
-                    </div>
-                </div>
-                </div>
-
-            <div id="about-us" class="about-us-section">
-                <div class="about-text-content">
-                    <h2>Nuestra Misión: Impulsar Tu Éxito</h2>
-                    <p>
-                        En PostUDO, estamos comprometidos con tu crecimiento profesional y académico. Hemos diseñado esta plataforma pensando en ti: el profesional ambicioso que busca trascender, el investigador apasionado en pos de nuevos horizontes, o el recién graduado listo para dar el siguiente gran paso en su carrera.
-                    </p>
-                    <p>
-                        Creemos que la especialización y la formación continua son pilares fundamentales para el éxito en un entorno profesional en constante evolución. Por eso, te ofrecemos acceso a programas de posgrado de alta calidad que te equiparán con las herramientas y el conocimiento para liderar en tu campo.
-                    </p>
-                </div>
-                <div class="about-image-container">
-                    <img src="{{ asset('Profesionales_investigando.jpg') }}" alt="Profesionales investigando" class="about-image">
-                </div>
-            </div>
-
-            <div id="offerings" class="offerings-section">
-                <h2>Nuestra Oferta Académica</h2>
-                <p class="section-description">Descubre programas de posgrado diseñados para las demandas del mercado actual y futuro.</p>
-                <div class="program-cards-container">
-                    <div class="program-card">
-                        <h3>Maestrías</h3>
-                        <p>Consolida tus conocimientos y adquiere habilidades avanzadas en diversas áreas. Perfectas para la especialización.</p>
-                        <a href="{{ url('/maestrias') }}" class="card-link">Ver Maestrías &rarr;</a>
-                    </div>
-                    <div class="program-card">
-                        <h3>Doctorados</h3>
-                        <p>Impulsa la frontera del saber y conviértete en un investigador líder. Ideal para la innovación y la academia.</p>
-                        <a href="{{ url('/doctorados') }}" class="card-link">Ver Doctorados &rarr;</a>
-                    </div>
-                    <div class="program-card">
-                        <h3>Diplomados y Especializaciones</h3>
-                        <p>Formación intensiva y específica para potenciar habilidades clave en corto tiempo. Actualízate rápidamente.</p>
-                        <a href="{{ url('/diplomados') }}" class="card-link">Ver Diplomados &rarr;</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="why-choose-us-section">
-                <h2>¿Por Qué Elegir PostUDO?</h2>
-                <div class="benefits-grid">
-                    <div class="benefit-item">
-                        <h3>Excelencia Académica</h3>
-                        <p>Programas impartidos por docentes de alto nivel y con reconocimiento en sus campos.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <h3>Modalidades Flexibles</h3>
-                        <p>Opciones de estudio que se adaptan a tu ritmo de vida profesional.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <h3>Red de Contactos</h3>
-                        <p>Conecta con profesionales, investigadores y líderes de la industria.</p>
-                    </div>
-                    <div class="benefit-item">
-                        <h3>Enfoque Innovador</h3>
-                        <p>Contenidos actualizados y relevantes para los desafíos del mañana.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-section">
-                <div class="cta-content">
-                    <h2>Comienza Tu Viaje Hacia la Maestría</h2>
-                    <p>Miles de profesionales ya están transformando sus carreras con PostUDO. ¿Serás el siguiente?</p>
-                </div>
-            </div>
-        </div>
-        </main>
-
-    <footer id="pie">
-        <div class="contenido_pie">
-            <p>&copy; 2025 PostUDO. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-</body>
-</html>
