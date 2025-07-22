@@ -45,9 +45,7 @@ class RegisteredUserController extends Controller
             $filename = $originalName . "_" . $request->cedula . '.' . $extension;
             $path = $image->storeAs('foto_perfil', $filename, 'public');
             $foto_perfil = 'foto_perfil/' . $filename;
-            
-        }
-        else{
+        } else {
             $foto_perfil = 'foto_perfil/default.png'; 
         }
         if(User::where('cedula',$request->cedula)->exists()){

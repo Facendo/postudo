@@ -16,7 +16,7 @@
             deleteEspecialidad: "{{ url('/administrador/especialidad') }}"
         };
     </script>
-
+    <script src="{{ asset('js/admin_options.js') }}"></script>
     <script src="{{ asset('js/admin_options.js') }}"></script>
 
     <section class="content_texto_bienvenida">
