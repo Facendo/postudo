@@ -1,54 +1,70 @@
 <?php
 
-use App\Http\Controllers\MateriasController;
-use App\Http\Controllers\ProfileController;
-use App\Models\Materias;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EstudianteController;
-use App\Http\Controllers\EspecialidadesController;
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CarreraController;
-use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\EspecialidadesController;
+use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\MateriasController;
 use App\Http\Controllers\PostgradoController;
-use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\ProfesorController;
+use Illuminate\Support\Facades\Route;
 
-Route::get(("/administrador"), [AdministradorController::class, 'index'])->middleware('auth','role:administrador')->name(name: 'administrador.index');
-Route::get('/administrador/gestionestudiantes', [EstudianteController::class, 'list'])->name('administrador.gestionestudiantes');
-Route::get(("/administrador/gestion_estudiante"), [EstudianteController::class, 'list'])->middleware('auth','role:administrador')->name('estudiante.list');
-Route::get(("/administrador/registro_estudiante"), [EstudianteController::class, 'create'])->middleware('auth','role:administrador')->name('registro_estudiante.index');
-Route::post(("/administrador/registro_estudiante"), [EstudianteController::class, 'store'])->middleware('auth','role:administrador')->name('estudiante.store');
-Route::get(("/administrador/areas"), [AdministradorController::class, 'creacionArea'])->middleware('auth','role:administrador')->name('administrador.creacion.index');
-Route::post(("/administrador/areas"), [AreaController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.area.store');
-Route::get(("/administrador/areas/{area}/edit"), [AreaController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.area.edit');
-Route::put(("/administrador/areas/{area}"), [AreaController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.area.update');
-Route::delete(("/administrador/areas/{area}"), [AreaController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.area.destroy');
-Route::post("/administrador/carrera", [CarreraController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.carrera.store');
-Route::get("administrador/carrera/{carrera}/edit", [CarreraController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.carrera.edit');
-Route::put("administrador/carrera/{carrera}", [CarreraController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.carrera.update');
-Route::delete("administrador/carrera/{carrera}", [CarreraController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.carrera.destroy');
-Route::post("/administrador/especialidad", [EspecialidadesController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.especialidad.store');
-Route::get("administrador/especialidad/{especialidad}/edit", [EspecialidadesController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.especialidad.edit');
-Route::put("administrador/especialidad/{especialidad}", [EspecialidadesController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.especialidad.update');
-Route::delete("administrador/especialidad/{especialidad}", [EspecialidadesController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.especialidad.destroy');
-Route::get("/administrador/gestion_profesor", [ProfesorController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestion_profesor');
-Route::get("/administrador/gestion_profesor/create", [ProfesorController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestion_profesor.create');
-Route::post("/administrador/gestion_profesor", [ProfesorController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestion_profesor.store');
-Route::get("/administrador/gestion_profesor/{profesor}/edit", [ProfesorController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestion_profesor.edit');
-Route::put("/administrador/gestion_profesor/{profesor}", [ProfesorController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestion_profesor.update');
-Route::delete("/administrador/gestion_profesor/{profesor}", [ProfesorController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestion_profesor.destroy');
-Route::get("/administrador/gestion_estudiante/{estudiante}/edit", [EstudianteController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestion_estudiante.edit');
-Route::put("/administrador/gestion_estudiante/{estudiante}", [EstudianteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestion_estudiante.update');
-Route::delete("/administrador/gestion_estudiante/{estudiante}", [EstudianteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestion_estudiante.destroy');
-Route::get("/administrador/gestion_postgrado", [PostgradoController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado');
-Route::get("/administrador/gestion_postgrado/create", [PostgradoController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.create');
-Route::post("/administrador/gestion_postgrado", [PostgradoController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.store');
-Route::get("/administrador/gestion_postgrado/{postgrado}/edit", [PostgradoController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.edit');
-Route::delete("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.destroy');
-Route::put("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestion_postgrado.update');
-Route::get("/administrador/gestionmaterias", [MateriasController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias');
-Route::get("/administrador/gestionmaterias/create", [MateriasController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.create');
-Route::post("/administrador/gestionmaterias", [MateriasController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.store');
-Route::get("/administrador/gestionmaterias/{materia}/edit", [MateriasController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.edit');
-Route::put("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.update');
-Route::delete("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.destroy');
+// Rutas del panel de administrador (requieren autenticación y rol de 'administrador')
+Route::middleware(['auth', 'role:administrador'])->group(function () {
+
+    // Panel principal del administrador
+    Route::get("/administrador", [AdministradorController::class, 'index'])->name('administrador.index');
+
+    // Gestión de Estudiantes
+    Route::get('/administrador/gestionestudiantes', [EstudianteController::class, 'list'])->name('administrador.gestionestudiantes'); // Lista de estudiantes
+    Route::get("/administrador/gestion_estudiante", [EstudianteController::class, 'list'])->name('estudiante.list'); // Otra ruta para listar estudiantes
+    Route::get("/administrador/registro_estudiante", [EstudianteController::class, 'create'])->name('registro_estudiante.index'); // Formulario de registro de estudiante
+    Route::post("/administrador/registro_estudiante", [EstudianteController::class, 'store'])->name('estudiante.store'); // Guardar nuevo estudiante
+    Route::get("/administrador/gestion_estudiante/{estudiante}/edit", [EstudianteController::class, 'edit'])->name('administrador.gestion_estudiante.edit'); // Formulario de edición de estudiante
+    Route::put("/administrador/gestion_estudiante/{estudiante}", [EstudianteController::class, 'update'])->name('administrador.gestion_estudiante.update'); // Actualizar estudiante
+    Route::delete("/administrador/gestion_estudiante/{estudiante}", [EstudianteController::class, 'destroy'])->name('administrador.gestion_estudiante.destroy'); // Eliminar estudiante
+
+    // Gestión de Áreas
+    Route::get("/administrador/areas", [AdministradorController::class, 'creacionArea'])->name('administrador.creacion.index'); // Vista para creación de áreas
+    Route::post("/administrador/areas", [AreaController::class, 'store'])->name('administrador.area.store'); // Guardar nueva área
+    Route::get("/administrador/areas/{area}/edit", [AreaController::class, 'edit'])->name('administrador.area.edit'); // Formulario de edición de área
+    Route::put("/administrador/areas/{area}", [AreaController::class, 'update'])->name('administrador.area.update'); // Actualizar área
+    Route::delete("/administrador/areas/{area}", [AreaController::class, 'destroy'])->name('administrador.area.destroy'); // Eliminar área
+
+    // Gestión de Carreras
+    Route::post("/administrador/carrera", [CarreraController::class, 'store'])->name('administrador.carrera.store'); // Guardar nueva carrera
+    Route::get("administrador/carrera/{carrera}/edit", [CarreraController::class, 'edit'])->name('administrador.carrera.edit'); // Formulario de edición de carrera
+    Route::put("administrador/carrera/{carrera}", [CarreraController::class, 'update'])->name('administrador.carrera.update'); // Actualizar carrera
+    Route::delete("administrador/carrera/{carrera}", [CarreraController::class, 'destroy'])->name('administrador.carrera.destroy'); // Eliminar carrera
+
+    // Gestión de Especialidades
+    Route::post("/administrador/especialidad", [EspecialidadesController::class, 'store'])->name('administrador.especialidad.store'); // Guardar nueva especialidad
+    Route::get("administrador/especialidad/{especialidad}/edit", [EspecialidadesController::class, 'edit'])->name('administrador.especialidad.edit'); // Formulario de edición de especialidad
+    Route::put("administrador/especialidad/{especialidad}", [EspecialidadesController::class, 'update'])->name('administrador.especialidad.update'); // Actualizar especialidad
+    Route::delete("administrador/especialidad/{especialidad}", [EspecialidadesController::class, 'destroy'])->name('administrador.especialidad.destroy'); // Eliminar especialidad
+
+    // Gestión de Profesores
+    Route::get("/administrador/gestion_profesor", [ProfesorController::class, 'index'])->name('administrador.gestion_profesor'); // Lista de profesores
+    Route::get("/administrador/gestion_profesor/create", [ProfesorController::class, 'create'])->name('administrador.gestion_profesor.create'); // Formulario de registro de profesor
+    Route::post("/administrador/gestion_profesor", [ProfesorController::class, 'store'])->name('administrador.gestion_profesor.store'); // Guardar nuevo profesor
+    Route::get("/administrador/gestion_profesor/{profesor}/edit", [ProfesorController::class, 'edit'])->name('administrador.gestion_profesor.edit'); // Formulario de edición de profesor
+    Route::put("/administrador/gestion_profesor/{profesor}", [ProfesorController::class, 'update'])->name('administrador.gestion_profesor.update'); // Actualizar profesor
+    Route::delete("/administrador/gestion_profesor/{profesor}", [ProfesorController::class, 'destroy'])->name('administrador.gestion_profesor.destroy'); // Eliminar profesor
+
+    // Gestión de Postgrados
+    Route::get("/administrador/gestion_postgrado", [PostgradoController::class, 'index'])->name('administrador.gestion_postgrado'); // Lista de postgrados
+    Route::get("/administrador/gestion_postgrado/create", [PostgradoController::class, 'create'])->name('administrador.gestion_postgrado.create'); // Formulario de registro de postgrado
+    Route::post("/administrador/gestion_postgrado", [PostgradoController::class, 'store'])->name('administrador.gestion_postgrado.store'); // Guardar nuevo postgrado
+    Route::get("/administrador/gestion_postgrado/{postgrado}/edit", [PostgradoController::class, 'edit'])->name('administrador.gestion_postgrado.edit'); // Formulario de edición de postgrado
+    Route::put("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'update'])->name('administrador.gestion_postgrado.update'); // Actualizar postgrado
+    Route::delete("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'destroy'])->name('administrador.gestion_postgrado.destroy'); // Eliminar postgrado
+
+    // Gestión de Materias
+    Route::get("/administrador/gestionmaterias", [MateriasController::class, 'index'])->name('administrador.gestionmaterias'); // Lista de materias
+    Route::get("/administrador/gestionmaterias/create", [MateriasController::class, 'create'])->name('administrador.gestionmaterias.create'); // Formulario de registro de materia
+    Route::post("/administrador/gestionmaterias", [MateriasController::class, 'store'])->name('administrador.gestionmaterias.store'); // Guardar nueva materia
+    Route::get("/administrador/gestionmaterias/{materia}/edit", [MateriasController::class, 'edit'])->name('administrador.gestionmaterias.edit'); // Formulario de edición de materia
+    Route::put("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'update'])->name('administrador.gestionmaterias.update'); // Actualizar materia
+    Route::delete("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
+});

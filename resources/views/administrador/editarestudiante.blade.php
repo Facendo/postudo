@@ -37,15 +37,11 @@
                     <label for="carrera" class="form-label">Carrera</label>
                     <select id="carrera" name="carrera" class="form-select" required>
                         <option value="">Selecciona tu carrera</option>
-                        {{-- Iterate through options and mark the selected one --}}
-                        <option value="informatica" {{ old('carrera', $estudiante->carrera) == 'informatica' ? 'selected' : '' }}>Ingeniería Informática</option>
-                        <option value="civil" {{ old('carrera', $estudiante->carrera) == 'civil' ? 'selected' : '' }}>Ingeniería Civil</option>
-                        <option value="electrica" {{ old('carrera', $estudiante->carrera) == 'electrica' ? 'selected' : '' }}>Ingeniería Eléctrica</option>
-                        <option value="mecanica" {{ old('carrera', $estudiante->carrera) == 'mecanica' ? 'selected' : '' }}>Ingeniería Mecánica</option>
-                        <option value="quimica" {{ old('carrera', $estudiante->carrera) == 'quimica' ? 'selected' : '' }}>Ingeniería Química</option>
-                        <option value="administracion" {{ old('carrera', $estudiante->carrera) == 'administracion' ? 'selected' : '' }}>Administración</option>
-                        <option value="contaduria" {{ old('carrera', $estudiante->carrera) == 'contaduria' ? 'selected' : '' }}>Contaduría Pública</option>
-                        <option value="derecho" {{ old('carrera', $estudiante->carrera) == 'derecho' ? 'selected' : '' }}>Derecho</option>
+                        @foreach ($carreras as $carrera)
+                            <option value="{{ $carrera->id }}" {{ old('carrera', $estudiante->carrera_id) == $carrera->id ? 'selected' : '' }}>
+                                {{ $carrera->nombre }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 
