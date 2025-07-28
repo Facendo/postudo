@@ -123,7 +123,7 @@
         <h3>Registrar Nueva Área</h3>
         <form class="registration-form" action="{{ route('administrador.area.store') }}" method="POST">
             @csrf
-            <div class="form-group"><<<<<<< José
+            <div class="form-group">
                 <label for="codigo" class="form-label">Codigo del area:</label>
                 <input type="text" id="codigo" name="codigo" class="form-input" required>
             </div>

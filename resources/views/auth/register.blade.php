@@ -9,8 +9,25 @@
     <title>Registro</title>
 </head>
 <body>
+    <div>
+            <section class="flash-messages-container" aria-live="polite"> {{-- Use a section and aria-live for accessibility --}}
+            @if (session('success'))
+                <div class="my-alert-style" role="alert"> {{-- role="alert" for accessibility --}}
+                    <strong class="font-bold">¡Éxito!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
 
+            @if (session('error'))
+                <div class="my-red-alert-style" role="alert">
+                    <strong class="font-bold">¡Error!</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
+        </section>    
+        </div>
 <div class="registration-page-container">
+
     <form method="POST" action="{{ route('register') }}" class="registration-form">
         @csrf
 
