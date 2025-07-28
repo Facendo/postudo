@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('evaluacion', function (Blueprint $table) {
             $table->id('id_evaluacion')->primary();
             $table->integer('codigo_materia')->nullable();
-            $table->integer('codigo_seccion');
+            $table->integer('codigo_seccion')->nullable();
             $table->string('titulo');
             $table->integer('porcentaje');
             $table->string('metodologia');

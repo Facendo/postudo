@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Evaluacion;
+use App\Models\Materias;
+use App\Models\Seccion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Area;
@@ -9,6 +12,7 @@ use App\Models\Carrera;
 use App\Models\Cohorte;
 use App\Models\Especialidades;
 use App\Models\Postgrado;
+use App\Models\Profesor;
 
 class RellenoAreasSeeder extends Seeder
 {
@@ -129,6 +133,15 @@ class RellenoAreasSeeder extends Seeder
             'nro_cohortes' => 3,
         ]);
 
+        Profesor::create([
+            'cedula' => '30731444',
+            'nombre' => 'Jose',
+            'apellido' => 'Cova',
+            'telefono' => '1234567890',
+            'correo' => 'gmail@gmail.com',
+            'edad' => 40,
+        ]);
+
         Cohorte::create([
             'codigo_cohorte' => 'COHORTE-INF-2024-1',
             'codigo_postgrado' => 'POST-INF-2024',
@@ -149,6 +162,88 @@ class RellenoAreasSeeder extends Seeder
             'fecha_inicio' => '2024-11-01',
             'fecha_fin' => '2025-11-01',
             'nro_de_cohorte' => 3,
+        ]);
+
+        Materias::create([
+            'codigo_materia' => 101,
+            'codigo_cohorte' => 'COHORTE-INF-2024-1',
+            'nombre' => 'Programación Avanzada',
+            'prelacion' => null,
+        ]);
+        Materias::create([
+            'codigo_materia' => 102,
+            'codigo_cohorte' => 'COHORTE-INF-2024-1',
+            'nombre' => 'Estructuras de Datos Avanzadas',
+            'prelacion' => null,
+        ]);
+        Materias::create([
+            'codigo_materia' => 103,
+            'codigo_cohorte' => 'COHORTE-INF-2024-2',
+            'nombre' => 'Bases de Datos Avanzadas',
+            'prelacion' => 101,
+        ]);
+        Materias::create([
+            'codigo_materia' => 104,
+            'codigo_cohorte' => 'COHORTE-INF-2024-2',
+            'nombre' => 'Desarrollo Web Avanzado',
+            'prelacion' => 102,
+        ]);
+        Materias::create([
+            'codigo_materia' => 105,
+            'codigo_cohorte' => 'COHORTE-INF-2024-3',
+            'nombre' => 'Arquitectura de Software',
+            'prelacion' => 103,
+        ]);
+
+        Seccion::create([
+            'nro_seccion' => 1,
+            'codigo_materia' => 101,
+            'hora_inicio' => '2024-01-15 08:00:00',
+            'hora_fin' => '2024-01-15 10:00:00',
+            'cedula_docente' => '12345678',
+            'aula' => 'A101',
+            'cupo_maximo' => 30,
+            'cupo_actual' => 0,
+        ]);
+        Seccion::create([
+            'nro_seccion' => 2,
+            'codigo_materia' => 101,
+            'hora_inicio' => '2024-01-18 08:00:00',
+            'hora_fin' => '2024-01-18 10:00:00',
+            'cedula_docente' => '12345678',
+            'aula' => 'A104',
+            'cupo_maximo' => 30,
+            'cupo_actual' => 0,
+        ]);
+        Seccion::create([
+            'nro_seccion' => 3,
+            'codigo_materia' => 103,
+            'hora_inicio' => '2024-06-01 08:00:00',
+            'hora_fin' => '2024-06-01 10:00:00',
+            'cedula_docente' => '87654321',
+            'aula' => 'B101',
+            'cupo_maximo' => 30,
+            'cupo_actual' => 0,
+        ]);
+        Seccion::create([
+            'nro_seccion' => 4,
+            'codigo_materia' => 104,
+            'hora_inicio' => '2024-06-02 08:00:00',
+            'hora_fin' => '2024-06-02 10:00:00',
+            'cedula_docente' => '87654321',
+            'aula' => 'B102',
+            'cupo_maximo' => 30,
+            'cupo_actual' => 0,
+        ]);
+        Seccion::create([
+            'nro_seccion' => 5,
+            'codigo_materia' => 105,
+            'hora_inicio' => '2024-11-01 08:00:00',
+            'hora_fin' => '2024-11-01 10:00:00',
+            'cedula_docente' => '12345678',
+            'aula' => 'C101',
+            'cupo_maximo' => 30,
+            'cupo_actual' => 0,
         ]);
     }
 }
