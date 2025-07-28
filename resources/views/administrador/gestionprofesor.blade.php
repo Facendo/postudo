@@ -4,7 +4,11 @@
             <label>Listado de Profesores</label>
         </div>
 
-        <div class="new-student-button-container">
+
+        
+        <div class="action-buttons-container">
+            {{-- Asegúrate de que la ruta sea correcta para crear un nuevo profesor --}}
+            {{-- Se asume que la ruta es 'administrador.gestion_profesor.create' --}}
             {{-- Botón para añadir un nuevo profesor, la ruta debe ser ajustada a la de registro de profesores --}}
             <a href="{{route('administrador.gestion_profesor.create')}}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Profesor

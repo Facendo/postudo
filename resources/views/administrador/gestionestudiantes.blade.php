@@ -1,10 +1,10 @@
-<x-layout title='PostUDO || Inicio'>
+<x-layout title='PostUDO || Gestión de Estudiantes'>
         <section class="main-content-section page-content">
             <div class="content_texto_bienvenida">
                 <label>Listado de Estudiantes</label>
             </div>
 
-            <div class="new-student-button-container">
+            <div class="action-buttons-container">
                 <a href="{{ route('registro_estudiante.index') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Estudiante
             </a>

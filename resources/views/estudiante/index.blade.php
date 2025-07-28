@@ -1,4 +1,5 @@
-<x-layout title="PostUDO || Estudiante" ruta="estudiante.index">
+<x-layout title='PostUDO || Estudiante'>
+
     <div class="content_texto_bienvenida">
         <label>Bienvenido, {{ $user->name }}</label>
     </div>

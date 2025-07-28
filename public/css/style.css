@@ -1,13 +1,39 @@
+/* --- Global Variables (New) --- */
+/* Define your color palette and other global values here for easy management */
+:root {
+    --primary-blue: #0a1128; /* Deep Navy Blue (from your nav) */
+    --secondary-blue: #004e98; /* Vibrant Blue */
+    --accent-orange: #FF6B35; /* Energetic Orange */
+    --light-gray: #f8f9fa; /* Off-white for section backgrounds */
+    --medium-gray: #e0e0e0; /* For subtle borders/dividers */
+    --dark-gray: #343a40; /* For primary text and strong shadows */
+    --text-light: #6c757d; /* For secondary text */
+    --white: #ffffff;
+    --success-green: #28a745; /* Existing green */
+    --danger-red: #dc3545; /* Existing red */
+
+    /* Font Weights for consistency */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+}
+
 /* --- Base & Layout Styles --- */
 /* These styles define the fundamental visual structure and overall page layout. */
 
 html {
     padding: 0;
     height: 100%;
+    scroll-behavior: smooth;
+    background-color: #353535;
 }
 
 body {
-    background: rgb(197, 194, 194);
+    /* Subtle gradient background for a modern feel */
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -16,6 +42,8 @@ body {
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
+    font-family: 'Open Sans', sans-serif; /* Default body font */
+    color: var(--dark-gray);
 }
 
 main {
@@ -23,158 +51,209 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
+    padding: 30px 0; /* Increased padding */
 }
 
+/* .titulo - This seems to be for a general page title, not the nav title */
 .titulo {
-    font-size: 32px;
+    font-size: 3.2em; /* Slightly larger, more impactful */
     text-align: center;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    color: #333;
-    margin-bottom: 30px;
-    font-family: 'Poppins', sans-serif;
-    letter-spacing: 1px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Softer, wider shadow */
+    color: var(--white); /* Stronger color */
+    margin-bottom: 40px; /* More space below */
+    font-family: 'Montserrat', sans-serif; /* Poppins is fine, but Montserrat for consistency with heading */
+    letter-spacing: 0.5px;
+    font-weight: var(--font-bold);
 }
 
-/* Buttons */
+/* --- General Buttons (btn, btn-primary, btn-secondary) --- */
+/* These are general-purpose buttons, distinct from button_body */
 .btn {
-    display: inline-block;
-    padding: 12px 25px;
-    border-radius: 8px;
+    display: inline-flex; /* Use flex for icon alignment */
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px; /* More generous padding */
+    border-radius: 50px; /* Pill shape for modern look */
     text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-weight: var(--font-semibold);
+    transition: all 0.3s ease; /* Smoother transitions for all properties */
     margin: 0 10px;
+    font-family: 'Inter', sans-serif; /* Consistent font */
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .btn-primary {
-    background-color: #007bff; /* Primary blue */
-    color: white;
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, #003a70 100%); /* Gradient for depth */
+    color: var(--white);
+    border: none;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #003a70 0%, var(--secondary-blue) 100%);
+    transform: translateY(-3px); /* More noticeable lift */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
     background-color: transparent;
-    color: white;
-    border: 2px solid white;
+    color: var(--primary-blue); /* Match primary color */
+    border: 2px solid var(--primary-blue);
+    box-shadow: none; /* No shadow for secondary */
 }
 
 .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(var(--primary-blue), 0.1); /* Subtle background on hover */
+    color: var(--primary-blue);
     transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-
-.program-cards-container, .benefits-grid {
+/* --- Card Components (program-cards-container, program-card, benefit-item) --- */
+.program-cards-container,
+.benefits-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min-width for flexibility */
     gap: 30px;
-    margin-top: 40px;
+    margin-top: 50px; /* Increased margin */
+    width: 90%; /* Responsive width */
+    max-width: 1200px;
 }
 
-.program-card, .benefit-item {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.program-card,
+.benefit-item {
+    background-color: var(--white);
+    padding: 35px; /* More padding */
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Stronger, softer shadow */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     text-align: center;
+    border: 1px solid var(--medium-gray); /* Subtle border for definition */
 }
 
-.program-card:hover, .benefit-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+.program-card:hover,
+.benefit-item:hover {
+    transform: translateY(-12px); /* More pronounced lift */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
 }
 
-.program-card h3, .benefit-item h3 {
-    color: #007bff;
-    font-size: 1.5em;
-    margin-bottom: 15px;
+.program-card h3,
+.benefit-item h3 {
+    color: var(--secondary-blue); /* Use secondary blue for headings */
+    font-size: 1.6em; /* Slightly larger */
+    margin-bottom: 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: var(--font-bold);
+}
+
+.program-card p,
+.benefit-item p {
+    color: var(--text-light); /* Lighter text for description */
+    font-size: 0.95em;
+    line-height: 1.6;
 }
 
 .card-link {
     display: inline-block;
-    margin-top: 20px;
-    color: #007bff;
+    margin-top: 25px; /* More space */
+    color: var(--accent-orange); /* Use accent orange for links */
     text-decoration: none;
-    font-weight: bold;
+    font-weight: var(--font-semibold);
+    position: relative;
 }
 
-.card-link:hover {
-    text-decoration: underline;
+.card-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-orange);
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.card-link:hover::after {
+    transform: scaleX(1);
 }
 
 .benefit-item i {
-    font-size: 3em; /* Size for icons */
-    color: #007bff;
-    margin-bottom: 20px;
+    font-size: 3.5em; /* Larger icons */
+    color: var(--accent-orange); /* Use accent orange for icons */
+    margin-bottom: 25px;
 }
 
 .cta-testimonials-section {
-    background-color: #001f54; /* Dark blue background */
-    color: white;
+    background-color: var(--primary-blue); /* Dark blue background */
+    color: var(--white);
     padding: 100px 40px;
+    text-align: center; /* Center content */
 }
 
 .cta-content h2 {
-    color: white;
-    font-size: 2.8em;
+    color: var(--white);
+    font-size: 3.5em; /* Larger, more impactful heading */
+    margin-bottom: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: var(--font-bold);
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .btn-cta {
-    background-color: #28a745; /* Success green */
-    color: white;
-    font-size: 1.2em;
-    padding: 15px 35px;
-    border-radius: 50px; /* Pill shape */
+    background: linear-gradient(135deg, var(--success-green) 0%, #1e7e34 100%); /* Green gradient */
+    color: var(--white);
+    font-size: 1.3em; /* Larger font */
+    padding: 18px 40px; /* More padding */
+    border-radius: 50px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    border: none; /* Ensure no border */
 }
 
 .btn-cta:hover {
-    background-color: #218838;
-    transform: translateY(-3px);
+    background: linear-gradient(135deg, #1e7e34 0%, var(--success-green) 100%);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 /* --- Navigation Bar Styles --- */
-/* Styles specifically for the navigation bar at the top of the page. */
-
 nav {
     width: 100%;
     height: 90px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(to right, #0a1128, #001f54);
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3),
-                0px 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.4),
+        0px 3px 6px rgba(0, 0, 0, 0.2); /* Stronger, softer shadows */
     padding: 0 60px;
     box-sizing: border-box;
-    position: relative;
+    position: sticky; /* Make it sticky */
+    top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Slightly stronger border */
 }
 
 .contenedor {
     display: flex;
     align-items: center;
-    gap: 35px;
+    gap: 40px; /* Increased gap */
     margin-left: 0;
 }
 
 .logo {
-    width: 60px;
+    width: 65px; /* Slightly larger logo */
     height: auto;
-    margin-right: 10px;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1));
+    margin-right: 15px;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); /* More pronounced glow */
 }
 
 .logo_barra {
+    /* This seems redundant if .logo is used for the main nav logo */
+    /* If this is for an image inside the logo, reconsider naming */
     width: 150px;
     height: 150px;
     display: flex;
@@ -184,30 +263,40 @@ nav {
 
 .titulo_barra {
     font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
-    color: #e0e7e9;
-    text-align: left;
+    font-size: 34px; /* Slightly larger */
+    color: white;
+    text-align: center;
     flex-grow: 1;
-    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
-    margin-left: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+    text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    margin-left: 10px;
+    font-weight: var(--font-bold);
+    letter-spacing: 0; /* No negative letter spacing for main title */
 }
 
 .button_barra {
-    margin: 0 20px;
-    padding: 15px 25px;
+    margin: 0px 5px;
+    margin-left: 1px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 10px 20px; /* Reducido ligeramente para más cohesión */
     text-decoration: none;
-    color: #a7d9ef;
-    font-family: 'Inter', sans-serif;
-    font-size: 17px;
-    border-radius: 10px;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #a7d9ef; /* Color base más suave */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px; /* Ajuste de tamaño */
+    border-radius: 8px; /* Menos redondeado para un look más moderno */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: 500;
     position: relative;
     overflow: hidden;
     background: transparent;
-    border: 1px solid transparent;
+    display: flex; /* Habilita Flexbox. Por defecto, flex-direction es 'row' (horizontal) */
+    justify-content: center;   /* Centra los elementos horizontalmente en el contenedor */
+    justify-content: flex-end;    /* Alinea los elementos al final (derecha) del contenedor */
+    justify-content: space-between; /* Distribuye el espacio entre los elementos, el primero al inicio y el último al final */
+    justify-content: space-around;  /* Distribuye el espacio alrededor de los elementos */
+    justify-content: space-evenly; 
+    align-items: center;
+    
 }
 
 .button_barra::before {
@@ -216,58 +305,58 @@ nav {
     bottom: 0;
     left: 50%;
     width: 0;
-    height: 2px;
-    background-color: #7abedb;
+    height: 3px;
+    background-color: var(--accent-orange);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     transform: translateX(-50%);
 }
 
 .button_barra:hover {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.08);
-    transform: translateY(-4px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    background-color: rgba(var(--primary-blue), 0.5); /* Slightly more opaque background */
+    transform: translateY(-5px); /* More lift */
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    border-color: rgba(255, 255, 255, 0.4); /* Stronger border on hover */
 }
 
 .button_barra:hover::before {
-    width: 80%;
+    width: 90%; /* Wider underline */
 }
 
 .cerrar_sesion {
-    background: linear-gradient(to right, #ef233c, #d90429);
+    background: linear-gradient( #ef233c, #d90429);
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 12px 15px;
     border-radius: 10px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     margin-right: 0;
-    font-weight: 600;
+    font-weight: 100;
     letter-spacing: 0.2px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     overflow: hidden;
+    position: relative; /* Necesario para el efecto de brillo */
 }
 
 .cerrar_sesion:hover {
     background: linear-gradient(to right, #d90429, #ef233c);
     transform: translateY(-3px);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+    animation: shine 1.5s infinite;
 }
 
 /* --- Content Section Styles --- */
-/* Styles for main content areas, welcome messages, and action buttons. */
-
 .main-content-section {
-    width: 80%;
-    max-width: 1200px;
-    margin: 40px auto;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 25px;
+    width: 90%; /* Wider content area */
+    max-width: 1100px; /* Adjusted max width */
+    margin: 50px auto; /* More margin */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* Stronger, softer shadow */
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);
+    border-radius: 15px; /* Softer corners */
+    padding: 35px; /* More padding */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -276,41 +365,42 @@ nav {
 
 .welcome-image-container {
     flex-shrink: 0;
-    max-width: 350px;
+    max-width: 400px; /* Larger image container */
+    margin-bottom: 30px; /* Space below image */
 }
 
 .welcome-image {
     max-width: 100%;
     height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow */
 }
 
 .welcome-text-content {
     padding: 0;
     flex-grow: 1;
     font-family: 'Lato', sans-serif;
-    font-size: 17px;
-    line-height: 1.6;
-    color: #333;
+    font-size: 1.1em; /* Slightly larger text */
+    line-height: 1.7; /* Increased line height for readability */
+    color: var(--text-light); /* Softer text color */
     text-align: justify;
 }
 
 .welcome-text-content p {
-    margin-bottom: 1em;
+    margin-bottom: 1.2em; /* More space between paragraphs */
 }
 
 .page-content {
-    width: 90%;
-    max-width: 1400px;
+    width: 95%; /* Wider content */
+    max-width: 1300px; /* Increased max-width */
     margin: 0 auto;
 }
 
 .content-image {
-    max-width: 350px;
+    max-width: 400px; /* Larger image */
     height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
 }
 
@@ -318,38 +408,39 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
-    padding: 20px 30px;
-    background-color: #f0fdf4;
-    border: 1px solid #d1e7dd;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* More space */
+    margin-bottom: 0.5px;
+    padding: 30px 40px; /* More padding */
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%); /* Lighter background for welcome */
+    border: 1px solid var(--black); /* Softer border */
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
     text-align: center;
     width: fit-content;
-    max-width: 90%;
+    max-width: 80%; /* Wider max width */
     margin-left: auto;
     margin-right: auto;
 }
 
 .content_texto_bienvenida label {
-    font-family: 'Montserrat', sans-serif; /* Changed to Montserrat for consistency with headings */
-    font-size: 2.8em; /* Larger, more prominent text (adjust em value as needed) */
-    font-weight: 700; /* Stays bold */
-    color: #0a1128; /* Darker, more sophisticated blue from your nav/headings */
-    line-height: 1.1; /* Slightly tighter line height for large text */
-    text-align: center; /* Center the welcome message */
-    display: block; /* Ensures it takes up full width for centering */
-    margin-bottom: 20px; /* Add space below the label */
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Subtle text shadow for depth */
-    letter-spacing: -0.5px; /* Slightly tighter letter spacing for large titles */
-    animation: fadeInSlideUp 0.8s ease-out forwards; /* Add an entrance animation */
+    font-family: 'Montserrat';
+    font-size: 3.2em; /* More prominent text */
+    font-weight: var(--font-bold);
+    color: #ffffff; /* Consistent dark blue */
+    line-height: 1.1;
+    text-align: center; 
+    display: block;
+    margin-bottom: 25px; /* More space */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+    letter-spacing: -0.2px;
+    animation: fadeInSlideUp 0.8s ease-out forwards;
 }
 
 /* New Keyframe Animation for the welcome text */
 @keyframes fadeInSlideUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(25px); /* More noticeable slide */
     }
     to {
         opacity: 1;
@@ -357,44 +448,43 @@ nav {
     }
 }
 
-
-
 .action-buttons-container {
     display: flex;
-    flex-wrap: wrap; /* Allows buttons to wrap to the next line on smaller screens */
-    gap: 20px; /* Slightly reduced gap for a tighter, more cohesive look */
-    justify-content: center; /* Keeps buttons centered horizontally */
-    align-items: center; /* Vertically aligns items if they have different heights */
-    margin: 40px auto; /* Increased top margin for more breathing room, auto for horizontal centering */
-    width: 100%; /* Ensures it takes full available width */
-    max-width: 900px; /* Increased max-width to allow more space for buttons on wider screens */
-    padding: 0 15px; /* Add some horizontal padding to prevent content from touching edges on small screens */
-    box-sizing: border-box; /* Ensures padding is included in the element's total width */
+    flex-wrap: wrap;
+    gap: 45px; /* Increased gap */
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 0.5px;
+    width: 100%;
+    max-width: 1000px; /* Wider container */
+    padding: 0 20px; /* More padding */
+    box-sizing: border-box;
 }
 
 .button_body {
     /* Base styles */
-    padding: 16px 35px; /* Slightly more padding for a larger touch target */
-    color: #ffffff;
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); /* Blue gradient for a modern feel */
-    border: none;
-    border-radius: 50px; /* Fully rounded, pill shape */
-    font-family: 'Montserrat', sans-serif; /* Changed to Montserrat for consistency with headings, or keep Inter if preferred for body text */
-    font-size: 19px; /* Slightly larger font */
-    font-weight: 700; /* Bolder text */
+    padding: 18px 30px; 
+    color: var(--white);
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #e08128 100%); /* Blue gradient for a modern feel */
+    border: black;
+    border-radius: 50px;
+    font-family: 'Montserrat';
+    font-size: 1.15em; /* Larger font */
+    font-weight: var(--font-bold);
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* More pronounced shadow for depth */
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother, more engaging transition */
-    letter-spacing: 0.8px; /* Increased letter spacing for a cleaner look */
-    display: inline-flex; /* Use inline-flex for better flow with text/other elements */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Stronger, softer shadow */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    letter-spacing: 1px; /* More letter spacing */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    position: relative; /* Needed for pseudo-elements for effects */
-    overflow: hidden; /* Ensures content stays within rounded borders */
-    z-index: 1; /* For layering effects */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
 .button_body::before {
@@ -404,7 +494,7 @@ nav {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.15); /* Subtle white overlay for hover effect */
+    background: rgba(255, 255, 255, 0.2); /* Slightly more opaque overlay */
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transform: scaleX(0);
     transform-origin: bottom right;
@@ -417,118 +507,135 @@ nav {
 }
 
 .button_body:hover {
-    background: linear-gradient(135deg, #0056b3 0%, #003d80 100%); /* Darker blue on hover */
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35); /* Even more pronounced shadow */
-    transform: translateY(-5px); /* More lift on hover */
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #e08128 100%); 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45); /* Even more pronounced shadow */
+    transform: translateY(-7px); /* More lift on hover */
 }
 
 .button_body:active {
-    background: #003d80; /* Solid darker blue on click */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reduced shadow for pressed state */
-    transform: translateY(0); /* Sinks back down */
-    transition: all 0.1s ease; /* Quicker transition for active state */
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #e08128 100%); /* Solid darker blue on click */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Reduced shadow for pressed state */
+    transform: translateY(0);
+    transition: all 0.1s ease;
+}
+
+.button_body.active-button {
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #d6542d 100%); /* Orange active state */
+    color: var(--white);
+    border: black;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.button_body.active-button:hover {
+    background: linear-gradient(135deg, #d6542d 0%, var(--accent-orange) 100%);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Specific styles for the "Especialidades" button in Carrera view (hidden) */
+.hidden {
+    display: none !important;
 }
 
 .icon-left {
-    margin-right: 10px;
-    font-size: 20px;
+    margin-right: 12px; /* More space for icon */
+    font-size: 1.2em; /* Slightly larger icon */
 }
 
 /* --- Form Styles --- */
-/* Styles for login, registration forms, and their elements. */
-
 .login-page-container,
 .registration-page-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #f0f2f5;
-    padding: 20px;
+    min-height: calc(100vh - 90px); /* Adjust for fixed nav height */
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);  /* Subtle gradient */
+    padding: 30px;
     box-sizing: border-box;
 }
 
 .login-form,
 .registration-form {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%); 
+    padding: 45px; /* More padding */
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Stronger shadow */
     width: 100%;
-    max-width: 450px;
+    max-width: 480px; /* Slightly wider forms */
     box-sizing: border-box;
+    border: 1px solid var(--black); /* Subtle border */
 }
 
 .registration-form {
-    /* Specific override for registration form width */
-    max-width: 500px;
+    max-width: 550px;
 }
 
 .login-form-title,
 .registration-form-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2em; /* Larger */
+    font-weight: var(--font-bold);
+    color: var(--white); /* Consistent primary blue */
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 35px; /* More space */
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 22px; /* More space between groups */
 }
 
 .form-label {
     display: block;
-    font-family: 'Roboto', sans-serif;
-    font-size: 15px;
-    color: #555;
-    margin-bottom: 8px;
-    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05em; /* Slightly larger */
+    color: var(--dark-gray); /* Darker label text */
+    margin-bottom: 10px; /* More space */
+    font-weight: var(--font-medium);
 }
 
 .form-input {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    color: #333;
+    padding: 14px 18px; /* More padding */
+    border: 1px solid var(--medium-gray); /* Softer border */
+    border-radius: 10px; /* Softer corners */
+    font-family: 'Montserrat';
+    font-size: 1.05em; /* Consistent font size */
+    color: var(--dark-gray);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
 }
 
 .form-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    border-color: var(--black); /* Highlight with secondary blue */
+    box-shadow: 0 0 0 4px rgba(var(--black), 0.2); /* Stronger glow */
     outline: none;
 }
 
 .form-select {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 14px 18px; /* More padding */
+    border: 1px solid var(--medium-gray);
+    border-radius: 10px;
     font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    color: #333;
-    background-color: #fff;
+    font-size: 1.05em;
+    color: var(--dark-gray);
+    background-color: var(--white);
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23666' d='M5 8l5 5 5-5z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%236c757d' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Updated SVG icon color and size */
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
+    background-position: right 15px center; /* Adjusted position */
+    background-size: 16px; /* Larger icon */
     cursor: pointer;
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    border-color: var(--secondary-blue);
+    box-shadow: 0 0 0 4px rgba(var(--secondary-blue), 0.2);
     outline: none;
 }
 
@@ -540,37 +647,38 @@ nav {
 }
 
 .form-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 20px; /* Larger checkbox */
+    height: 20px;
+    border: 2px solid var(--medium-gray); /* Thicker border */
+    border-radius: 6px; /* Softer corners */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 12px; /* More space */
     position: relative;
     top: -1px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .form-checkbox:checked {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: var(--accent-orange); /* Orange when checked */
+    border-color: var(--accent-orange);
 }
 
 .form-checkbox:checked::after {
     content: '✔';
     display: block;
-    color: white;
-    font-size: 14px;
+    color: var(--white);
+    font-size: 16px; /* Larger checkmark */
     text-align: center;
-    line-height: 18px;
+    line-height: 20px;
 }
 
 .checkbox-label {
     font-family: 'Open Sans', sans-serif;
-    font-size: 15px;
-    color: #666;
+    font-size: 1em;
+    color: var(--dark-gray);
     cursor: pointer;
 }
 
@@ -578,127 +686,137 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 35px; /* More space */
 }
 
 .forgot-password-link,
 .already-registered-link,
 .register-link {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    color: #007bff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95em;
+    color: var(--white);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .forgot-password-link:hover,
 .already-registered-link:hover,
 .register-link:hover {
-    color: #0056b3;
+    color: var(--primary-blue); /* Darker blue on hover */
     text-decoration: underline;
 }
 
 .submit-button {
-    background-color: #28a745;
-    color: white;
-    padding: 12px 25px;
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange) 100%);
+    color: var(--white);
+    padding: 14px 30px;
     border: none;
     border-radius: 30px;
     font-family: 'Poppins', sans-serif;
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 1.1em;
+    font-weight: var(--font-semibold);
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .submit-button:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 .submit-button:active {
-    background-color: #1e7e34;
+    background-color: #1a6d2f;
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form-error-message {
     display: block;
-    color: #dc3545;
+    color: var(--danger-red);
     font-family: 'Open Sans', sans-serif;
-    font-size: 13px;
-    margin-top: 5px;
+    font-size: 0.9em;
+    margin-top: 8px; /* More space */
+    font-weight: var(--font-medium);
 }
 
 /* --- Table Styles --- */
-/* Styles for displaying tabular data. */
-
 table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    border-radius: 10px;
+    border-collapse: separate; /* Use separate to allow border-radius on table */
+    border-spacing: 0; /* Remove space between cells */
+    margin-top: 30px; /* More space */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+    border-radius: 15px; /* Softer corners for table container */
     overflow: hidden; /* Ensures rounded corners apply to content */
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat';
+    font-size: var(--font-light);
+    border: 1px solid var(--black); /* Subtle table border */
 }
 
 table thead {
-    background-color: #024994; /* Your navy blue from the nav bar */
-    color: #ffffff;
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%); 
+    color: var(--white);
 }
 
 table th {
-    padding: 15px 20px;
+    padding: 18px 25px; /* More padding */
     text-align: left;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 1.1em; /* Slightly larger */
+    font-weight: var(--font-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid #003366; /* Slightly darker blue for separation */
+    letter-spacing: 0.8px; /* More letter spacing */
+    border-bottom: 1px solid white; /* Darker blue for separation */
+}
+/* Rounded corners for first and last header cells */
+table thead tr th:first-child {
+    border-top-left-radius: 15px;
 }
 
+table thead tr th:last-child {
+    border-top-right-radius: 15px;
+}
+
+
 table tbody tr {
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #f0f0f0; /* Lighter border for rows */
     transition: background-color 0.3s ease;
 }
 
 table tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Light stripe for readability */
+    background-color: #fcfcfc; /* Very light stripe */
 }
 
 table tbody tr:hover {
-    background-color: #e0f7fa; /* Light blue on hover */
+    background-color: #e6f7ff; /* Lighter, more inviting blue on hover */
     cursor: pointer;
 }
 
 table td {
-    padding: 12px 20px;
-    font-size: 15px;
-    color: #333;
+    padding: 15px 25px; /* More padding */
+    font-size: 1em;
+    color: var(--dark-gray);
     vertical-align: middle;
 }
 
 /* Specific column styling for better presentation */
 table td:nth-child(6) {
     /* Monto column */
-    font-weight: 600;
-    color: #28a745;
-    /* Green for monetary value, matching your button_body */
+    font-weight: var(--font-semibold);
+    color: var(--success-green); /* Green for monetary value */
 }
 
 table td:last-child {
     /* Fecha de Registro column */
-    font-size: 14px;
-    color: #666;
+    font-size: 0.9em;
+    color: var(--text-light); /* Lighter color */
 }
 
 /* Responsive Table */
 @media screen and (max-width: 768px) {
-
+    /* Existing responsive table styles */
     table,
     thead,
     tbody,
@@ -737,374 +855,525 @@ table td:last-child {
         padding-right: 10px;
         white-space: nowrap;
         text-align: left;
-        font-weight: 600;
-        color: #555;
-    }
-
-    /* Label the data cells for small screens */
-    table td:nth-of-type(1):before {
-        content: "Cédula";
-    }
-
-    table td:nth-of-type(2):before {
-        content: "Nombre";
-    }
-
-    table td:nth-of-type(3):before {
-        content: "Banco Emisor";
-    }
-
-    table td:nth-of-type(4):before {
-        content: "Banco Receptor";
-    }
-
-    table td:nth-of-type(5):before {
-        content: "Referencia";
-    }
-
-    table td:nth-of-type(6):before {
-        content: "Monto (Bs.)";
-    }
-
-    table td:nth-of-type(7):before {
-        content: "Asunto";
-    }
-
-    table td:nth-of-type(8):before {
-        content: "Fecha de Registro";
+        font-weight: var(--font-semibold);
+        color: var(--dark-gray);
     }
 }
 
 /* --- Utility & Message Styles --- */
-/* Styles for alerts, messages, and other functional utilities. */
-
 .session-status-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    background-color: #d4edda; /* Light green */
+    color: #155724; /* Dark green text */
+    padding: 18px; /* More padding */
+    border-radius: 10px; /* Softer corners */
+    margin-bottom: 25px; /* More space */
     font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
+    font-size: 1.05em;
     text-align: center;
+    border: 1px solid #c3e6cb; /* Subtle border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .my-alert-style {
     background-color: #d1fae5;
     border: 1px solid #6ee7b7;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Inter', sans-serif; /* Changed to Inter */
     color: #047857;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-radius: 0.25rem;
+    padding: 1rem 1.25rem; /* Adjusted padding */
+    border-radius: 0.5rem; /* Softer corners */
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.95em;
+    font-weight: var(--font-medium);
 }
 
 .my-red-alert-style {
     background-color: #fee2e2;
     border: 1px solid #f87171;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Inter', sans-serif; /* Changed to Inter */
     color: #b91c1c;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-radius: 0.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.95em;
+    font-weight: var(--font-medium);
 }
 
 /* --- Footer Styles --- */
-/* Styles for the page footer. */
-
 footer#pie {
-    background-color: #0a1128; /* Dark blue, matching nav */
-    color: #a7d9ef; /* Light blue text */
-    padding: 15px 0;
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);
+    color: #e0e7e9; /* Light blue text for contrast */
+    padding: 20px 0; /* More padding */
     text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 1em;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
-    
-    /*
-    padding: 40px 60px;
-    width: 100%;
-    background-color: #FFC107;
-    padding: 15px 0;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-    margin-top: auto;*/
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05em;
+    border-top: 1px white;
+    box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow */
 }
 
-.contenido_pie p{
+.contenido_pie p {
     text-align: center;
-    font-size: 18px;
-    color: #333;
+    font-size: 1.05em; /* Consistent with footer font size */
+    color: #e0e7e9; /* Consistent light blue */
+    margin: 0; /* Remove default paragraph margin */
 }
 
-/* New styles for this view */
-        .info-section {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 30px;
-            width: 90%;
-            max-width: 900px;
-            display: none; /* Hidden by default */
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .info-section.active {
-            display: block; /* Shown when active */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .info-section h3 {
-            font-family: 'Poppins', sans-serif;
-            color: #007bff;
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .info-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
-
-        .info-list li {
-            background-color: #f8f9fa;
-            border: 1px solid #e2e6ea;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            padding: 12px 15px;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 16px;
-            color: #495057;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .info-list li:hover {
-            background-color: #e9ecef;
-            transform: translateX(5px);
-        }
-
-        .info-list-nested {
-            list-style: none;
-            padding-left: 20px;
-            margin-top: 10px;
-            text-align: left;
-        }
-
-        .info-list-nested li {
-            background-color: #eaf6ff; /* Lighter blue for nested items */
-            border: 1px solid #cce5ff;
-            margin-top: 8px;
-            padding: 10px 15px;
-            font-size: 15px;
-            color: #004085;
-        }
-
-
-.dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .dashboard-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .dashboard-card-icon {
-            font-size: 50px;
-            color: #024994; /* Your navy blue */
-            margin-bottom: 15px;
-        }
-
-        .dashboard-card-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .dashboard-card-value {
-            font-family: 'Roboto', sans-serif;
-            font-size: 36px;
-            font-weight: 700;
-            color: #28a745; /* Your green */
-        }
-
-        .dashboard-card-description {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 15px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background-color: #f0fdf4; /* Lighter green background for welcome */
-            border-radius: 10px;
-            border: 1px solid #d1e7dd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #024994; /* Match nav bar color */
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-name {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #155724; /* Darker green from content_texto_bienvenida */
-            margin-bottom: 5px;
-        }
-
-        .profile-role {
-            font-family: 'Roboto', sans-serif;
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-        /* Tus estilos existentes para .info-section y .active */
+/* --- New styles for the Areas/Careers/Specialties View --- */
 .info-section {
-    display: none; /* Oculto por defecto */
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);;
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* Stronger, softer shadow */
+    padding: 35px; /* More padding */
+    margin-top: 40px; /* More space */
+    width: 90%;
+    max-width: 1000px; /* Wider container */
+    display: none;
+    animation: fadeIn 0.6s ease-out forwards; /* Slightly longer animation */
+    border: 1px solid var(--black); /* Subtle border */
 }
 
 .info-section.active {
-    display: block; /* Se muestra cuando tiene la clase 'active' */
+    display: block;
 }
 
-/* Estilos para los botones de la barra principal */
-.action-buttons-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 30px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px); /* More pronounced slide */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.button_body {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff; /* Color primario */
-    color: white;
-    cursor: pointer;
+.info-section h3 {
+    font-family: 'Montserrat';
+    color: var(--white); /* Secondary blue for section headings */
+    font-size: 2em; /* Larger heading */
+    margin-bottom: 25px; /* More space */
+    text-align: center;
+    font-weight: var(--font-bold);
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.info-list li {
+    background-color: var(--black); /* Lighter background for list items */
+    border: 1px solid var(--black); /* Subtle border */
+    border-radius: 10px; /* Softer corners */
+    margin-bottom: 15px; /* More space between items */
+    padding: 15px 20px; /* More padding */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.05em; /* Slightly larger font */
+    color: var(--white);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-align: left; /* Align text left within list item */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.info-list li:hover {
+    background-color: #eef5fc; /* Lighter blue on hover */
+    transform: translateX(8px); /* More pronounced slide */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.info-list-nested {
+    list-style: none;
+    padding-left: 30px; /* More indentation */
+    margin-top: 15px; /* More space */
+    text-align: left;
+    border-left: 4px solid var(--secondary-blue); /* Stronger border for nested lists */
+    padding-top: 5px;
+}
+
+.info-list-nested li {
+    background-color: #e6f7ff; /* Lighter blue for nested items */
+    border: 1px solid #1b1b1b; /* Stronger border */
+    margin-top: 10px; /* More space */
+    padding: 12px 18px; /* More padding */
     font-size: 1em;
-    transition: background-color 0.3s ease;
+    color: #003366; /* Darker blue text */
+    border-radius: 8px; /* Softer corners */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
-.button_body:hover {
-    background-color: #0056b3;
+.info-list-nested li:hover {
+    background-color: #d9efff;
+    transform: translateX(5px);
 }
 
-.button_body.active {
-    background-color: #0056b3; /* Color para el botón activo */
-    border: 2px solid #004085;
+/* Styles for clickable links within info lists */
+.area-link, .area-return-link, .carrera-link, .especialidad-return-link {
+    cursor: pointer;
+    color: var(--accent-orange); /* Use orange for clickable links */
+    text-decoration: none;
+    font-weight: var(--font-semibold);
+    display: block; /* Ensures the whole block is clickable */
+    padding: 5px 0;
 }
 
-.button_body.small-button {
-    padding: 5px 10px;
-    font-size: 0.9em;
+.area-link:hover, .area-return-link:hover, .carrera-link:hover, .especialidad-return-link:hover {
+    text-decoration: underline;
+    color: #d6542d; /* Slightly darker orange on hover */
 }
 
-.button_body.cancel-button {
-    background-color: #dc3545; /* Rojo para cancelar */
-    margin-left: 10px;
-}
-.button_body.cancel-button:hover {
-    background-color: #c82333;
+/* If you want the titles of area/carrera/especialidad to be more prominent */
+.area-return-link, .carrera-link, .especialidad-return-link {
+    font-size: 1.1em; /* Make them slightly larger */
+    margin-bottom: 5px; /* Add some spacing */
 }
 
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Slightly larger min-width */
+    gap: 30px; /* More gap */
+    width: 95%; /* Wider dashboard */
+    max-width: 1300px;
+    margin: 40px auto; /* More margin */
+    padding: 0 20px;
+}
 
-/* Estilos para las tarjetas de datos */
+.dashboard-card {
+    background-color: var(--white);
+    border-radius: 15px; /* Softer corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* Stronger shadow */
+    padding: 30px; /* More padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: 1px solid var(--medium-gray); /* Subtle border */
+}
+
+.dashboard-card:hover {
+    transform: translateY(-8px); /* More lift */
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+.dashboard-card-icon {
+    font-size: 55px; /* Larger icon */
+    color: var(--accent-orange); /* Orange for icons */
+    margin-bottom: 20px; /* More space */
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1)); /* Subtle shadow for icons */
+}
+
+.dashboard-card-title {
+    font-family: 'Monserrat';
+    font-size: 1.7em; /* Larger title */
+    font-weight: var(--font-bold);
+    color: var(--primary-blue); /* Primary blue for title */
+    margin-bottom: 12px;
+}
+
+.dashboard-card-value {
+    font-family: 'Monserrat';
+    font-size: 3.2em; /* Larger value */
+    font-weight: var(--font-bold);
+    color: var(--success-green); /* Green for value */
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-card-description {
+    font-family: 'Monserrat';
+    font-size: 0.95em;
+    color: var(--text-light);
+    margin-top: 8px; /* More space */
+    line-height: 1.5;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 50px; /* More space */
+    padding: 30px; /* More padding */
+    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%); /* Consistent light gray background */
+    border-radius: 15px; /* Softer corners */
+    border: 1px solid var(--black);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    width: 90%;
+    max-width: 800px;
+}
+
+.profile-avatar {
+    width: 110px; /* Larger avatar */
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--white); /* Secondary blue border */
+    margin-bottom: 20px; /* More space */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.profile-name {
+    font-family: 'Montserrat';
+    font-size: 2.2em; /* Larger name */
+    font-weight: var(--font-bold);
+    color: var(--white); /* Primary blue for name */
+    margin-bottom: 8px;
+}
+
+.profile-role {
+    font-family: 'Montserrat';
+    font-size: 1.15em; /* Larger role text */
+    color: var(--white);
+    margin-bottom: 25px; /* More space */
+}
+
+/* Adjustments for data lists (already looks good, minor tweaks) */
 .data-list-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px; /* More gap between cards */
+    width: 100%; /* Ensure it takes full width */
 }
 
 .data-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
+    background-color: var(--white);
+    border: 1px solid var(--medium-gray);
+    border-radius: 10px;
+    padding: 20px; /* More padding */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Para que los elementos se ajusten en pantallas pequeñas */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.data-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
 .data-card h4, .data-card h5 {
     margin: 0;
-    color: #333;
-    flex-grow: 1; /* Permite que el título ocupe espacio */
+    color: var(--primary-blue); /* Consistent primary blue */
+    font-family: 'Monsserrat';
+    font-weight: var(--font-semibold);
+    flex-grow: 1;
+    font-size: 1.15em;  
 }
 
 .data-card p {
-    margin: 5px 0;
-    color: #666;
-    flex-basis: 100%; /* Las descripciones ocupan toda la línea */
+    margin: 8px 0; /* More space for paragraphs */
+    color: var(--text-light);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.95em;
+    flex-basis: 100%;
 }
 
 .data-card .card-actions {
     display: flex;
-    gap: 10px;
-    margin-left: auto; /* Empuja los botones a la derecha */
+    gap: 15px; /* More space between action buttons */
+    margin-left: auto;
+    margin-top: 10px; /* Ensure space on smaller screens */
+}
+
+.button_body.small-button {
+    padding: 8px 15px; /* Adjusted padding */
+    font-size: 0.9em;
+    border-radius: 30px; /* Pill shape for small buttons too */
+}
+
+.button_body.cancel-button {
+    background: linear-gradient(135deg, var(--danger-red) 0%, #b90222 100%);
+}
+.button_body.cancel-button:hover {
+    background: linear-gradient(135deg, #b90222 0%, var(--danger-red) 100%);
+}
+
+/* Nested List (for career/area breakdown) */
+.nested-list {
+    margin-left: 30px; /* More indentation */
+    border-left: 4px solid var(--secondary-blue); /* Stronger visual cue */
+    padding-left: 15px; /* More padding */
+    margin-top: 20px;
+}
+
+.nested-card {
+    background-color: #e6f7ff; /* Lighter blue for nested cards */
+    border: 1px solid #cceeff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Detail Headers */
+.detail-header {
+    border-bottom: 2px solid var(--medium-gray); /* Stronger divider */
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.detail-content h4 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: var(--dark-gray);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    font-weight: var(--font-semibold);
+}
+
+/* Register Form Section */
+.register-form-section {
+    max-width: 650px; /* Wider forms */
+    margin: 30px auto;
+}
+
+.registration-form .form-group {
+    margin-bottom: 20px;
+}
+
+.registration-form .form-label {
+    font-weight: var(--font-semibold);
+    color: var(--dark-gray);
+}
+
+.registration-form .form-input {
+    padding: 12px 15px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+}
+
+.registration-form textarea.form-input {
+    resize: vertical;
+    min-height: 80px; /* Minimum height for textareas */
+}
+
+.registration-form .form-actions {
+    margin-top: 30px;
+}
+
+/* Font Awesome Icon spacing */
+.fas, .far, .fal, .fad, .fab { /* Include all common Font Awesome prefixes */
+    margin-right: 8px; /* More space for icons */
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 992px) {
+    nav {
+        padding: 0 30px;
+    }
+    .titulo_barra {
+        font-size: 28px;
+    }
+    .button_barra {
+        font-size: 0.9em;
+        padding: 12px 20px;
+        margin: 0 10px;
+    }
+    .cerrar_sesion {
+        font-size: 0.9em;
+        padding: 10px 20px;
+    }
+    .content_texto_bienvenida label {
+        font-size: 2.5em;
+    }
+    .button_body {
+        padding: 15px 30px;
+        font-size: 1em;
+    }
+    .info-section h3 {
+        font-size: 1.8em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+    }
+    .contenedor {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+        gap: 20px;
+    }
+    .titulo_barra {
+        text-align: center;
+        margin-left: 0;
+        font-size: 24px;
+    }
+    .button_barra {
+        margin: 5px 8px;
+        padding: 10px 15px;
+        font-size: 0.85em;
+    }
+    .cerrar_sesion {
+        margin-top: 15px;
+        width: 100%;
+        text-align: center;
+    }
+    .main-content-section {
+        padding: 20px;
+        width: 90%;
+    }
+    .content_texto_bienvenida {
+        padding: 15px;
+    }
+    .content_texto_bienvenida label {
+        font-size: 2em;
+        margin-bottom: 15px;
+    }
+    .action-buttons-container {
+        flex-direction: column;
+        gap: 15px;
+        margin: 30px auto;
+    }
+    .button_body {
+        margin-top: 1px;
+        width: 70%; /* Make buttons take more width on small screens */
+        max-width: 300px;
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+    .program-card, .benefit-item, .dashboard-card {
+        padding: 25px;
+    }
+    .program-card h3, .benefit-item h3 {
+        font-size: 1.4em;
+    }
+    .form-input, .form-select {
+        padding: 10px 12px;
+        font-size: 1em;
+    }
+    .submit-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+    .info-section {
+        padding: 25px;
+    }
+    .info-section h3 {
+        font-size: 1.6em;
+    }
+    .info-list li, .info-list-nested li {
+        padding: 10px 15px;
+        font-size: 0.95em;
+    }
+    .data-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .data-card .card-actions {
+        margin-left: 0;
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* Estilos para listas anidadas (ej. carreras dentro de un área) */
@@ -1170,4 +1439,71 @@ footer#pie {
 /* Iconos (asegúrate de tener Font Awesome o similar incluido) */
 .fas {
     margin-right: 5px;
+}
+
+/* Estilo para ocultar elementos */
+.hidden {
+    display: none !important;
+}
+
+/* Para mostrar/ocultar secciones */
+.info-section {
+    display: none;
+}
+
+.info-section.active {
+    display: block;
+}
+
+/* Para el botón activo */
+.button_body {
+    /* ...tus estilos existentes para botones... */
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button_body.active-button {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.button_body:hover:not(.active-button) {
+    background-color: #e0e0e0;
+}
+
+
+/* Estilos para los enlaces clicables (áreas, carreras y especialidades) */
+.area-link, .area-return-link, .carrera-link, .especialidad-return-link {
+    cursor: pointer;
+    color: #007bff; /* Un color estándar para enlaces clicables */
+    text-decoration: none;
+}
+
+.area-link:hover, .area-return-link:hover, .carrera-link:hover, .especialidad-return-link:hover {
+    text-decoration: underline;
+}
+
+/* Si quieres que los títulos de área/carrera/especialidad sean más prominentes */
+.area-return-link, .carrera-link, .especialidad-return-link {
+    font-weight: bold;
+    display: block; /* Para que ocupen más espacio y sean más fáciles de cliquear */
+    padding: 5px 0;
+}
+
+
+.menu_barra_nueva {
+    display: flex; /* Paso clave: convierte el contenedor en un contenedor flex */
+    flex-direction: row; /* Esto es el valor por defecto, pero lo especifico para claridad.*/
+    justify-content: flex-end;  
+    justify-content: space-between; /* Distribuye el espacio entre los elementos, el primero al inicio y el último al final */
+    justify-content: space-around;  /* Distribuye el espacio equitativamente alrededor de los elementos */
+    justify-content: space-evenly;  /* Distribuye el espacio de manera uniforme entre y alrededor de los elementos */
+    gap: 20px;
+    background: transparent; /* El color de fondo que se ve en tu imagen */
+    padding: 15px 20px; /* Un poco de padding para el contenedor del menú */
+    border-radius: 10px; /* Si quieres que el contenedor tenga bordes redondeados */
 }

@@ -4,7 +4,9 @@
             <label>Listado de Cohortes</label>
         </div>
 
-        <div class="new-student-button-container">
+        <div class="action-buttons-container">
+            {{-- Asegúrate de que la ruta sea correcta para crear una nueva cohorte --}}
+            {{-- Se asume que la ruta es 'administrador.gestioncohorte.create' --}}
             <a href="{{ route('administrador.gestioncohorte.create') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nueva Cohorte
             </a>
