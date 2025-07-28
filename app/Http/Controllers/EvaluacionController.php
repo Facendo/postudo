@@ -32,7 +32,8 @@ class EvaluacionController extends Controller
     public function store(Request $request)
     {
         $evaluacion = new Evaluacion();
-        $evaluacion->Codigo_materia = $request->Codigo_materia;
+        $evaluacion->codigo_materia = $request->codigo_materia;
+        $evaluacion->codigo_seccion = $request->codigo_seccion;
         $evaluacion->titulo = $request->titulo;
         $evaluacion->porcentaje = $request->porcentaje;
         $evaluacion->metodologia = $request->metodologia;
