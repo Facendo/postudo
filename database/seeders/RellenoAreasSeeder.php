@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Estudiante;
 use App\Models\Evaluacion;
 use App\Models\Materias;
 use App\Models\Seccion;
@@ -108,6 +109,53 @@ class RellenoAreasSeeder extends Seeder
             'nombre' => 'Educación Inicial',
             'id_carrera' => 5,
         ]);
+
+        Estudiante::create([
+            'cedula' => '12345678',
+            'nombre' => 'Juan',
+            'apellido' => 'Pérez',
+            'carrera' => 'Ingeniería de Sistemas',
+            'especialidad' => 'Desarrollo de Software',
+            'correo' => 'juan.perez@example.com',
+            'edad' => 25,
+        ]);
+        Estudiante::create([
+            'cedula' => '87654321',
+            'nombre' => 'María',
+            'apellido' => 'Gómez',
+            'carrera' => 'Administración de Empresas',
+            'especialidad' => 'Gestión Empresarial',
+            'correo' => 'maria.gomez@example.com',
+            'edad' => 22,
+        ]);
+        Estudiante::create([
+            'cedula' => '11223344',
+            'nombre' => 'Carlos',
+            'apellido' => 'López',
+            'carrera' => 'Ingeniería de Sistemas',
+            'especialidad' => 'Desarrollo de Software',
+            'correo' => 'carlos.lopez@example.com',
+            'edad' => 23,
+        ]);
+        Estudiante::create([
+            'cedula' => '44332211',
+            'nombre' => 'Ana',
+            'apellido' => 'Martínez',
+            'carrera' => 'Administración de Empresas',
+            'especialidad' => 'Gestión Empresarial',
+            'correo' => 'ana.martinez@example.com',
+            'edad' => 24,
+        ]);
+        Estudiante::create([
+            'cedula' => '55667788',
+            'nombre' => 'Luis',
+            'apellido' => 'Hernández',
+            'carrera' => 'Ingeniería de Sistemas',
+            'especialidad' => 'Desarrollo de Software',
+            'correo' => 'luis.hernandez@example.com',
+            'edad' => 26,
+        ]);
+
         Postgrado::create([
             'id_postgrado' => 'POST-INF-2024',
             'nombre' => 'Maestría en Ingeniería de Software',
@@ -217,6 +265,16 @@ class RellenoAreasSeeder extends Seeder
         ]);
         Seccion::create([
             'nro_seccion' => 3,
+            'codigo_materia' => 102,
+            'hora_inicio' => '2024-01-20 08:00:00',
+            'hora_fin' => '2024-01-20 10:00:00',
+            'cedula_docente' => '12345678',
+            'aula' => 'A102',
+            'cupo_maximo' => 30,
+            'cupo_actual' => 0,
+        ]);
+        Seccion::create([
+            'nro_seccion' => 4,
             'codigo_materia' => 103,
             'hora_inicio' => '2024-06-01 08:00:00',
             'hora_fin' => '2024-06-01 10:00:00',
@@ -226,7 +284,7 @@ class RellenoAreasSeeder extends Seeder
             'cupo_actual' => 0,
         ]);
         Seccion::create([
-            'nro_seccion' => 4,
+            'nro_seccion' => 5,
             'codigo_materia' => 104,
             'hora_inicio' => '2024-06-02 08:00:00',
             'hora_fin' => '2024-06-02 10:00:00',
@@ -236,7 +294,7 @@ class RellenoAreasSeeder extends Seeder
             'cupo_actual' => 0,
         ]);
         Seccion::create([
-            'nro_seccion' => 5,
+            'nro_seccion' => 6,
             'codigo_materia' => 105,
             'hora_inicio' => '2024-11-01 08:00:00',
             'hora_fin' => '2024-11-01 10:00:00',
@@ -244,6 +302,115 @@ class RellenoAreasSeeder extends Seeder
             'aula' => 'C101',
             'cupo_maximo' => 30,
             'cupo_actual' => 0,
+        ]);
+
+        Evaluacion::create([
+            'codigo_materia' => 101,
+            'codigo_seccion' => 1,
+            'titulo' => 'Examen Parcial 1',
+            'porcentaje' => 30,
+            'metodologia' => 'Examen escrito',
+            'fecha' => '2024-02-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 101,
+            'codigo_seccion' => 2,
+            'titulo' => 'Examen Parcial 2',
+            'porcentaje' => 30,
+            'metodologia' => 'Examen escrito',
+            'fecha' => '2024-02-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 101,
+            'codigo_seccion' => 1,
+            'titulo' => 'Proyecto Final',
+            'porcentaje' => 70,
+            'metodologia' => 'Proyecto práctico',
+            'fecha' => '2024-03-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 101,
+            'codigo_seccion' => 2, 
+            'titulo' => 'Proyecto Final',
+            'porcentaje' => 70,
+            'metodologia' => 'Proyecto práctico',
+            'fecha' => '2024-03-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 102,
+            'codigo_seccion' => 3,
+            'titulo' => 'Examen Parcial 1',
+            'porcentaje' => 30,
+            'metodologia' => 'Examen escrito',
+            'fecha' => '2024-02-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 102,
+            'codigo_seccion' => 3,
+            'titulo' => 'Proyecto Final',
+            'porcentaje' => 70,
+            'metodologia' => 'Proyecto práctico',
+            'fecha' => '2024-03-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 103,
+            'codigo_seccion' => 4,
+            'titulo' => 'Examen Parcial 1',
+            'porcentaje' => 30,
+            'metodologia' => 'Examen escrito',
+            'fecha' => '2024-02-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 103,
+            'codigo_seccion' => 4,
+            'titulo' => 'Proyecto Final',
+            'porcentaje' => 70,
+            'metodologia' => 'Proyecto práctico',
+            'fecha' => '2024-03-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 104,
+            'codigo_seccion' => 5,
+            'titulo' => 'Examen Parcial 1',
+            'porcentaje' => 30,
+            'metodologia' => 'Examen escrito',
+            'fecha' => '2024-02-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 104,
+            'codigo_seccion' => 5,
+            'titulo' => 'Proyecto Final',
+            'porcentaje' => 70,
+            'metodologia' => 'Proyecto práctico',
+            'fecha' => '2024-03-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 105,
+            'codigo_seccion' => 6,
+            'titulo' => 'Examen Parcial 1',
+            'porcentaje' => 30,
+            'metodologia' => 'Examen escrito',
+            'fecha' => '2024-02-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+        Evaluacion::create([
+            'codigo_materia' => 105,
+            'codigo_seccion' => 6,
+            'titulo' => 'Proyecto Final',
+            'porcentaje' => 70,
+            'metodologia' => 'Proyecto práctico',
+            'fecha' => '2024-03-15',
+            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
         ]);
     }
 }
