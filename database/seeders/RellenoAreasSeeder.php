@@ -126,7 +126,7 @@ class RellenoAreasSeeder extends Seeder
             'carrera' => 'Administración de Empresas',
             'especialidad' => 'Gestión Empresarial',
             'correo' => 'maria.gomez@example.com',
-            'edad' => 22,
+            'edad' => 27,
         ]);
         Estudiante::create([
             'cedula' => '11223344',
