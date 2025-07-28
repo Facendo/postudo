@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('codigo_especialidad');
             $table->string('nombre');
             $table->string('descripcion');
+            $table->integer('nro_cohortes');
             $table->string('duracion');
           
             $table->foreign('codigo_especialidad')

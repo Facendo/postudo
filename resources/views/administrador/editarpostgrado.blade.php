@@ -46,10 +46,9 @@
                 <div class="form-group">
                     <label for="codigo_especialidad" class="form-label">Especialidad</label>
                     <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
-                        <option value="">Selecciona una especialidad</option>
-                        {{-- Itera sobre las especialidades disponibles y selecciona la actual --}}
-                        @foreach(App\Models\Especialidades::with('carrera')->get() as $especialidad){{-- Asume que $especialidades es una colección --}}
-                            <option value="{{ $especialidad->codigo_especialidad }}" {{ (old('codigo_especialidad', $postgrado->codigo_especialidad) == $especialidad->codigo_especialidad) ? 'selected' : '' }}>
+                        @foreach($especialidades as $especialidad)
+                            <option value="{{ $especialidad->codigo_especialidad }}" 
+                                {{ old('codigo_especialidad', $postgrado->codigo_especialidad) == $especialidad->codigo_especialidad ? 'selected' : '' }}>
                                 {{ $especialidad->nombre }}
                             </option>
                         @endforeach

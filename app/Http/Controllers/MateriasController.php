@@ -23,7 +23,9 @@ class MateriasController extends Controller
      */
     public function create()
     {
-        return view('administrador.registromateria');
+        $materias = Materias::all();
+        $especialidades = Especialidades::all();
+        return view('administrador.registromateria', compact('especialidades', 'materias'));
     }
 
     /**
@@ -34,9 +36,7 @@ class MateriasController extends Controller
         $materia = new Materias();
         $materia->codigo_materia = $request->codigo_materia;
         $materia->nombre = $request->nombre;
-        $materia->nombre_carrera = $request->carrera;
-        $materia->nombre_especialidad = $request->codigo_especialidad;
-        $materia->nro_seccion = $request->nro_seccion;
+        $materia->id_especialidad = $request->codigo_especialidad;
         $materia->prelacion = $request->prelacion ?? 0; // Valor por defecto si es null
         $materia->save();
 

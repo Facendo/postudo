@@ -16,7 +16,6 @@
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Postgrado
             </a>
         </div>
-
         {{-- Tabla para mostrar los postgrados --}}
         <table>
             <thead>
@@ -26,6 +25,7 @@
                     <th>Descripción</th>
                     <th>Duración</th>
                     <th>Cód. Especialidad</th>
+                    <th>Nro. Cohortes</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -41,6 +41,7 @@
                         <td>{{ $postgrado->descripcion }}</td>
                         <td>{{ $postgrado->duracion }}</td>
                         <td>{{ $postgrado->codigo_especialidad }}</td>
+                        <td>{{ $postgrado->nro_cohortes }}</td>
                         
                         {{-- Columna de acciones con botones para Editar y Eliminar --}}
                         <td class="table-actions">

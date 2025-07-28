@@ -29,14 +29,22 @@
                     <input type="text" id="duracion" name="duracion" class="form-input" placeholder="Ej: 2 años / 4 semestres" required>
                 </div>
 
+                <!-- Campo para el numero de cohortes -->
+                <div class="form-group">
+                    <label for="nro_de_cohortes" class="form-label">Número de Cohortes</label>
+                    <input type="number" id="nro_de_cohortes" name="nro_de_cohortes" class="form-input" placeholder="Ej: 3" required>
+                </div>
+                @error('nro_de_cohortes')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
                 <!-- Campo para codigo_especialidad (similar al de estudiante pero para postgrados) -->
                 <div class="form-group">
                 <label for="codigo_especialidad" class="form-label">Especialidad</label>
                 <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
                     <option value="">Selecciona una especialidad</option>
-                    @foreach(App\Models\Especialidades::with('carrera')->get() as $especialidad)
+                    @foreach($especialidades as $especialidad)
                         <option value="{{ $especialidad->codigo_especialidad }}">
-                            {{ $especialidad->nombre }} - {{ $especialidad->carrera->nombre ?? 'Sin carrera' }}
+                            {{ $especialidad->nombre }}
                         </option>
                     @endforeach
                 </select>
@@ -51,5 +59,7 @@
 
             </form>
         </div>
+        
     </section>
+    <x-back_button />
 </x-layout>
