@@ -2,13 +2,13 @@
     <section class="main-content-section page-content">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
-            <label>Listado de Cohortes Asociados a {{ $postgrado->nombre }}</label>
+            <label>Listado de materias Asignadas a {{ $cohorte->nro_de_cohorte }}° cohorte</label>
         </div>
 
         {{-- Botón para crear un nuevo postgrado --}}
         <div class="new-student-button-container">
             {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
-            <a href="{{ route('administrador.gestioncohorte.create', $postgrado->id_postgrado) }}" class="button_body">
+            <a href="{{ route('administrador.gestioncohorte.create', $cohorte->codigo_cohorte) }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Cohorte
             </a>
         </div>
@@ -16,11 +16,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Codigo Materia</th>
                     <th>Nombre</th>
-                    <th>Duración</th>
-                    <th>Nro. de Cohorte</th>
-                    <th>Ver Materias</th>
+                    <th>Prelacion</th>
+                    <th>Ver Secciones asignadas</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -29,14 +28,17 @@
                     Bucle @forelse para iterar sobre la colección de $postgrados.
                     Muestra una fila por cada postgrado.
                 --}}
-                @forelse ($cohortes as $cohorte)
+                @forelse ($materias as $materia)
                     <tr>
-                        <td>{{ $cohorte->codigo_cohorte }}</td>
-                        <td>{{ $cohorte->codigo_postgrado}}</td>
-                        <td>{{ $cohorte->fecha_inicio }} - {{ $cohorte->fecha_fin }}</td>
-                        <td>{{ $cohorte->nro_de_cohorte }}</td>
+                        <td>{{ $materia->codigo_materia }}</td>
+                        <td>{{ $materia->nombre }}</td>
+                        <td>{{ $materia->prelacion }}</td>
+                        <td>{{-- Enlace a la vista de secciones asignadas --}}
+                            <a href="{{ route('administrador.gestioncohorte.showdetalles', $materia->codigo_materia) }}" class="button_body" title="Ver Secciones">
+                                <i class="fas fa-eye"></i>
+                            </a></td>
                         <td>{{-- Enlace a la vista de detalles del postgrado --}}
-                            <a href="{{ route('administrador.gestioncohorte.showdetalles', $cohorte->codigo_cohorte) }}" class="button_body" title="Ver Detalles">
+                            <a href="{{ route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado) }}" class="button_body" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
                             </a></td>
 
