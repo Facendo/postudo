@@ -1,7 +1,4 @@
-{{--
-    Vista para mostrar el listado de Postgrados.
-    Adaptada desde la vista de listado de estudiantes.
---}}
+
 <x-layout title='PostUDO || Postgrados'>
     <section class="main-content-section page-content">
         {{-- Título de la sección --}}
@@ -10,7 +7,7 @@
         </div>
 
         {{-- Botón para crear un nuevo postgrado --}}
-        <div class="new-student-button-container">
+        <div class="action-buttons-container">
             {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
             <a href="{{ route('administrador.gestion_postgrado.create') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Postgrado

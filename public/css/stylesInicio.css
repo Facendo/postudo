@@ -24,7 +24,7 @@
         }
 
         h1, h2, h3 {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             color: #0a1128; /* Dark blue, matching nav */
             margin-bottom: 20px;
             line-height: 1.2;
@@ -184,7 +184,7 @@
         .hero-section {
             position: relative;
             height: 85vh; /* Taller hero section for impact */
-            background: url('{{ asset('fondo.jpg') }}') no-repeat center center/cover;
+            background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);
             display: flex;
             align-items: center;
             justify-content: center;

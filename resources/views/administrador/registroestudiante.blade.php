@@ -1,4 +1,6 @@
-<x-layout title='PostUDO || Inicio'>
+<x-layout title='PostUDO || Registro de Estudiante'>
+    
+    {{-- Sección principal para el registro de estudiantes --}}
     <section class="login-page-container">
         <div class="registration-form">
             <h2 class="registration-form-title">Registro de Estudiante</h2>

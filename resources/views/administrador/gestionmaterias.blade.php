@@ -4,7 +4,9 @@
             <label>Listado de Materias</label>
         </div>
 
-        <div class="new-student-button-container">
+        <div class="action-buttons-container">
+            {{-- Asegúrate de que la ruta sea correcta para crear una nueva materia --}}
+            {{-- Se asume que la ruta es 'administrador.gestionmaterias.create' --}}
             {{-- Cambia la ruta para crear una nueva materia --}}
             <a href="{{ route('administrador.gestionmaterias.create') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nueva Materia
