@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CarreraController;
+use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\EspecialidadesController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\MateriasController;
@@ -67,4 +68,12 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get("/administrador/gestionmaterias/{materia}/edit", [MateriasController::class, 'edit'])->name('administrador.gestionmaterias.edit'); // Formulario de edición de materia
     Route::put("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'update'])->name('administrador.gestionmaterias.update'); // Actualizar materia
     Route::delete("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
+  
+    //Gestion de Cohortes
+    Route::get("/administrador/gestioncohorte", [CohorteController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte');
+    Route::get("/administrador/gestioncohorte/create", [CohorteController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.create');
+    Route::post("/administrador/gestioncohorte", [CohorteController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.store');
+    Route::get("/administrador/gestioncohorte/{cohorte}/edit", [CohorteController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.edit');
+    Route::put("/administrador/gestioncohorte/{cohorte}", [CohorteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.update');
+    Route::delete("/administrador/gestioncohorte/{cohorte}", [CohorteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.destroy');
 });

@@ -12,7 +12,8 @@ class CohorteController extends Controller
      */
     public function index()
     {
-        //
+        $cohortes = Cohorte::all();
+        return view('administrador.gestioncohorte', compact('cohortes'));
     }
 
     /**
@@ -20,7 +21,7 @@ class CohorteController extends Controller
      */
     public function create()
     {
-        //
+        return view('administrador.registrocohorte');
     }
 
     /**
@@ -32,8 +33,10 @@ class CohorteController extends Controller
         $cohorte->codigo_cohorte = $request->codigo_cohorte;
         $cohorte->fecha_inicio = $request->fecha_inicio;
         $cohorte->fecha_fin = $request->fecha_fin;
-        $cohorte->nro_de_cohorte = $request->nro_de_cohorte; // Ensure this matches your migration
+        $cohorte->nro_de_cohorte = $request->nro_de_cohorte;
+        $cohorte->codigo_postgrado = $request->codigo_postgrado; // Ensure this matches your migration
         $cohorte->save();
+        return redirect()->route('administrador.gestioncohorte')->with('success', 'Cohorte registrada correctamente.');
     }
 
     /**
@@ -49,7 +52,7 @@ class CohorteController extends Controller
      */
     public function edit(Cohorte $cohorte)
     {
-        //
+        return view('administrador.editarcohorte', compact('cohorte'));
     }
 
     /**
@@ -61,7 +64,9 @@ class CohorteController extends Controller
         $cohorte->fecha_inicio = $request->fecha_inicio;
         $cohorte->fecha_fin = $request->fecha_fin;
         $cohorte->nro_de_cohorte = $request->nro_de_cohorte; // Ensure this matches your migration
+        $cohorte->codigo_postgrado = $request->codigo_postgrado; // Ensure this matches your migration
         $cohorte->save();
+        return redirect()->route('administrador.gestioncohorte')->with('success', 'Cohorte actualizada correctamente.');
     }
 
     /**
@@ -69,6 +74,7 @@ class CohorteController extends Controller
      */
     public function destroy(Cohorte $cohorte)
     {
-        //
+        $cohorte->delete();
+        return redirect()->route('administrador.gestioncohorte')->with('success', 'Cohorte eliminada correctamente.');
     }
 }
