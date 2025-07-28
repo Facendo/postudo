@@ -6,7 +6,7 @@
         </div>
 
         {{-- Botón para crear un nuevo postgrado --}}
-        <div class="new-student-button-container">
+        <div class="action-buttons-container">
             {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
             <a href="{{ route('administrador.gestioncohorte.create', $postgrado->id_postgrado) }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nuevo Cohorte
