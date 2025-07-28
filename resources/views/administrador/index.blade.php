@@ -1,4 +1,4 @@
-<x-layout title='PostUDO || Inicio'>
+<x-layout title='PostUDO || Administrador - Inicio'>
     
         <section class="main-content-section">
             <div class="profile-section">
