@@ -12,6 +12,11 @@ class Especialidades extends Model
     protected $primaryKey = 'codigo_especialidad';
     protected $keyType = 'integer';
 
+    protected $fillable = [
+        'codigo_especialidad',
+        'nombre',
+        'id_carrera',
+    ];
     // En Especialidades.php
     public function carrera()
     {
