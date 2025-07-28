@@ -12,6 +12,16 @@ class Seccion extends Model
     protected $primaryKey = 'id_seccion';
     public $keyType = 'integer';
 
+    protected $fillable = [
+        'codigo_materia',
+        'codigo_seccion',
+        'titulo',
+        'porcentaje',
+        'metodologia',
+        'fecha',
+        'nota'
+    ];
+
     public function estudiantes()
     {
         return $this->hasMany(Estudiante::class, 'id_seccion', 'id_seccion');

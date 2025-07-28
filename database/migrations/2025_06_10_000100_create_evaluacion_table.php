@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('evaluacion', function (Blueprint $table) {
-            $table->integer('id_evaluacion')->primary();
-            $table->integer('codigo_seccion');
+            $table->id('id_evaluacion')->primary();
+            $table->integer('codigo_materia')->nullable();
+            $table->integer('codigo_seccion')->nullable();
             $table->string('titulo');
             $table->integer('porcentaje');
             $table->string('metodologia');
-            $table->integer('nota');
+            $table->date('fecha'); // Asegúrate de que este campo exista en tu modelo
+            $table->integer('nota')->nullable(); // Asegúrate de que este campo sea nullable si es necesario
             $table->timestamps();
 
         });
