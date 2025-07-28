@@ -4,14 +4,14 @@
             <h2 class="registration-form-title">Editar Postgrado</h2>
 
             {{-- El action del formulario apunta a la ruta 'update' y utiliza el método PUT/PATCH --}}
-            <form action="{{ route('administrador.gestion_postgrado.update', $postgrado) }}" method="POST">
+            <form action="{{ route('administrador.gestion_postgrado.update', $postgrado->id_postgrado) }}" method="POST">
                 @csrf
                 @method('PUT') {{-- O @method('PATCH') --}}
 
                 <!-- Campo para Id_postgrado (generalmente no se edita, pero se muestra) -->
                 <div class="form-group">
                     <label for="Id_postgrado" class="form-label">ID del Postgrado</label>
-                    <input type="text" id="Id_postgrado" name="Id_postgrado" class="form-input" value="{{ old('Id_postgrado', $postgrado->Id_postgrado) }}" readonly>
+                    <input type="text" id="Id_postgrado" name="Id_postgrado" class="form-input" value="{{ old('id_postgrado', $postgrado->id_postgrado) }}" readonly>
                     {{-- 'readonly' para evitar que se edite el ID principal --}}
                 </div>
 

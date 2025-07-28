@@ -57,9 +57,10 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get("/administrador/gestion_postgrado", [PostgradoController::class, 'index'])->name('administrador.gestion_postgrado'); // Lista de postgrados
     Route::get("/administrador/gestion_postgrado/create", [PostgradoController::class, 'create'])->name('administrador.gestion_postgrado.create'); // Formulario de registro de postgrado
     Route::post("/administrador/gestion_postgrado", [PostgradoController::class, 'store'])->name('administrador.gestion_postgrado.store'); // Guardar nuevo postgrado
-    Route::get("/administrador/gestion_postgrado/{postgrado}/edit", [PostgradoController::class, 'edit'])->name('administrador.gestion_postgrado.edit'); // Formulario de edición de postgrado
-    Route::put("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'update'])->name('administrador.gestion_postgrado.update'); // Actualizar postgrado
-    Route::delete("/administrador/gestion_postgrado/{postgrado}", [PostgradoController::class, 'destroy'])->name('administrador.gestion_postgrado.destroy'); // Eliminar postgrado
+    Route::get("/administrador/gestion_postgrado/{id}/edit", [PostgradoController::class, 'edit'])->name('administrador.gestion_postgrado.edit'); // Formulario de edición de postgrado
+    Route::get("/administrador/gestion_postgrado/{id}/detalles", [PostgradoController::class, 'showdetalles'])->name('administrador.gestion_postgrado.showdetalles'); // Ver detalles de postgrado
+    Route::put("/administrador/gestion_postgrado/{id}", [PostgradoController::class, 'update'])->name('administrador.gestion_postgrado.update'); // Actualizar postgrado
+    Route::delete("/administrador/gestion_postgrado/{id}", [PostgradoController::class, 'destroy'])->name('administrador.gestion_postgrado.destroy'); // Eliminar postgrado
 
     // Gestión de Materias
     Route::get("/administrador/gestionmaterias", [MateriasController::class, 'index'])->name('administrador.gestionmaterias'); // Lista de materias
@@ -71,9 +72,10 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
   
     //Gestion de Cohortes
     Route::get("/administrador/gestioncohorte", [CohorteController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte');
-    Route::get("/administrador/gestioncohorte/create", [CohorteController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.create');
+    Route::get("/administrador/gestioncohorte/create/{id}", [CohorteController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.create');
     Route::post("/administrador/gestioncohorte", [CohorteController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.store');
-    Route::get("/administrador/gestioncohorte/{cohorte}/edit", [CohorteController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.edit');
-    Route::put("/administrador/gestioncohorte/{cohorte}", [CohorteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.update');
-    Route::delete("/administrador/gestioncohorte/{cohorte}", [CohorteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.destroy');
+    Route::get("/administrador/gestioncohorte/{id}/edit", [CohorteController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.edit');
+    Route::get("/administrador/gestioncohorte/{id}/detalles", [CohorteController::class, 'showdetalles'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.showdetalles');
+    Route::put("/administrador/gestioncohorte/{id}", [CohorteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.update');
+    Route::delete("/administrador/gestioncohorte/{id}", [CohorteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.destroy');
 });

@@ -6,7 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Area;
 use App\Models\Carrera;
+use App\Models\Cohorte;
 use App\Models\Especialidades;
+use App\Models\Postgrado;
 
 class RellenoAreasSeeder extends Seeder
 {
@@ -101,6 +103,52 @@ class RellenoAreasSeeder extends Seeder
             'codigo_especialidad' => 5,
             'nombre' => 'Educación Inicial',
             'id_carrera' => 5,
+        ]);
+        Postgrado::create([
+            'id_postgrado' => 'POST-INF-2024',
+            'nombre' => 'Maestría en Ingeniería de Software',
+            'descripcion' => 'Programa de posgrado enfocado en el desarrollo avanzado de software.',
+            'duracion' => 24,
+            'codigo_especialidad' => 1,
+            'nro_cohortes' => 3,
+        ]);
+        Postgrado::create([
+            'id_postgrado' => 'POST-ADM-2024',
+            'nombre' => 'Maestría en Administración de Empresas',
+            'descripcion' => 'Programa de posgrado enfocado en la gestión empresarial.',
+            'duracion' => 18,
+            'codigo_especialidad' => 2,
+            'nro_cohortes' => 2,
+        ]);
+        Postgrado::create([
+            'id_postgrado' => 'POST-PSI-2024',
+            'nombre' => 'Maestría en Psicología',
+            'descripcion' => 'Programa de posgrado enfocado en la formación avanzada en psicología.',
+            'duracion' => 24,
+            'codigo_especialidad' => 3,
+            'nro_cohortes' => 3,
+        ]);
+
+        Cohorte::create([
+            'codigo_cohorte' => 'COHORTE-INF-2024-1',
+            'codigo_postgrado' => 'POST-INF-2024',
+            'fecha_inicio' => '2024-01-15',
+            'fecha_fin' => '2025-01-15',
+            'nro_de_cohorte' => 1,
+        ]);
+        Cohorte::create([
+            'codigo_cohorte' => 'COHORTE-INF-2024-2',
+            'codigo_postgrado' => 'POST-INF-2024',
+            'fecha_inicio' => '2024-06-01',
+            'fecha_fin' => '2025-06-01',
+            'nro_de_cohorte' => 2,
+        ]);
+        Cohorte::create([
+            'codigo_cohorte' => 'COHORTE-INF-2024-3',
+            'codigo_postgrado' => 'POST-INF-2024',
+            'fecha_inicio' => '2024-11-01',
+            'fecha_fin' => '2025-11-01',
+            'nro_de_cohorte' => 3,
         ]);
     }
 }

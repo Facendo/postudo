@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Inicio'>
-    
+
         <section class="main-content-section">
             <div class="profile-section">
                 <img src="{{asset('foto_perfil/default.png')}}" alt="Avatar del Profesor" class="profile-avatar">

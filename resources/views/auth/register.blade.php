@@ -72,14 +72,7 @@
                 <span class="form-error-message">{{ $message }}</span>
             @enderror
         </div>
-        <div class="form-group">
-            <label for="foto_perfil" class="form-label">Foto de Perfil</label>
-            <input type="file" id="foto_perfil" class="form-input"  name="foto_perfil" accept="image/*">
-            @error('foto_perfil')
-                <span class="form-error-message">{{ $message }}</span>
-            @enderror
-        </div>
-
+        
         <div class="form-actions">
             <a class="already-registered-link" href="{{ route('login') }}">¿Ya estás registrado?</a>
             <button type="submit" class="submit-button">

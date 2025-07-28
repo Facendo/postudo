@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Postgrado;
 use App\Models\Especialidades;
 use App\Models\Area; // Se importa el nuevo modelo Area
+use App\Models\Cohorte;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -52,16 +53,20 @@ class PostgradoController extends Controller
     /**
      * Muestra los detalles de un postgrado específico.
      */
-    public function show(Postgrado $postgrado)
+    public function showdetalles(string $id)
     {
-
+        $cohortes = Cohorte::where('codigo_postgrado', $id)->get(); // Obtiene las cohortes asociadas al postgrado
+        $postgrado = Postgrado::find($id);
+        return view('administrador.detallespostgrado', compact('postgrado', 'cohortes'));
     }
 
     /**
      * Muestra el formulario para editar un postgrado específico.
      */
-    public function edit(Postgrado $postgrado)
+    public function edit(string $id)
     {
+        $postgrado = Postgrado::find($id);
+
         // Obtiene la especialidad para el formulario de edición
         $especialidad_ = Especialidades::find($postgrado->codigo_especialidad);
         $especialidades = Especialidades::all(); // Obtiene todas las especialidades para el select
@@ -71,8 +76,9 @@ class PostgradoController extends Controller
     /**
      * Actualiza un postgrado específico en la base de datos.
      */
-    public function update(Request $request, Postgrado $postgrado)
+    public function update(Request $request, string $id)
     {
+        $postgrado = Postgrado::find($id);
         $postgrado->Id_postgrado = $request->Id_postgrado;
         $postgrado->codigo_especialidad = $request->codigo_especialidad;
         $postgrado->nombre = $request->nombre;
@@ -92,8 +98,9 @@ class PostgradoController extends Controller
     /**
      * Elimina un postgrado específico de la base de datos.
      */
-    public function destroy(Postgrado $postgrado)
+    public function destroy(string $id)
     {
+        $postgrado = Postgrado::find($id);
         $postgrado->delete();
         return redirect()->route('administrador.gestion_postgrado')->with('success', 'Postgrado eliminado exitosamente.');
     }

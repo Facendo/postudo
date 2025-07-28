@@ -10,7 +10,7 @@ class Postgrado extends Model
     use HasFactory;
 
     protected $table = 'postgrado';
-    protected $primaryKey = 'Id_postgrado';
+    protected $primaryKey = 'id_postgrado';
     public $incrementing = false;
     protected $keyType = 'string';
     public $timestamps = false;
@@ -20,7 +20,7 @@ class Postgrado extends Model
      * Se elimina 'codigo_pensum'.
      */
     protected $fillable = [
-        'Id_postgrado',
+        'id_postgrado',
         'codigo_especialidad',
         'nombre',
         'descripcion',

@@ -10,11 +10,9 @@
                     <input type="text" id="codigo_cohorte" name="codigo_cohorte" class="form-input" placeholder="Ej: C-2025-INF-01" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="codigo_postgrado" class="form-label">Código de Postgrado</label>
-                    <input type="text" id="codigo_postgrado" name="codigo_postgrado" class="form-input" placeholder="Ej: POST-INF-2024" required>
-                </div>
-
+                
+                <input type="hidden" id="codigo_postgrado" name="codigo_postgrado" class="form-input"  value="{{ $postgrado->id_postgrado }}" >
+                
                 <div class="form-group">
                     <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
                     <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-input" required>
