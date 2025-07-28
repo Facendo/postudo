@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
+use App\Models\Especialidades;
 use App\Models\Estudiante;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +27,9 @@ class EstudianteController extends Controller
     public function create()
     {
         $user = Auth::user();
-        return view('administrador.registroestudiante', compact('user'));
+        $carreras = Carrera::all();
+        $especialidades = Especialidades::all();
+        return view('administrador.registroestudiante', compact('user', 'carreras', 'especialidades'));
     }
 
     /**
@@ -39,7 +44,7 @@ class EstudianteController extends Controller
         $estudiante->apellido=$request->apellido;
         $estudiante->correo=$request->correo;
         $estudiante->carrera=$request->carrera;
-        $estudiante->especialidad=$request->especialidad;
+        $estudiante->especialidad="No inscrita"; // Default value
         $estudiante->edad=$request->edad;
         $estudiante->save();
         $estudiantes=Estudiante::all();
@@ -51,10 +56,13 @@ class EstudianteController extends Controller
         $estudiantes=Estudiante::all();
         return view('administrador.gestionestudiantes',compact('estudiantes'));
     }
-    
-    /**
-     * Display the specified resource.
-     */
+
+    public function editPerfil()
+    {
+        $user = Auth::user();
+        return view('estudiante.edicion_perfil', compact('user'));
+    }
+
     public function showPerfil()
     {
         $user = Auth::user();
@@ -69,9 +77,25 @@ class EstudianteController extends Controller
         return view('administrador.editarestudiante', compact('estudiante'));
     }
 
+    
     /**
      * Update the specified resource in storage.
      */
+
+    public function update_Perfil_estudiante(Request $request)
+    {
+        $use = Auth::user();
+        $user = User::find($use->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->cedula = $request->cedula;
+        $user->save();
+        return redirect()->route('estudiante.perfil')->with('success', 'Perfil actualizado exitosamente.');
+    }
+
+
+        
+    
     public function update(Request $request, Estudiante $estudiante)
     {
         $estudiante->cedula=$request->cedula;
@@ -79,7 +103,7 @@ class EstudianteController extends Controller
         $estudiante->apellido=$request->apellido;
         $estudiante->correo=$request->correo;
         $estudiante->carrera=$request->carrera;
-        $estudiante->especialidad=$request->especialidad;
+        $estudiante->especialidad=$request->especialidad; 
         $estudiante->edad=$request->edad;
         $estudiante->save();
         return redirect()->route('administrador.gestionestudiantes')->with('success', 'Estudiante actualizado exitosamente.');

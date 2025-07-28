@@ -11,7 +11,7 @@
     <title>{{ $title ?? 'PostUDO' }}</title> {{-- Added a default title if $title is not set --}}
      <script src="https://kit.fontawesome.com/your-font-awesome-kit-code.js" crossorigin="anonymous"></script> {{-- Reemplaza con tu propio código de kit --}}
     {{-- Incluye tu archivo JavaScript externo --}}
-    <script src="{{ asset('js/admin_options.js') }}"></script>
+    
 </head>
 <body>
     <header class="main-header"> {{-- Add a class for specific header styling if needed --}}

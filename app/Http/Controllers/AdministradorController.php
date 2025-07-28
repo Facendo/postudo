@@ -28,7 +28,7 @@ class AdministradorController extends Controller
     
     public function registroEstudiante()
     {
-        return view('administrador.registroestudiante');
+        return view('administrador.registroestudiante',compact('carreras', 'especialidades'));
     }
 
     public function creacionArea()

@@ -74,7 +74,7 @@
         </div>
         <div class="form-group">
             <label for="foto_perfil" class="form-label">Foto de Perfil</label>
-            <input id="foto_perfil" class="form-input" type="file" name="foto_perfil" accept="image/*">
+            <input type="file" id="foto_perfil" class="form-input"  name="foto_perfil" accept="image/*">
             @error('foto_perfil')
                 <span class="form-error-message">{{ $message }}</span>
             @enderror

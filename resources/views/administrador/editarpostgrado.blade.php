@@ -1,7 +1,3 @@
-{{--
-    Vista para editar un Postgrado existente.
-    Precarga los datos del postgrado para su modificación.
---}}
 <x-layout title='PostUDO || Editar Postgrado'>
     <section class="login-page-container">
         <div class="registration-form">
