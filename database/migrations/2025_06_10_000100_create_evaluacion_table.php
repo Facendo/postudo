@@ -20,10 +20,6 @@ return new class extends Migration
             $table->integer('nota');
             $table->timestamps();
 
-            $table->foreign('codigo_materia')
-                ->references('codigo_materia')
-                ->on('materia')
-                ->onDelete('cascade');
         });
     }
 
