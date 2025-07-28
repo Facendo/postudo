@@ -12,6 +12,12 @@ class Carrera extends Model
     protected $primaryKey = 'id_carrera';
     protected $keyType = 'integer';
 
+    protected $fillable = [
+        'id_carrera',
+        'nombre',
+        'descripcion',
+        'codigo_area',
+    ];
     public function area(){
         return $this->belongsTo(Area::class, 'codigo_area', 'codigo');
     }

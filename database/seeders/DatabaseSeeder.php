@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         //Asignando un usuario por defecto
         $this->call(AdmindSeeder::class);
-        
+        $this->call(RellenoAreasSeeder::class);
     }
 }

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('carrera', function (Blueprint $table) {
             $table->integer('id_carrera')->primary();
-            $table->string('codigo_Area');
+            $table->string('codigo_area');
             $table->string('nombre');
             $table->timestamps();
 
-            $table->foreign('codigo_Area')
+            $table->foreign('codigo_area')
                     ->references('codigo')
                     ->on('area')
                     ->onDelete('cascade');
