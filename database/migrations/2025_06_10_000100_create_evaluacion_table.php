@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('evaluacion', function (Blueprint $table) {
             $table->integer('id_evaluacion')->primary();
-            $table->integer('codigo_materia');
+            $table->integer('codigo_seccion');
             $table->string('titulo');
             $table->integer('porcentaje');
             $table->string('metodologia');
