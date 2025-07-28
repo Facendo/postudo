@@ -19,6 +19,12 @@ return new class extends Migration
             $table->integer('nro_de_cohortes');
             $table->timestamps();
 
+            $table->foreign('codigo_postgrado')
+                ->references('id_postgrado')
+                ->on('postgrado')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
         });
     }
 
