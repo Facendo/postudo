@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Area;
 use App\Models\Carrera;
 use App\Models\Especialidades;
+use App\Models\Postgrado;
 
 class RellenoAreasSeeder extends Seeder
 {
@@ -101,6 +102,30 @@ class RellenoAreasSeeder extends Seeder
             'codigo_especialidad' => 5,
             'nombre' => 'Educación Inicial',
             'id_carrera' => 5,
+        ]);
+        Postgrado::create([
+            'id_postgrado' => 'POST-INF-2024',
+            'nombre' => 'Maestría en Ingeniería de Software',
+            'descripcion' => 'Programa de posgrado enfocado en el desarrollo avanzado de software.',
+            'duracion' => 24,
+            'codigo_especialidad' => 1,
+            'nro_cohortes' => 3,
+        ]);
+        Postgrado::create([
+            'id_postgrado' => 'POST-ADM-2024',
+            'nombre' => 'Maestría en Administración de Empresas',
+            'descripcion' => 'Programa de posgrado enfocado en la gestión empresarial.',
+            'duracion' => 18,
+            'codigo_especialidad' => 2,
+            'nro_cohortes' => 2,
+        ]);
+        Postgrado::create([
+            'id_postgrado' => 'POST-PSI-2024',
+            'nombre' => 'Maestría en Psicología',
+            'descripcion' => 'Programa de posgrado enfocado en la formación avanzada en psicología.',
+            'duracion' => 24,
+            'codigo_especialidad' => 3,
+            'nro_cohortes' => 3,
         ]);
     }
 }

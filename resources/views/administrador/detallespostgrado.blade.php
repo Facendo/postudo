@@ -1,19 +1,15 @@
-{{--
-    Vista para mostrar el listado de Postgrados.
-    Adaptada desde la vista de listado de estudiantes.
---}}
 <x-layout title='PostUDO || Postgrados'>
     <section class="main-content-section page-content">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
-            <label>Listado de Postgrados</label>
+            <label>Listado de Cohortes Asociados a {{ $postgrado->nombre }}</label>
         </div>
 
         {{-- Botón para crear un nuevo postgrado --}}
         <div class="new-student-button-container">
             {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
-            <a href="{{ route('administrador.gestion_postgrado.create') }}" class="button_body">
-                <i class="fa-solid fa-plus icon-left"></i> Nuevo Postgrado
+            <a href="{{ route('administrador.gestioncohorte.create', $postgrado->id_postgrado) }}" class="button_body">
+                <i class="fa-solid fa-plus icon-left"></i> Nuevo Cohorte
             </a>
         </div>
         {{-- Tabla para mostrar los postgrados --}}
@@ -22,11 +18,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Descripción</th>
                     <th>Duración</th>
-                    <th>Cód. Especialidad</th>
-                    <th>Nro. Cohortes</th>
-                    <th>Detalles</th>
+                    <th>Nro. de Cohorte</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -35,32 +28,24 @@
                     Bucle @forelse para iterar sobre la colección de $postgrados.
                     Muestra una fila por cada postgrado.
                 --}}
-                @forelse ($postgrados as $postgrado)
+                @forelse ($cohortes as $cohorte)
                     <tr>
-                        <td>{{ $postgrado->id_postgrado }}</td>
-                        <td>{{ $postgrado->nombre }}</td>
-                        <td>{{ $postgrado->descripcion }}</td>
-                        <td>{{ $postgrado->duracion }}</td>
-                        <td>{{ $postgrado->codigo_especialidad }}</td>
-                        <td>{{ $postgrado->nro_cohortes }}</td>
-                        <td>
-                            {{-- Enlace a la vista de detalles del postgrado --}}
-                            <a href="{{ route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado) }}" class="button_body" title="Ver Detalles">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                        </td>
-                        
+                        <td>{{ $cohorte->codigo_cohorte }}</td>
+                        <td>{{ $cohorte->codigo_postgrado}}</td>
+                        <td>{{ $cohorte->fecha_inicio }} - {{ $cohorte->fecha_fin }}</td>
+                        <td>{{ $cohorte->nro_de_cohorte }}</td>
+
                         {{-- Columna de acciones con botones para Editar y Eliminar --}}
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
                             {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
-                            <a href="{{ route('administrador.gestion_postgrado.edit', $postgrado->id_postgrado) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestioncohorte.edit', $cohorte->codigo_cohorte) }}" class="button_body" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
                             {{-- Botón de Eliminar (usando un formulario para solicitudes DELETE) --}}
                             {{-- Se asume que la ruta para eliminar es 'administrador.gestion_postgrado.destroy' --}}
-                            <form action="{{ route('administrador.gestion_postgrado.destroy', $postgrado->id_postgrado) }}" method="POST" class="inline-form">
+                            <form action="{{ route('administrador.gestioncohorte.destroy', $cohorte->codigo_cohorte) }}" method="POST" class="inline-form">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="button_body" title="Eliminar">
@@ -70,12 +55,8 @@
                         </td>
                     </tr>
                 @empty
-                    {{--
-                        Este bloque se muestra si la colección $postgrados está vacía.
-                        El colspan se ajusta a 7 para coincidir con el número de columnas.
-                    --}}
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 20px;">No hay postgrados registrados.</td>
+                        <td colspan="7" style="text-align: center; padding: 20px;">No hay postgrados registrados.</td>
                     </tr>
                 @endforelse
             </tbody>

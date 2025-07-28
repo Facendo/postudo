@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('codigo_materia');
             $table->date('hora_inicio');
             $table->date('hora_fin');
+            $table->string('cedula_docente');
             $table->string('aula');
             $table->integer('cupo_maximo');
             $table->integer('cupo_actual')->default(0);
