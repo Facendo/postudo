@@ -26,7 +26,7 @@
             <a href="{{ route('administrador.creacion.index') }}" class="button_body">
                 <i class="fa-solid fa-building icon-left"></i> Gestion de Areas, Carreras y Especialidades
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('administrador.gestioncohorte') }}" class="button_body">
                 <i class="fa-solid fa-archive icon-left"></i> Gestion de Cohortes
             </a>
             <a href="{{ route('administrador.gestionmaterias') }}" class="button_body">

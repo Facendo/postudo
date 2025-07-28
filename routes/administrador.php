@@ -11,6 +11,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\PostgradoController;
+use App\Http\Controllers\CohorteController;
 use App\Http\Middleware\CheckRole;
 
 Route::get(("/administrador"), [AdministradorController::class, 'index'])->middleware('auth','role:administrador')->name(name: 'administrador.index');
@@ -52,3 +53,9 @@ Route::post("/administrador/gestionmaterias", [MateriasController::class, 'store
 Route::get("/administrador/gestionmaterias/{materia}/edit", [MateriasController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.edit');
 Route::put("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.update');
 Route::delete("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestionmaterias.destroy');
+Route::get("/administrador/gestioncohorte", [CohorteController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte');
+Route::get("/administrador/gestioncohorte/create", [CohorteController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.create');
+Route::post("/administrador/gestioncohorte", [CohorteController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.store');
+Route::get("/administrador/gestioncohorte/{cohorte}/edit", [CohorteController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.edit');
+Route::put("/administrador/gestioncohorte/{cohorte}", [CohorteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.update');
+Route::delete("/administrador/gestioncohorte/{cohorte}", [CohorteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.destroy');
