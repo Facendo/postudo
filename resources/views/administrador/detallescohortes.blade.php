@@ -37,10 +37,6 @@
                             <a href="{{ route('administrador.gestioncohorte.showdetalles', $materia->codigo_materia) }}" class="button_body" title="Ver Secciones">
                                 <i class="fas fa-eye"></i>
                             </a></td>
-                        <td>{{-- Enlace a la vista de detalles del postgrado --}}
-                            <a href="{{ route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado) }}" class="button_body" title="Ver Detalles">
-                                <i class="fas fa-eye"></i>
-                            </a></td>
 
                         {{-- Columna de acciones con botones para Editar y Eliminar --}}
                         <td class="table-actions">
