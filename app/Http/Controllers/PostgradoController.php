@@ -25,7 +25,8 @@ class PostgradoController extends Controller
      */
     public function create()
     {
-      return view('administrador.registropostrado');
+        $especialidades = Especialidades::all(); // Obtiene todas las especialidades
+        return view('administrador.registropostgrado', compact('especialidades'));
     }
 
     /**
@@ -42,13 +43,8 @@ class PostgradoController extends Controller
         $postgrado->nombre = $request->nombre;
         $postgrado->descripcion = $request->descripcion;
         $postgrado->duracion = $request->duracion;
+        $postgrado->nro_cohortes = $request->nro_de_cohortes;
         $postgrado->save();
-
-        $especialidad = Especialidades::find($request->codigo_especialidad);
-        if (!$especialidad) {
-            return back()->withInput()
-                ->with('error', 'La especialidad seleccionada no existe');
-        }
 
         return redirect()->route('administrador.gestion_postgrado')->with('success', 'Postgrado registrado exitosamente.');
     }
@@ -66,7 +62,10 @@ class PostgradoController extends Controller
      */
     public function edit(Postgrado $postgrado)
     {
-       return view('administrador.editarpostgrado', compact('postgrado'));
+        // Obtiene la especialidad para el formulario de edición
+        $especialidad_ = Especialidades::find($postgrado->codigo_especialidad);
+        $especialidades = Especialidades::all(); // Obtiene todas las especialidades para el select
+       return view('administrador.editarpostgrado', compact('postgrado', 'especialidad_', 'especialidades'));
     }
 
     /**

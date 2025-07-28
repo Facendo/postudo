@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('materia', function (Blueprint $table) {
             $table->integer('codigo_materia')->primary();
-            $table->string('nombre_carrera');
-            $table->string('nombre_especialidad');
-            $table->integer('nro_seccion');
+            $table->integer('id_especialidad');
             $table->string('nombre');
             $table->integer('prelacion')->nullable();
             $table->timestamps();
 
 
+            $table->foreign('id_especialidad')
+                ->references('codigo_especialidad')
+                ->on('especialidades')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

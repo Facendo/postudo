@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('codigo_postgrado');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->integer('nro_de_cohorte');
+            $table->integer('nro_de_cohortes');
             $table->timestamps();
 
         });

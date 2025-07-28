@@ -10,7 +10,7 @@
                 <i class="fa-solid fa-plus icon-left"></i> Nueva Materia
             </a>
         </div>
-
+        
         <table>
             <thead>
                 <tr>
@@ -60,4 +60,5 @@
             </tbody>
         </table>
     </section>
+    
 </x-layout>
