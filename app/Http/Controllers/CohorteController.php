@@ -82,8 +82,10 @@ class CohorteController extends Controller
      */
     public function destroy(string $id)
     {
+       
         $cohorte = Cohorte::find($id);
+        $codigo_postgrado = $cohorte->codigo_postgrado; // Guardar el código del postgrado antes de eliminar la cohorte
         $cohorte->delete();
-        return redirect()->route('administrador.gestioncohorte')->with('success', 'Cohorte eliminada correctamente.');
+        return redirect()->route('administrador.gestion_postgrado.showdetalles',$codigo_postgrado)->with('success', 'Cohorte eliminada correctamente.');
     }
 }

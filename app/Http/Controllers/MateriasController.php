@@ -56,6 +56,7 @@ class MateriasController extends Controller
      */
     public function edit($codigo_materia)
     {
+
         $materia = Materias::where('codigo_materia', $codigo_materia)->firstOrFail();
         // ...otras variables si necesitas...
         return view('administrador.editarmateria', compact('materia'));
@@ -93,8 +94,9 @@ class MateriasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Materias $materia)
+    public function destroy(string $id)
     {
+        $materia = Materias::find($id);
         $materia->delete();
         return redirect()->route('administrador.gestionmaterias')->with('success', 'Materia eliminada exitosamente.');
     }

@@ -66,10 +66,10 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get("/administrador/gestionmaterias", [MateriasController::class, 'index'])->name('administrador.gestionmaterias'); // Lista de materias
     Route::get("/administrador/gestionmaterias/create", [MateriasController::class, 'create'])->name('administrador.gestionmaterias.create'); // Formulario de registro de materia
     Route::post("/administrador/gestionmaterias", [MateriasController::class, 'store'])->name('administrador.gestionmaterias.store'); // Guardar nueva materia
-    Route::get("/administrador/gestionmaterias/{materia}/edit", [MateriasController::class, 'edit'])->name('administrador.gestionmaterias.edit'); // Formulario de edición de materia
-    Route::put("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'update'])->name('administrador.gestionmaterias.update'); // Actualizar materia
-    Route::delete("/administrador/gestionmaterias/{materia}", [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
-  
+    Route::get("/administrador/gestionmaterias/{id}/edit", [MateriasController::class, 'edit'])->name('administrador.gestionmaterias.edit'); // Formulario de edición de materia
+    Route::put("/administrador/gestionmaterias/{id}", [MateriasController::class, 'update'])->name('administrador.gestionmaterias.update'); // Actualizar materia
+    Route::delete("/administrador/gestionmaterias/{id}", [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
+
     //Gestion de Cohortes
     Route::get("/administrador/gestioncohorte", [CohorteController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte');
     Route::get("/administrador/gestioncohorte/create/{id}", [CohorteController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.create');
