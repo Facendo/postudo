@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cohorte;
+use App\Models\Materias;
 use App\Models\Postgrado;
 use Illuminate\Http\Request;
 
@@ -45,9 +46,11 @@ class CohorteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cohorte $cohorte)
+    public function showdetalles(string $id)
     {
-        //
+        $cohorte = Cohorte::find($id);
+        $materias = Materias::where('codigo_cohorte', $cohorte->codigo_cohorte)->get(); // Obtener materias asociadas a la cohorte
+        return view('administrador.detallescohortes', compact('cohorte', 'materias'));
     }
 
     /**

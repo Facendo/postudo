@@ -75,6 +75,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get("/administrador/gestioncohorte/create/{id}", [CohorteController::class, 'create'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.create');
     Route::post("/administrador/gestioncohorte", [CohorteController::class, 'store'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.store');
     Route::get("/administrador/gestioncohorte/{id}/edit", [CohorteController::class, 'edit'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.edit');
+    Route::get("/administrador/gestioncohorte/{id}/detalles", [CohorteController::class, 'showdetalles'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.showdetalles');
     Route::put("/administrador/gestioncohorte/{id}", [CohorteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.update');
     Route::delete("/administrador/gestioncohorte/{id}", [CohorteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.destroy');
 });

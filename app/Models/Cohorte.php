@@ -12,6 +12,13 @@ class Cohorte extends Model
     protected $primaryKey = 'codigo_cohorte';
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'codigo_cohorte',
+        'codigo_postgrado',
+        'fecha_inicio',
+        'fecha_fin',
+        'nro_de_cohorte',
+    ];
     public function Materias(){
         return $this->hasMany(Materias::class, 'codigo_cohorte', 'codigo_cohorte');
     }
