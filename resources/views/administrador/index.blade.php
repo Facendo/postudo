@@ -26,6 +26,9 @@
             <a href="{{ route('administrador.creacion.index') }}" class="button_body">
                 <i class="fa-solid fa-building icon-left"></i> Gestion de Areas, Carreras y Especialidades
             </a>
+            <a href="{{ route('asuntos.index') }}" class="button_body">
+                <i class="fa-solid fa-file-alt icon-left"></i> Gestion de Asuntos
+            </a>
 
 
         </div>

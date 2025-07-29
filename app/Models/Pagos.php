@@ -10,6 +10,16 @@ class Pagos extends Model
 {
     use HasFactory;
     protected $table= 'pago';
+    protected $fillable = [
+        'id',
+        'monto',
+        'fecha_pago',
+        'metodo_pago',
+        'estado',
+        'cedula_estudiante',
+    ];
+    protected $primaryKey = 'id';  
+    protected $keyType = 'int';
 
     public function estudiante(){
         return $this->belongsTo(Estudiante::class,'cedula','cedula');

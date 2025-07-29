@@ -9,6 +9,7 @@ use App\Models\Seccion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Area;
+use App\Models\Asunto;
 use App\Models\Carrera;
 use App\Models\Cohorte;
 use App\Models\Especialidades;
@@ -462,6 +463,43 @@ class RellenoAreasSeeder extends Seeder
             'metodologia' => 'Proyecto práctico',
             'fecha' => '2024-03-15',
             'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
+        ]);
+
+        Asunto::create([
+            'nombre' => 'Inscripción Curso Verano',
+            'descripcion' => 'Inscripción para el curso de verano de programación avanzada.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Pago de Matrícula',
+            'descripcion' => 'Pago de matrícula para el semestre 2024-1.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Solicitud de Beca',
+            'descripcion' => 'Solicitud de beca para el programa de posgrado en ingeniería de software.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Consulta Académica',
+            'descripcion' => 'Consulta sobre el plan de estudios y materias del programa de ingeniería de software.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Reclamo de Calificación',
+            'descripcion' => 'Reclamo sobre la calificación del examen final de la materia de programación avanzada.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Solicitud de Certificado',
+            'descripcion' => 'Solicitud de certificado de culminación de estudios en ingeniería de software.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Cambio de Carrera',
+            'descripcion' => 'Solicitud de cambio de carrera de ingeniería de software a administración de empresas.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Inscripción a Exámenes',
+            'descripcion' => 'Inscripción para los exámenes finales del semestre 2024-1.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Solicitud de Tutoría',
+            'descripcion' => 'Solicitud de tutoría académica para mejorar el rendimiento en las materias.',
         ]);
     }
 }
