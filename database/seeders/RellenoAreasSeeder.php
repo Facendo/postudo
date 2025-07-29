@@ -12,7 +12,6 @@ use App\Models\Area;
 use App\Models\Carrera;
 use App\Models\Cohorte;
 use App\Models\Especialidades;
-use App\Models\Estudiante;
 use App\Models\Postgrado;
 use App\Models\Profesor;
 

@@ -32,6 +32,20 @@ class EstudianteController extends Controller
         return view('administrador.registroestudiante', compact('user', 'carreras', 'especialidades'));
     }
 
+    public function mostrarhorarioacademico()
+    {
+        $user = Auth::user();
+        $horario = $user->horario; // Asumiendo que el modelo Estudiante tiene una relación con Horario
+        return view('estudiante.horarioacademico', compact('horario'));
+    }
+
+    public function mostrarhistorialacademico()
+    {
+        $user = Auth::user();
+        $historial = $user->historial; // Asumiendo que el modelo Estudiante tiene una relación con Historial
+        return view('estudiante.historialacademico', compact('historial'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
