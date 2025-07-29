@@ -12,4 +12,5 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get('/asuntos/{id}/edit', [AsuntoController::class, 'edit'])->name('asuntos.edit');
     Route::put('/asuntos/{id}', [AsuntoController::class, 'update'])->name('asuntos.update');
     Route::delete('/asuntos/{id}', [AsuntoController::class, 'destroy'])->name('asuntos.destroy');
+    
 });

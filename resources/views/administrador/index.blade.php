@@ -29,6 +29,9 @@
             <a href="{{ route('asuntos.index') }}" class="button_body">
                 <i class="fa-solid fa-file-alt icon-left"></i> Gestion de Asuntos
             </a>
+            <a href="{{ route('pago.controlpagos') }}" class="button_body">
+                <i class="fa-solid fa-file-alt icon-left"></i> Control de Pagos
+            </a>
 
 
         </div>

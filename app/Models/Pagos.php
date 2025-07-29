@@ -16,7 +16,7 @@ class Pagos extends Model
         'fecha_pago',
         'metodo_pago',
         'estado',
-        'cedula_estudiante',
+        'cedula',
     ];
     protected $primaryKey = 'id';  
     protected $keyType = 'int';

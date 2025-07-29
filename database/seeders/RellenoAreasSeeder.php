@@ -501,6 +501,25 @@ class RellenoAreasSeeder extends Seeder
             'nombre' => 'Solicitud de Tutoría',
             'descripcion' => 'Solicitud de tutoría académica para mejorar el rendimiento en las materias.',
         ]);
+        Asunto::create([
+            'nombre' => 'Inscripción',
+            'descripcion' => 'Inscripción para participar en actividades extracurriculares del programa de ingeniería de software.',
+        ]);
+        Asunto::create([
+            'nombre' => 'Inscripción',
+            'descripcion' => 'Inscripción para el programa de posgrado en ingeniería de software.',
+            'cedula_estudiante' => '28649925',
+            'activo' => true,
+        ]);
+        Estudiante::create([
+            'cedula' => '28649925',
+            'nombre' => 'Francisco',
+            'apellido' => 'hernandez',
+            'carrera' => 'Ingeniería de Sistemas',
+            'especialidad' => 'Desarrollo de Software',
+            'edad' => 25,
+            'correo' => 'francisco.hernandez@example.com',
+        ]);
     }
 }
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('asunto', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100)->unique();
+            $table->string('nombre', 100);
             $table->string('descripcion', 255)->nullable();
             $table->string('cedula_estudiante')->nullable();
             $table->boolean('activo')->default(false);

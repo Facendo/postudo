@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asunto;
 use App\Models\Carrera;
 use App\Models\Especialidades;
 use App\Models\Estudiante;
+use App\Models\Pagos;
+use App\Models\Postgrado;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,7 +110,31 @@ class EstudianteController extends Controller
         return redirect()->route('estudiante.perfil')->with('success', 'Perfil actualizado exitosamente.');
     }
 
+    public function inscripcion()
+    {
+        $user = Auth::user();
+        $estudiante = Estudiante::where('cedula', $user->cedula)->first();
+        $carrera = Carrera::where('nombre', $estudiante->carrera)->first();
+        $especialidades = Especialidades::where('id_carrera', $carrera->id_carrera)->get();
+        $postgrados = Postgrado::where('codigo_especialidad', $estudiante->especialidad)->get();
+        $inscripcion = Pagos::where('cedula', $user->cedula)->first();
 
+        foreach ($inscripcion as $item) {
+            if ($item->cedula_estudiante == $user->cedula) {
+                if ($item->estado == "Pendiente") {
+                    $verificacion_pago = false;
+                } else {
+                    $verificacion_pago = true;
+                }
+            }
+        }
+        if($verificacion_pago) {
+            return view('estudiante.inscripcion', compact('user', 'carrera', 'especialidades', 'postgrados'));
+        }
+        else{
+            return redirect()->route('estudiante.index')->with('error', 'No se ha realizado el pago de inscripción.');
+        }
+    }
         
     
     public function update(Request $request, Estudiante $estudiante)

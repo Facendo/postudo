@@ -24,10 +24,6 @@ return new class extends Migration
             $table->string('estado');
             $table->timestamps();
 
-            $table->foreign('cedula')
-                        ->references('cedula')
-                        ->on('estudiantes')
-                        ->onDelete('cascade');
         });
 
 

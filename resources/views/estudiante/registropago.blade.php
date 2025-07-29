@@ -6,7 +6,7 @@
 
             <div class="form-group">
                 <label for="cedula_pago" class="form-label">Cédula del Remitente</label>
-                <input type="text" id="cedula" name="cedula" class="form-input" placeholder="Ej: V-12345678" required>
+                <input type="text" id="cedula" name="cedula" class="form-input" placeholder="Ej: V-12345678" value="{{ old('cedula', Auth::user()->cedula) }}" required>
                 @error('cedula')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror
@@ -46,11 +46,27 @@
 
             <div class="form-group">
                 <label for="banco_receptor" class="form-label">Banco Receptor</label>
-                <input type="text" id="banco_receptor" name="banco_receptor" class="form-input" placeholder="Ej: Banco Provincial" required>
-                @error('banco_receptor')
-                    <span class="form-error-message">{{ $message }}</span>
-                @enderror
-            </div>
+                 <select id="banco_receptor" name="banco_receptor" class="form-input" required>
+                <option value="">Seleccione un banco</option>
+                <option value="Banco de Venezuela">Banco de Venezuela</option>
+                <option value="Banesco">Banesco</option>
+                <option value="Mercantil">Mercantil</option>
+                <option value="BBVA Provincial">BBVA Provincial</option>
+                <option value="Banco Nacional de Crédito">Banco Nacional de Crédito (BNC)</option>
+                <option value="Banco Activo">Banco Activo</option>
+                <option value="Banco Bicentenario del Pueblo">Banco Bicentenario del Pueblo</option>
+                <option value="Banco del Tesoro">Banco del Tesoro</option>
+                <option value="Banco Exterior">Banco Exterior</option>
+                <option value="Banco Fondo Común">Banco Fondo Común (BFC)</option>
+                <option value="Banco Caroní">Banco Caroní</option>
+                <option value="Banplus">Banplus</option>
+                <option value="Venezolano de Crédito">Venezolano de Crédito</option>
+                <option value="Banco Plaza">Banco Plaza</option>
+            </select>
+            @error('banco_receptor')
+                <span class="form-error-message">{{ $message }}</span>
+            @enderror
+        </div>
 
             <div class="form-group">
                 <label for="referencia" class="form-label">Referencia de Pago</label>
