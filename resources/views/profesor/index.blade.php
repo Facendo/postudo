@@ -11,7 +11,7 @@
             <a href="{{ route('profesor.perfil') }}" class="button_body">
                 <i class="fa-solid fa-square-poll-vertical icon-left"></i> Ver Perfil
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('profesor.gestionnotas') }}" class="button_body">
                 <i class="fa-solid fa-users icon-left"></i> Gestion de Notas
             </a>
             <a href="{{ route('profesor.listadoestudiantes') }}" class="button_body">
@@ -21,7 +21,7 @@
             <a href="{{ route('profesor.gestionevaluacion.index') }}" class="button_body">
                 <i class="fa-solid fa-calendar-alt icon-left"></i> Gestion de Evaluaciones
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('profesor.consultarhorario') }}" class="button_body">
                 <i class="fa-solid fa-building icon-left"></i> Consultar Horario Academico
             </a>
 
