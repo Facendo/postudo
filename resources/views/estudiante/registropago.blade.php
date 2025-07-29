@@ -70,7 +70,12 @@
 
             <div class="form-group">
                 <label for="asunto" class="form-label">Asunto / Descripción del Pago</label>
-                <input type="text" id="asunto" name="asunto" class="form-input" placeholder="Ej: Inscripción Curso Verano" required>
+                <select id="asunto" name="asunto" class="form-input" required>
+                    <option value="">Seleccione un asunto</option>
+                    @foreach($asuntos as $asunto)
+                        <option value="{{ $asunto->nombre }}">{{ $asunto->nombre }}</option>
+                    @endforeach
+                </select>
                 @error('asunto')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror 

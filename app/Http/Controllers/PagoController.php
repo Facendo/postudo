@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asunto;
 use App\Models\Pagos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +23,9 @@ class PagoController extends Controller
      */
     public function create()
     {   
+        $asuntos= Asunto::all();
         $user=Auth::user();
-        return view('estudiante.registropago',compact('user'));
+        return view('estudiante.registropago',compact('user','asuntos'));
     }
 
     /**
