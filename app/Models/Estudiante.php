@@ -12,6 +12,15 @@ class Estudiante extends Model
     protected $primaryKey= 'cedula';
     public $keyType= 'string';
 
+    protected $fillable = [
+        'cedula',
+        'nombre',
+        'apellido',
+        'carrera',
+        'especialidad',
+        'correo',
+        'edad'
+    ];
     public function pago(){
         return $this->hasMany(Pagos::class,'cedula','cedula');
     }

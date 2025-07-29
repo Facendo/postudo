@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('carrera');
-            $table->string('especialidad');
+            $table->string('especialidad')->default('N/A');
             $table->string('correo');
             $table->integer('edad');
             $table->timestamps();

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cohorte;
 use App\Models\Materias;
 use Illuminate\Http\Request;
 use App\Models\Especialidades;
+use App\Models\Seccion;
 
 class MateriasController extends Controller
 {
@@ -21,11 +23,11 @@ class MateriasController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
+        $cohorte = Cohorte::find($id);
         $materias = Materias::all();
-        $especialidades = Especialidades::all();
-        return view('administrador.registromateria', compact('especialidades', 'materias'));
+        return view('administrador.registromateria', compact('cohorte', 'materias'));
     }
 
     /**
@@ -33,31 +35,33 @@ class MateriasController extends Controller
      */
     public function store(Request $request)
     {
+        $codigo_cohorte = $request->codigo_cohorte;
         $materia = new Materias();
         $materia->codigo_materia = $request->codigo_materia;
         $materia->nombre = $request->nombre;
-        $materia->id_especialidad = $request->codigo_especialidad;
+        $materia->codigo_cohorte = $request->codigo_cohorte;
         $materia->prelacion = $request->prelacion ?? 0; // Valor por defecto si es null
         $materia->save();
 
-        return redirect()->route('administrador.gestionmaterias')->with('success', 'Materia registrada exitosamente.');
+        return redirect()->route('administrador.gestioncohorte.showdetalles', $codigo_cohorte)->with('success', 'Materia registrada exitosamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Materias $materias)
+    public function showdetalles(string $id)
     {
-        //
+        $materia= Materias::find($id);
+        $secciones = Seccion::where('codigo_materia', $id)->get();
+        return view('administrador.detallesmaterias', compact('materia', 'secciones'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($codigo_materia)
+    public function edit(string $id)
     {
-
-        $materia = Materias::where('codigo_materia', $codigo_materia)->firstOrFail();
+        $materia = Materias::where('codigo_materia', $id)->firstOrFail();
         // ...otras variables si necesitas...
         return view('administrador.editarmateria', compact('materia'));
     }
@@ -65,30 +69,18 @@ class MateriasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Materias $materia)
+    public function update(Request $request, string $id)
     {
-        
-        $request->validate([
-            'codigo_materia' => 'required|integer',
-            'nombre' => 'required|string',
-            'carrera' => 'required|string',
-            'codigo_especialidad' => 'required|string',
-            'nro_seccion' => 'required|integer',
-            'prelacion' => 'nullable|integer', // Hacerlo nullable si es opcional
-        ]);
+        $materia = Materias::where('codigo_materia', $id)->firstOrFail();
+        $codigo_cohorte = $materia->codigo_cohorte;
 
-        // Actualiza el registro existente
-        $materia->update([
-            'codigo_materia' => $request->codigo_materia,
-            'nombre' => $request->nombre,
-            'nombre_carrera' => $request->carrera,
-            'nombre_especialidad' => $request->codigo_especialidad,
-            'nro_seccion' => $request->nro_seccion,
-            'prelacion' => $request->prelacion ?? null, // Usar null si no se proporciona
-        ]);
+        // Actualizar los campos de la materia
+        $materia->codigo_materia = $request->codigo_materia;
+        $materia->nombre = $request->nombre;
+        $materia->prelacion = $request->prelacion ?? 0; // Valor por defecto si es null
+        $materia->save();
 
-        return redirect()->route('administrador.gestionmaterias')
-            ->with('success', 'Materia actualizada exitosamente.');
+        return redirect()->route('administrador.gestioncohorte.showdetalles', $codigo_cohorte)->with('success', 'Materia actualizada exitosamente.');
     }
 
     /**
@@ -97,7 +89,8 @@ class MateriasController extends Controller
     public function destroy(string $id)
     {
         $materia = Materias::find($id);
+        $codigo_cohorte = $materia->codigo_cohorte;
         $materia->delete();
-        return redirect()->route('administrador.gestionmaterias')->with('success', 'Materia eliminada exitosamente.');
+        return redirect()->route('administrador.gestioncohorte.showdetalles', $codigo_cohorte)->with('success', 'Materia eliminada exitosamente.');
     }
 }
