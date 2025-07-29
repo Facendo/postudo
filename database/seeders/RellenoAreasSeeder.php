@@ -12,6 +12,7 @@ use App\Models\Area;
 use App\Models\Carrera;
 use App\Models\Cohorte;
 use App\Models\Especialidades;
+use App\Models\Estudiante;
 use App\Models\Postgrado;
 use App\Models\Profesor;
 
@@ -302,6 +303,57 @@ class RellenoAreasSeeder extends Seeder
             'aula' => 'C101',
             'cupo_maximo' => 30,
             'cupo_actual' => 0,
+        ]);
+        Profesor::create([
+            'cedula' => '35415135',
+            'nombre' => 'Ana',
+            'apellido' => 'Gómez',
+            'telefono' => '9876543210',
+            'correo' => 'ana.gomez@example.com',
+            'edad' => 35
+        ]);
+        Profesor::create([
+            'cedula' => '35131315',
+            'nombre' => 'Carlos',
+            'apellido' => 'Pérez',
+            'telefono' => '5555555555',
+            'correo' => 'carlos.perez@example.com',
+            'edad' => 40
+        ]);
+        Profesor::create([
+            'cedula' => '87654321',
+            'nombre' => 'María',
+            'apellido' => 'López',
+            'telefono' => '4444444444',
+            'correo' => 'maria.lopez@example.com',
+            'edad' => 38
+        ]);
+        Estudiante::create([
+            'cedula' => '123456789',
+            'nombre' => 'Juan',
+            'apellido' => 'Martínez',
+            'carrera' => 'Ingeniería de Sistemas',
+            'especialidad' => 'Desarrollo de Software',
+            'correo' => 'juan.martinez@example.com',
+            'edad' => 22
+        ]);
+        Estudiante::create([
+            'cedula' => '987654321',
+            'nombre' => 'Laura',
+            'apellido' => 'García',
+            'carrera' => 'Administración de Empresas',
+            'especialidad' => 'Gestión Empresarial',
+            'correo' => 'laura.garcia@example.com',
+            'edad' => 21
+        ]);
+        Estudiante::create([
+            'cedula' => '456789123',
+            'nombre' => 'Pedro',
+            'apellido' => 'Ramírez',
+            'carrera' => 'Ingeniería de Software',
+            'especialidad' => 'Desarrollo Web',
+            'correo' => 'pedro.ramirez@example.com',
+            'edad' => 23
         ]);
 
         Evaluacion::create([

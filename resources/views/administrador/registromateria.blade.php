@@ -19,18 +19,9 @@
                     <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Ej: Programación Avanzada" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="especialidad" class="form-label">Especialidad</label>
-                    <select id="especialidad" name="codigo_especialidad" class="form-select" required>
-                        @empty ($especialidades)
-                            <option value="">No hay especialidades disponibles</option>
-                        @else
-                            @foreach ($especialidades as $especialidad)
-                                <option value="{{ ($especialidad->codigo_especialidad) }}">{{ $especialidad->nombre_carrera }}</option>
-                            @endforeach
-                        @endempty
-                    </select>
-                </div>
+                <input type="hidden" name="codigo_cohorte" value="{{ $cohorte->codigo_cohorte }}">
+
+                {{-- Selección de Especialidad --}}
                 
                 <div class="form-group">
                     <label for="prelacion" class="form-label">Prelación</label>
@@ -38,12 +29,14 @@
                         @empty ($materias)
                             <option value="">No hay materias disponibles</option>
                         @else
+                            <option value="0">Ninguna (sin prelación)</option>
                             @foreach ($materias as $materia)
                                 <option value="{{ ($materia->codigo_materia) }}">{{ $materia->nombre }}</option>
                             @endforeach
                         @endempty
+                    </select>
                 </div>
-                
+
                 {{-- Submit Button --}}
                 <div class="form-actions" style="justify-content: center;">
                     <button type="submit" class="submit-button">Registrar Materia</button>

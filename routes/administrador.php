@@ -9,6 +9,7 @@ use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\MateriasController;
 use App\Http\Controllers\PostgradoController;
 use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\SeccionController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas del panel de administrador (requieren autenticación y rol de 'administrador')
@@ -64,11 +65,12 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
 
     // Gestión de Materias
     Route::get("/administrador/gestionmaterias", [MateriasController::class, 'index'])->name('administrador.gestionmaterias'); // Lista de materias
-    Route::get("/administrador/gestionmaterias/create", [MateriasController::class, 'create'])->name('administrador.gestionmaterias.create'); // Formulario de registro de materia
+    Route::get("/administrador/gestionmaterias/{id}/create", [MateriasController::class, 'create'])->name('administrador.gestionmaterias.create'); // Formulario de registro de materia
     Route::post("/administrador/gestionmaterias", [MateriasController::class, 'store'])->name('administrador.gestionmaterias.store'); // Guardar nueva materia
     Route::get("/administrador/gestionmaterias/{id}/edit", [MateriasController::class, 'edit'])->name('administrador.gestionmaterias.edit'); // Formulario de edición de materia
     Route::put("/administrador/gestionmaterias/{id}", [MateriasController::class, 'update'])->name('administrador.gestionmaterias.update'); // Actualizar materia
     Route::delete("/administrador/gestionmaterias/{id}", [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
+    Route::get("/administrador/gestionmaterias/{id}/detalles", [MateriasController::class, 'showdetalles'])->name('administrador.gestionmaterias.showdetalles'); // Ver detalles de materia
 
     //Gestion de Cohortes
     Route::get("/administrador/gestioncohorte", [CohorteController::class, 'index'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte');
@@ -78,4 +80,12 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get("/administrador/gestioncohorte/{id}/detalles", [CohorteController::class, 'showdetalles'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.showdetalles');
     Route::put("/administrador/gestioncohorte/{id}", [CohorteController::class, 'update'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.update');
     Route::delete("/administrador/gestioncohorte/{id}", [CohorteController::class, 'destroy'])->middleware('auth','role:administrador')->name('administrador.gestioncohorte.destroy');
+
+    // Gestión de Secciones
+    Route::get("/administrador/gestionseccion", [SeccionController::class, 'index'])->name('administrador.gestionseccion'); // Lista de secciones
+    Route::get("/administrador/gestionseccion/{id}/create", [SeccionController::class, 'create'])->name('administrador.gestionseccion.create'); // Formulario de registro de sección
+    Route::post("/administrador/gestionseccion", [SeccionController::class, 'store'])->name('administrador.gestionseccion.store'); // Guardar nueva sección        
+    Route::get("/administrador/gestionseccion/{id}/edit", [SeccionController::class, 'edit'])->name('administrador.gestionseccion.edit'); // Formulario de edición de sección
+    Route::put("/administrador/gestionseccion/{id}", [SeccionController::class, 'update'])->name('administrador.gestionseccion.update'); // Actualizar sección
+    Route::delete("/administrador/gestionseccion/{id}", [SeccionController::class, 'destroy'])->name('administrador.gestionseccion.destroy'); // Eliminar sección
 });

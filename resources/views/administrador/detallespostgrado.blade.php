@@ -61,7 +61,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 20px;">No hay postgrados registrados.</td>
+                        <td colspan="7" style="text-align: center; padding: 20px;">No hay cohortes registrados.</td>
                     </tr>
                 @endforelse
             </tbody>
