@@ -9,7 +9,7 @@
             <a href="{{ route('estudiante.historialacademico') }}" class="button_body">
                 <i class="fa-solid fa-square-poll-vertical icon-left"></i> Historico Academico
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('estudiante.cohortes') }}" class="button_body">
                 <i class="fa-solid fa-users icon-left"></i> Cohortes inscritos
             </a>
             <a href="{{ route('pago.index') }}" class="button_body">

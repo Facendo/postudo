@@ -13,3 +13,5 @@ Route::get('/estudiante/registro', [EstudianteController::class, 'create'])->mid
 Route::post('/estudiante/registro', [EstudianteController::class, 'store'])->middleware('auth','role:administrador')->name('estudiante.store');
 Route::get('/estudiante/horarioacademico', [EstudianteController::class, 'mostrarhorarioacademico'])->middleware('auth','role:estudiante')->name('estudiante.horarioacademico');
 Route::get('/estudiante/historialacademico', [EstudianteController::class, 'mostrarhistorialacademico'])->middleware('auth','role:estudiante')->name('estudiante.historialacademico');  
+Route::get('/estudiante/inscripcion', [EstudianteController::class, 'inscripcion'])->middleware('auth','role:estudiante')->name('estudiante.inscripcion');
+Route::put('/estudiante/inscripcion', [EstudianteController::class, 'inscribir'])->middleware('auth','role:estudiante')->name('estudiante.inscribir');

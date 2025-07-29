@@ -28,6 +28,11 @@ class PagoController extends Controller
         return view('estudiante.registropago',compact('user','asuntos'));
     }
 
+    public function controlpagos()
+    {
+        $pagos=Pagos::all();
+        return view('asuntos.controldepagos',compact('pagos'));
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -52,9 +57,19 @@ class PagoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pagos $pagos)
+    public function ActualizarEstado(int $id)
     {
-        //
+        $pago = Pagos::find($id);
+        $asunto= Asunto::where('nombre', $pago->asunto)->first();
+        $asuntoestudiante=new Asunto();
+        $asuntoestudiante->nombre = $asunto->nombre;
+        $asuntoestudiante->descripcion = $asunto->descripcion;
+        $asuntoestudiante->cedula_estudiante = $pago->cedula;
+        $asuntoestudiante->activo= true;
+        $asuntoestudiante->save();
+        $pago->estado = "Actualizado";
+        $pago->save();
+        return redirect()->route('pago.controlpagos')->with('success', 'Estado de pago actualizado exitosamente');
     }
 
     /**

@@ -29,5 +29,14 @@ class AdmindSeeder extends Seeder
             'cedula' => '12345678', 
             'foto_perfil' => 'foto_perfil/default.png',
         ]);
+
+        User::create([
+            'name' => 'Francisco',
+            'email' => 'francisco@estudiante.com',
+            'password' => Hash::make('12345678'), 
+            'rol' => 'estudiante', 
+            'cedula' => '28649925', 
+            'foto_perfil' => 'foto_perfil/default.png',
+        ]);
     }
 }
