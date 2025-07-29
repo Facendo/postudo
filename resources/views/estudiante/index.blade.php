@@ -6,7 +6,7 @@
 
     <div class="main-content-section">
         <div class="action-buttons-container">
-            <a href="#" class="button_body">
+            <a href="{{ route('estudiante.historialacademico') }}" class="button_body">
                 <i class="fa-solid fa-square-poll-vertical icon-left"></i> Historico Academico
             </a>
             <a href="#" class="button_body">
@@ -15,7 +15,7 @@
             <a href="{{ route('pago.index') }}" class="button_body">
                 <i class="fa-solid fa-credit-card icon-left"></i> Historico de Pagos
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('estudiante.horarioacademico') }}" class="button_body">
                 <i class="fa-solid fa-calendar-alt icon-left"></i>Horario Academico
             </a>
             <a href="#" class="button_body">
