@@ -17,4 +17,7 @@ Route::post('/profesor/gestionevaluacion', [EvaluacionController::class, 'store'
 Route::get('/profesor/gestionevaluacion/{id_evaluacion}/edit', [EvaluacionController::class, 'edit'])->name('profesor.gestionevaluacion.edit');
 Route::put('/profesor/gestionevaluacion/{id_evaluacion}', [EvaluacionController::class, 'update'])->name('profesor.gestionevaluacion.update');
 Route::delete('/profesor/gestionevaluacion/{id_evaluacion}', [EvaluacionController::class, 'destroy'])->name('profesor.gestionevaluacion.destroy');
+Route::get('/profesor/gestionnotas', [ProfesorController::class, 'gestionnotas'])->name('profesor.gestionnotas');
+
+Route::get('/profesor/consultarhorario', [ProfesorController::class, 'consultarhorario'])->name('profesor.consultarhorario');
 

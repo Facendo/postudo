@@ -45,6 +45,20 @@ class ProfesorController extends Controller
         return view('profesor.gestionevaluacion', compact('evaluaciones'));
     }
 
+    public function gestionnotas()
+    {
+        $profesor = Auth::user();
+        $secciones = $profesor->seccion; // Asumiendo que el modelo Profesor tiene una relación con Seccion
+        return view('profesor.gestionnotas', compact('secciones'));
+    }
+
+    public function consultarhorario()
+    {
+        $profesor = Auth::user();
+        $horario = $profesor->horario; // Asumiendo que el modelo Profesor tiene una relación con Horario
+        return view('profesor.consultarhorario', compact('horario'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
