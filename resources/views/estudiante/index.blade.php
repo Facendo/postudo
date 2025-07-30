@@ -18,7 +18,7 @@
             <a href="{{ route('estudiante.horarioacademico') }}" class="button_body">
                 <i class="fa-solid fa-calendar-alt icon-left"></i>Horario Academico
             </a>
-            <a href="#" class="button_body">
+            <a href="{{ route('pensum') }}" class="button_body">
                 <i class="fa-solid fa-book icon-left"></i> Pensum
             </a>
             
