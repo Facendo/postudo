@@ -15,3 +15,4 @@ Route::get('/estudiante/horarioacademico', [EstudianteController::class, 'mostra
 Route::get('/estudiante/historialacademico', [EstudianteController::class, 'mostrarhistorialacademico'])->middleware('auth','role:estudiante')->name('estudiante.historialacademico');  
 Route::get('/estudiante/inscripcion', [EstudianteController::class, 'inscripcion'])->middleware('auth','role:estudiante')->name('estudiante.inscripcion');
 Route::put('/estudiante/inscripcion', [EstudianteController::class, 'inscribir'])->middleware('auth','role:estudiante')->name('estudiante.inscribir');
+ Route::view('/estudiante/pensum', 'pensum')->name('pensum')->middleware('auth','role:estudiante');

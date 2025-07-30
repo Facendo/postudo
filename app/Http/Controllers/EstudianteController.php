@@ -117,10 +117,10 @@ class EstudianteController extends Controller
         $carrera = Carrera::where('nombre', $estudiante->carrera)->first();
         $especialidades = Especialidades::where('id_carrera', $carrera->id_carrera)->get();
         $postgrados = Postgrado::where('codigo_especialidad', $estudiante->especialidad)->get();
-        $inscripcion = Pagos::where('cedula', $user->cedula)->first();
+        $pagos = Pagos::where('cedula', $user->cedula)->first()->get();
 
-        foreach ($inscripcion as $item) {
-            if ($item->cedula_estudiante == $user->cedula) {
+        foreach ($pagos as $item) {
+            if ($item->cedula == $user->cedula && $item->asunto == "Inscripción") {
                 if ($item->estado == "Pendiente") {
                     $verificacion_pago = false;
                 } else {
@@ -132,7 +132,7 @@ class EstudianteController extends Controller
             return view('estudiante.inscripcion', compact('user', 'carrera', 'especialidades', 'postgrados'));
         }
         else{
-            return redirect()->route('estudiante.index')->with('error', 'No se ha realizado el pago de inscripción.');
+            return redirect()->route('estudiante.index')->with('error', 'No se ha procesado el pago de inscripción.');
         }
     }
         
