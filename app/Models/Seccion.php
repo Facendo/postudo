@@ -9,8 +9,18 @@ class Seccion extends Model
 {
     use HasFactory;
     protected $table = 'seccion';
-    protected $primaryKey = 'id_seccion';
+    protected $primaryKey = 'nro_seccion';
     public $keyType = 'integer';
+
+    protected $fillable = [
+        'codigo_materia',
+        'codigo_seccion',
+        'titulo',
+        'porcentaje',
+        'metodologia',
+        'fecha',
+        'nota'
+    ];
 
     public function estudiantes()
     {

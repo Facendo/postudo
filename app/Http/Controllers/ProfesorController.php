@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Profesor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Estudiante;
+use App\Models\Evaluacion;
 
 class ProfesorController extends Controller
 {
@@ -23,6 +25,38 @@ class ProfesorController extends Controller
     public function create()
     {
         return view('administrador.registroprofesor');
+    }
+
+    public function perfil()
+    {
+        $profesor = auth()->user();
+        return view('profesor.perfil_profesor', compact('profesor'));
+    }
+
+    public function listadoestudiantes()
+    {
+        $estudiantes = Estudiante::all(); // O tu lógica de filtrado
+        return view('profesor.listadoestudiantes', compact('estudiantes'));
+    }
+
+    public function gestionevaluacion()
+    {
+        $evaluaciones = Evaluacion::all(); // O tu lógica de filtrado
+        return view('profesor.gestionevaluacion', compact('evaluaciones'));
+    }
+
+    public function gestionnotas()
+    {
+        $profesor = Auth::user();
+        $secciones = $profesor->seccion; // Asumiendo que el modelo Profesor tiene una relación con Seccion
+        return view('profesor.gestionnotas', compact('secciones'));
+    }
+
+    public function consultarhorario()
+    {
+        $profesor = Auth::user();
+        $horario = $profesor->horario; // Asumiendo que el modelo Profesor tiene una relación con Horario
+        return view('profesor.consultarhorario', compact('horario'));
     }
 
     /**

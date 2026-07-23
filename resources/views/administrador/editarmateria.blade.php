@@ -31,67 +31,7 @@
                     @enderror
                 </div>
 
-                {{-- Carrera Selection --}}
-                <div class="form-group">
-                    <label for="carrera" class="form-label">Carrera</label>
-                    <select id="carrera" name="carrera" class="form-select" required>
-                        <option value="">Selecciona la Carrera</option>
-                        @php
-                            // Determine the slug for the currently saved career name for pre-selection
-                            // Example: "Ingeniería Informática" -> "informatica"
-                            $currentCareerSlug = strtolower(str_replace(' ', '', $materia->nombre_carrera)); 
-                        @endphp
-                        <option value="informatica" {{ old('carrera', $currentCareerSlug) == 'informatica' ? 'selected' : '' }}>Ingeniería Informática</option>
-                        <option value="civil" {{ old('carrera', $currentCareerSlug) == 'civil' ? 'selected' : '' }}>Ingeniería Civil</option>
-                        <option value="electrica" {{ old('carrera', $currentCareerSlug) == 'electrica' ? 'selected' : '' }}>Ingeniería Eléctrica</option>
-                        <option value="mecanica" {{ old('carrera', $currentCareerSlug) == 'mecanica' ? 'selected' : '' }}>Ingeniería Mecánica</option>
-                        <option value="quimica" {{ old('carrera', $currentCareerSlug) == 'quimica' ? 'selected' : '' }}>Ingeniería Química</option>
-                        <option value="administracion" {{ old('carrera', $currentCareerSlug) == 'administracion' ? 'selected' : '' }}>Administración</option>
-                        <option value="contaduria" {{ old('carrera', $currentCareerSlug) == 'contaduria' ? 'selected' : '' }}>Contaduría Pública</option>
-                        <option value="derecho" {{ old('carrera', $currentCareerSlug) == 'derecho' ? 'selected' : '' }}>Derecho</option>
-                        {{-- If you're fetching careers from the database, use this structure:
-                        @foreach($carreras as $carreraOption)
-                            <option value="{{ strtolower($carreraOption->codigo_carrera) }}"
-                                {{ old('carrera', strtolower($materia->nombre_carrera)) == strtolower($carreraOption->codigo_carrera) ? 'selected' : '' }}>
-                                {{ $carreraOption->nombre_carrera }}
-                            </option>
-                        @endforeach
-                        --}}
-                    </select>
-                    @error('carrera')
-                        <p class="error-message">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Especialidad Selection (Dynamically populated by JS) --}}
-                <div class="form-group">
-                    <label for="especialidad" class="form-label">Especialidad</label>
-                    <select id="especialidad" name="codigo_especialidad" class="form-select" required>
-                        {{-- This option will be replaced by JS, but ensures something is there --}}
-                        <option value="">Selecciona una carrera primero</option>
-                        
-                        {{-- Add the currently saved specialty as a selected option for initial load --}}
-                        @if($materia->nombre_especialidad)
-                            <option value="{{ old('codigo_especialidad', $materia->nombre_especialidad) }}" selected>
-                                {{ $materia->nombre_especialidad }}
-                            </option>
-                        @endif
-                    </select>
-                    @error('codigo_especialidad')
-                        <p class="error-message">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Número de Sección --}}
-                <div class="form-group">
-                    <label for="nro_seccion" class="form-label">Número de Sección</label>
-                    <input type="number" id="nro_seccion" name="nro_seccion" class="form-input" 
-                           placeholder="Ej: 1" required 
-                           value="{{ old('nro_seccion', $materia->nro_seccion) }}">
-                    @error('nro_seccion')
-                        <p class="error-message">{{ $message }}</p>
-                    @enderror
-                </div>
+                
 
                 {{-- Prelación (Optional) --}}
                 <div class="form-group">
