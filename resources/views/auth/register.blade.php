@@ -5,14 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="shortcut icon" href="{{asset('iconopagina.png')}}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
     <title>Registro</title>
 </head>
 <body>
+    <div style="padding: 20px; display: flex; justify-content: flex-end; font-size: 25px; font-weight: bold;">
+           <a href="{{ url('/') }}" class="button_barra"><i class="fa-solid fa-house"></i></a>
+    </div>
+
     <div>
-            <section class="flash-messages-container" aria-live="polite"> {{-- Use a section and aria-live for accessibility --}}
+            <section class="flash-messages-container" aria-live="polite"> 
             @if (session('success'))
-                <div class="my-alert-style" role="alert"> {{-- role="alert" for accessibility --}}
+                <div class="my-alert-style" role="alert">
                     <strong class="font-bold">¡Éxito!</strong>
                     <span class="block sm:inline">{{ session('success') }}</span>
                 </div>
@@ -25,7 +33,8 @@
                 </div>
             @endif
         </section>    
-        </div>
+    </div>
+
 <div class="registration-page-container">
 
     <form method="POST" action="{{ route('register') }}" class="registration-form">
@@ -73,7 +82,7 @@
             @enderror
         </div>
         
-        <div class="form-actions">
+        <div class="acciones-form">
             <a class="already-registered-link" href="{{ route('login') }}">¿Ya estás registrado?</a>
             <button type="submit" class="submit-button">
                 Registrarse
