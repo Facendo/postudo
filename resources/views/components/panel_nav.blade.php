@@ -8,7 +8,7 @@
         @auth
                 @if (Auth::user()->rol == 'estudiante')
                     <a href="{{ route('estudiante.index') }}" class="button_barra">Inicio</a>
-                    <a href="{{ route('estudiante.perfil')}}" class="button_barra">Mi Perfil</a>
+                    
                 @endif
 
                 @if (Auth::user()->rol == 'administrador')

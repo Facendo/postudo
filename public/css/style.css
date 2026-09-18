@@ -383,7 +383,7 @@ main {
     /* More margin */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     /* Stronger, softer shadow */
-    background: linear-gradient(90deg, #0c0101ff 40%, #440707 60%);
+    background: #570e0ef5;
     border-radius: 15px;
     /* Softer corners */
     padding: 35px;
@@ -579,7 +579,7 @@ main {
 
 .login-form,
 .registration-form {
-    background: rgba(25, 5, 5, 0.6);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     padding: 45px;
@@ -832,12 +832,12 @@ table {
     border-collapse: separate;
     border-spacing: 0;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #220606 20%, #790b0bff 80%);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     overflow: hidden;
     font-family: 'Outfit', sans-serif;
     font-size: var(--font-light);
-    border: 1px solid var(--black);
+    border: rgba(255, 255, 255, 0.1);
 }
 
 table thead {
@@ -1834,9 +1834,11 @@ table td:last-child {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }

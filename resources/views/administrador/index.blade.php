@@ -13,11 +13,15 @@
         <div class="admin-grid">
             <a href="{{ route('asuntos.index') }}" class="admin-card">
                 <i class="fa-solid fa-file-alt"></i>
-                <span>Gestión de Asuntos</span>
+                <span>Asuntos</span>
             </a>
             <a href="{{ route('pago.controlpagos') }}" class="admin-card">
                 <i class="fa-solid fa-file-invoice-dollar"></i>
-                <span>Control de Pagos</span>
+                <span>Pagos</span>
+            </a>
+            <a href="{{ route('registro_estudiante.index') }}" class="admin-card">
+                <i class="fa-solid fa-file-alt"></i>
+                <span>Registrar Estudiante</span>
             </a>
         </div>
     </div>

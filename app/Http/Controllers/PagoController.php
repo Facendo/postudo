@@ -14,8 +14,9 @@ class PagoController extends Controller
      */
     public function index()
     {
-        $pagos=Pagos::all();
-        return view('estudiante.pago',compact('pagos'));
+        $user = Auth::user();
+        $pagos = Pagos::where('cedula', $user->cedula)->get();
+        return view('estudiante.pago', compact('pagos'));
     }
 
     /**

@@ -1,5 +1,11 @@
 <x-layout title="Control de Pago">
-        <h1 class="titulo">Lista de Pagos</h1>
+
+
+
+    
+        <div class="content_texto_bienvenida">
+            <label>Listado de Pagos</label>
+        </div>
         <div class="action-buttons-container">
         <div>
             <table>
