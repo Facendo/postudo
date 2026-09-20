@@ -579,12 +579,12 @@ main {
 
 .login-form,
 .registration-form {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     padding: 45px;
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 15px 40px rgba(255,255, 255, 0.1);
     width: 100%;
     max-width: 480px;
     box-sizing: border-box;
@@ -1034,8 +1034,9 @@ table td:last-child {
 
 .admin-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    /* Forzar exactamente 2 columnas para que no se apilen en una sola bajo ninguna circunstancia */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 .admin-card {
@@ -1096,7 +1097,7 @@ table td:last-child {
 
 /* --- New styles for the Areas/Careers/Specialties View --- */
 .info-section {
-    background: linear-gradient(135deg, #bdd0f0 0%, #1d3070 100%);
+    background: rgba(255, 255, 255, 0.1);
     ;
     border-radius: 15px;
     /* Softer corners */

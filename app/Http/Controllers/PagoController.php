@@ -31,8 +31,20 @@ class PagoController extends Controller
 
     public function controlpagos()
     {
-        $pagos=Pagos::all();
+        $pagos = Pagos::with('estudiante')->get();
         return view('asuntos.controldepagos',compact('pagos'));
+    }
+
+    public function pagosActualizados()
+    {
+        $pagos = Pagos::with('estudiante')->where('estado', 'Actualizado')->get();
+        return view('asuntos.pagos_actualizados', compact('pagos'));
+    }
+
+    public function pagosPendientes()
+    {
+        $pagos = Pagos::with('estudiante')->where('estado', 'Pendiente')->get();
+        return view('asuntos.pagos_pendientes', compact('pagos'));
     }
     /**
      * Store a newly created resource in storage.

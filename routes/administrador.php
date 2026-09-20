@@ -41,6 +41,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::delete("administrador/carrera/{carrera}", [CarreraController::class, 'destroy'])->name('administrador.carrera.destroy'); // Eliminar carrera
 
     // Gestión de Especialidades
+    Route::get("/administrador/especialidades", [EspecialidadesController::class, 'index'])->name('administrador.especialidades.index');
     Route::post("/administrador/especialidad", [EspecialidadesController::class, 'store'])->name('administrador.especialidad.store'); // Guardar nueva especialidad
     Route::get("administrador/especialidad/{especialidad}/edit", [EspecialidadesController::class, 'edit'])->name('administrador.especialidad.edit'); // Formulario de edición de especialidad
     Route::put("administrador/especialidad/{especialidad}", [EspecialidadesController::class, 'update'])->name('administrador.especialidad.update'); // Actualizar especialidad

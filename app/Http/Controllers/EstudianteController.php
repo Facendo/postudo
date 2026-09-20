@@ -61,7 +61,7 @@ class EstudianteController extends Controller
         $estudiante->apellido=$request->apellido;
         $estudiante->correo=$request->correo;
         $estudiante->carrera=$request->carrera;
-        $estudiante->especialidad="No inscrita"; // Default value
+        $estudiante->especialidad=$request->especialidad ?? 'No inscrita';
         $estudiante->edad=$request->edad;
         $estudiante->save();
         $estudiantes=Estudiante::all();

@@ -1,10 +1,7 @@
-<x-layout title="Control de Pago">
-
-
-
+<x-layout title="Pagos Actualizados">
 
     <div class="content_texto_bienvenida">
-        <label>Listado de Pagos</label>
+        <label>Pagos Actualizados</label>
     </div>
     <div class="action-buttons-container">
         <div>
@@ -21,11 +18,10 @@
                         <th>Asunto</th>
                         <th>Fecha de Registro</th>
                         <th>Estado de Pago</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($pagos as $pago)
+                    @forelse ($pagos as $pago)
                         <tr>
                             <td>{{ $pago->cedula }}</td>
                             <td>{{ $pago->nombre }}</td>
@@ -36,22 +32,14 @@
                             <td>{{ number_format($pago->monto, 2, ',', '.') }}</td>
                             <td>{{ $pago->asunto }}</td>
                             <td>{{ $pago->created_at->format('d/m/Y H:i') }}</td>
-                            <td>{{ $pago->estado }}</td>
-                            @if($pago->estado === 'Pendiente')
-                                <td>
-                                    <form action="{{ route('pago.actualizar', $pago->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="button_body">Actualizar</button>
-                                    </form>
-                                </td>
-                            @endif
-                            @if($pago->estado === 'Actualizado')
-                                <td>
-                                    <span class="badge badge-success">Actualizado</span>
-                                </td>
-                            @endif
+                            <td><span class="badge badge-success">{{ $pago->estado }}</span></td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 2rem; opacity: 0.7;">No hay pagos
+                                actualizados.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

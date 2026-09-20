@@ -10,3 +10,5 @@ Route::get('estudiante/registrar-pago', [PagoController::class, 'create'])->midd
 Route::post('estudiante/registrar-pago', [PagoController::class, 'store'])->middleware('auth','role:estudiante')->name('pago.store');
 Route::get('estudiante/pago/detalles', [PagoController::class, 'controlpagos'])->middleware('auth','role:administrador')->name('pago.controlpagos');
 Route::post('/asuntos/Actualizar/{id}', [PagoController::class, 'ActualizarEstado'])->middleware('auth','role:administrador')->name('pago.actualizar');
+Route::get('administrador/pagos-actualizados', [PagoController::class, 'pagosActualizados'])->middleware('auth','role:administrador')->name('pago.actualizados');
+Route::get('administrador/pagos-pendientes', [PagoController::class, 'pagosPendientes'])->middleware('auth','role:administrador')->name('pago.pendientes');

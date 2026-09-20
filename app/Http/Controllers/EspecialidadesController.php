@@ -9,7 +9,8 @@ class EspecialidadesController extends Controller
 {
     public function index()
     {
-        //
+        $especialidades = Especialidades::with('carrera')->get();
+        return view('administrador.especialidades.index', compact('especialidades'));
     }
 
     public function create()
