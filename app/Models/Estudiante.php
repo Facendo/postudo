@@ -24,6 +24,10 @@ class Estudiante extends Model
     public function pago(){
         return $this->hasMany(Pagos::class,'cedula','cedula');
     }
+    
+    public function especialidadRel(){
+        return $this->belongsTo(Especialidades::class, 'especialidad', 'codigo_especialidad');
+    }
     public function seccion(){
         return $this->belongsTo(Seccion::class,'id_seccion','id_seccion');
     }

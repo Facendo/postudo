@@ -29,7 +29,8 @@
                         <tr>
                             <td>{{ $pago->cedula }}</td>
                             <td>{{ $pago->nombre }}</td>
-                            <td>{{ $pago->estudiante->especialidad ?? 'N/A' }}</td>
+                            <td>{{ $pago->estudiante->especialidadRel->nombre ?? $pago->estudiante->especialidad ?? 'N/A' }}
+                            </td>
                             <td>{{ $pago->banco_emisor }}</td>
                             <td>{{ $pago->banco_receptor }}</td>
                             <td>{{ $pago->referencia }}</td>

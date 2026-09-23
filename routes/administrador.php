@@ -17,6 +17,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
 
     // Panel principal del administrador
     Route::get("/administrador", [AdministradorController::class, 'index'])->name('administrador.index');
+    Route::post("/administrador/tasa-cambio", [AdministradorController::class, 'saveTasaCambio'])->name('administrador.tasa_cambio.save');
 
     // Gestión de Estudiantes
     Route::get('/administrador/gestionestudiantes', [EstudianteController::class, 'list'])->name('administrador.gestionestudiantes'); // Lista de estudiantes

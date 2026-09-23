@@ -584,7 +584,7 @@ main {
     -webkit-backdrop-filter: blur(15px);
     padding: 45px;
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(255,255, 255, 0.1);
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
     width: 100%;
     max-width: 480px;
     box-sizing: border-box;
@@ -646,6 +646,14 @@ main {
     box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.2);
     background: rgba(255, 255, 255, 0.1);
     outline: none;
+}
+
+/* Estilos para las opciones de los menús desplegables nativos */
+select.form-input option,
+.form-select option {
+    background-color: #2b0b0b;
+    color: #ffffff;
+    font-size: 1em;
 }
 
 .form-select {

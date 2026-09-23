@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Administrador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Carrera;
 use App\Models\Area;
 use App\Models\Especialidades;
@@ -22,8 +23,43 @@ class AdministradorController extends Controller
      */
     public function index()
     {
-        
-        return view('administrador.index');
+        $tasaData = $this->getTasaData();
+        return view('administrador.index', ['tasaCambio' => $tasaData]);
+    }
+
+    /**
+     * Guarda la tasa de cambio en storage.
+     */
+    public function saveTasaCambio(Request $request)
+    {
+        $request->validate([
+            'tasa' => 'required|numeric|min:0',
+        ]);
+
+        $data = [
+            'valor' => $request->input('tasa'),
+            'fecha' => now()->format('d/m/Y'),
+            'hora'  => now()->format('H:i'),
+        ];
+
+        Storage::put('tasa_cambio.json', json_encode($data));
+
+        return response()->json([
+            'success' => true,
+            'tasa'    => $data,
+        ]);
+    }
+
+    /**
+     * Lee la tasa de cambio almacenada.
+     */
+    private function getTasaData(): array
+    {
+        if (Storage::exists('tasa_cambio.json')) {
+            $json = Storage::get('tasa_cambio.json');
+            return json_decode($json, true) ?? [];
+        }
+        return [];
     }
     
     public function registroEstudiante()

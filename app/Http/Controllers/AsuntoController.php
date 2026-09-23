@@ -32,6 +32,7 @@ class AsuntoController extends Controller
         $asunto = new Asunto();
         $asunto->nombre = $request->input('nombre');
         $asunto->descripcion = $request->input('descripcion');
+        $asunto->valor_usd = $request->input('valor_usd', 0);
         $asunto->cedula_estudiante = $request->input('cedula_estudiante');
         $asunto->activo = $request->input('activo', true);
         $asunto->save();
@@ -64,6 +65,7 @@ class AsuntoController extends Controller
         $asunto = Asunto::find($id);
         $asunto->nombre = $request->input('nombre');
         $asunto->descripcion = $request->input('descripcion');
+        $asunto->valor_usd = $request->input('valor_usd', 0);
         $asunto->cedula_estudiante = $request->input('cedula_estudiante');
         $asunto->activo = $request->input('activo', true);
         $asunto->save();
