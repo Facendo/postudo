@@ -26,6 +26,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get("/administrador/gestion_estudiante/{estudiante}/edit", [EstudianteController::class, 'edit'])->name('administrador.gestion_estudiante.edit'); // Formulario de edición de estudiante
     Route::put("/administrador/gestion_estudiante/{estudiante}", [EstudianteController::class, 'update'])->name('administrador.gestion_estudiante.update'); // Actualizar estudiante
     Route::delete("/administrador/gestion_estudiante/{estudiante}", [EstudianteController::class, 'destroy'])->name('administrador.gestion_estudiante.destroy'); // Eliminar estudiante
+    Route::get('/administrador/prueba_especialidades', [EstudianteController::class, 'listByEspecialidad'])->name('administrador.prueba_especialidades'); // Vista de prueba
 
     // Gestión de Áreas
     Route::get("/administrador/areas", [AdministradorController::class, 'creacionArea'])->name('administrador.creacion.index'); // Vista para creación de áreas
