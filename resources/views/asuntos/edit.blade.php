@@ -41,7 +41,6 @@
 
                 <div class="form-actions" style="justify-content: center;">
                     <button type="submit" class="submit-button">
-                        <i class="fa-solid fa-floppy-disk" style="margin-right:8px;"></i>
                         Actualizar Asunto
                     </button>
                 </div>

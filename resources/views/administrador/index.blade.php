@@ -39,6 +39,10 @@
                 <i class="fa-solid fa-users-viewfinder"></i>
                 <span>Estudiantes</span>
             </a>
+            <a href="{{ route('administrador.coordinador.create') }}" class="admin-card">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Registrar Coordinador</span>
+            </a>
         </div>
     </div>
 

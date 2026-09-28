@@ -10,6 +10,7 @@ use App\Http\Controllers\MateriasController;
 use App\Http\Controllers\PostgradoController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\SeccionController;
+use App\Http\Controllers\CoordinadorGeneralController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas del panel de administrador (requieren autenticación y rol de 'administrador')
@@ -18,6 +19,10 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     // Panel principal del administrador
     Route::get("/administrador", [AdministradorController::class, 'index'])->name('administrador.index');
     Route::post("/administrador/tasa-cambio", [AdministradorController::class, 'saveTasaCambio'])->name('administrador.tasa_cambio.save');
+
+    // Gestión de Coordinador General
+    Route::get("/administrador/registro_coordinador", [CoordinadorGeneralController::class, 'create'])->name('administrador.coordinador.create');
+    Route::post("/administrador/registro_coordinador", [CoordinadorGeneralController::class, 'store'])->name('administrador.coordinador.store');
 
     // Gestión de Estudiantes
     Route::get('/administrador/gestionestudiantes', [EstudianteController::class, 'list'])->name('administrador.gestionestudiantes'); // Lista de estudiantes

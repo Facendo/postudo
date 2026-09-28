@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Estudiante;
 use App\Models\Profesor;
 use App\Models\Administrador;
+use App\Models\CoordinadorGeneral;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -88,6 +89,17 @@ class RegisteredUserController extends Controller
                 'foto_perfil' => $foto_perfil
             ]);
         }
+        elseif(CoordinadorGeneral::where('cedula', $request->cedula)->exists()){
+            $rol = "coordinador_general";
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'cedula' => $request->cedula,
+                'rol' => $rol,
+                'foto_perfil' => $foto_perfil
+            ]);
+        }
 
         else{
             return redirect()->back()->withErrors(['cedula' => 'La cédula no está registrada en el sistema.']);
@@ -102,6 +114,8 @@ class RegisteredUserController extends Controller
             return redirect(route('profesor.index', absolute: false));
         } elseif ($rol === 'administrador') {
             return redirect(route('administrador.index', absolute: false));
+        } elseif ($rol === 'coordinador_general') {
+            return redirect(route('coordinador.index', absolute: false));
         }
         else {
             // Si el rol no es reconocido, redirigir a una página de error o inicio

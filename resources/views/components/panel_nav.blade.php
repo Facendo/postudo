@@ -8,7 +8,7 @@
         @auth
                 @if (Auth::user()->rol == 'estudiante')
                     <a href="{{ route('estudiante.index') }}" class="button_barra">Inicio</a>
-                    
+
                 @endif
 
                 @if (Auth::user()->rol == 'administrador')
@@ -20,6 +20,12 @@
                 @if (Auth::user()->rol == 'profesor')
 
                     <a href="{{ route('profesor.index') }}" class="button_barra">Inicio</a>
+
+                @endif
+
+                @if (Auth::user()->rol == 'coordinador_general')
+
+                    <a href="{{ route('coordinador.index') }}" class="button_barra">Inicio</a>
 
                 @endif
                 <form method="POST" action="{{ route('logout') }}">
