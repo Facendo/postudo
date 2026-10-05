@@ -12,3 +12,6 @@ Route::get('estudiante/pago/detalles', [PagoController::class, 'controlpagos'])-
 Route::post('/asuntos/Actualizar/{id}', [PagoController::class, 'ActualizarEstado'])->middleware('auth','role:administrador')->name('pago.actualizar');
 Route::get('administrador/pagos-actualizados', [PagoController::class, 'pagosActualizados'])->middleware('auth','role:administrador')->name('pago.actualizados');
 Route::get('administrador/pagos-pendientes', [PagoController::class, 'pagosPendientes'])->middleware('auth','role:administrador')->name('pago.pendientes');
+Route::get('administrador/verificar-pagos', [PagoController::class, 'verificarPagos'])->middleware('auth','role:administrador')->name('pago.verificar');
+Route::post('administrador/confirmar-verificados', [PagoController::class, 'confirmarVerificados'])->middleware('auth','role:administrador')->name('pago.confirmarVerificados');
+Route::post('administrador/configurar-sheet', [PagoController::class, 'configurarSheet'])->middleware('auth','role:administrador')->name('pago.configurarSheet');
