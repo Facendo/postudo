@@ -56,11 +56,27 @@ class PagoController extends Controller
     {
         $user=Auth::user();
 
-        // Capturar la tasa de cambio actual
-        $tasaActual = 0;
-        if (Storage::exists('tasa_cambio.json')) {
+        // Capturar la tasa de cambio de la fecha del pago (NO la de hoy)
+        $tasaAplicable = 0;
+        $fechaPago = \Carbon\Carbon::parse($request->fecha_pago)->format('Y-m-d');
+        
+        if (Storage::exists('tasa_cambio_historial.json')) {
+            $history = json_decode(Storage::get('tasa_cambio_historial.json'), true) ?? [];
+            // Ordenamos las fechas de mayor a menor para encontrar la más cercana hacia atrás
+            krsort($history);
+            foreach ($history as $date => $rate) {
+                // Buscamos la tasa de ese mismo día o la última tasa registrada antes de ese día
+                if ($date <= $fechaPago) {
+                    $tasaAplicable = $rate;
+                    break;
+                }
+            }
+        }
+
+        // Fallback a la tasa actual si el historial está vacío (por ser la primera vez)
+        if ($tasaAplicable == 0 && Storage::exists('tasa_cambio.json')) {
             $tasaJson = json_decode(Storage::get('tasa_cambio.json'), true);
-            $tasaActual = $tasaJson['valor'] ?? 0;
+            $tasaAplicable = $tasaJson['valor'] ?? 0;
         }
 
         $pago= new Pagos();
@@ -69,7 +85,7 @@ class PagoController extends Controller
         $pago->banco_emisor=$request->banco_emisor;
         $pago->banco_receptor=$request->banco_receptor;
         $pago->monto=$request->monto;
-        $pago->tasa_momento=$tasaActual;
+        $pago->tasa_momento=$tasaAplicable;
         $pago->asunto=$request->asunto;
         $pago->fecha_pago=$request->fecha_pago;
         $pago->referencia=$request->referencia;

@@ -36,13 +36,25 @@ class AdministradorController extends Controller
             'tasa' => 'required|numeric|min:0',
         ]);
 
+        $fechaIso = now()->format('Y-m-d');
+        $valorTasa = $request->input('tasa');
+
         $data = [
-            'valor' => $request->input('tasa'),
+            'valor' => $valorTasa,
             'fecha' => now()->format('d/m/Y'),
             'hora'  => now()->format('H:i'),
         ];
 
         Storage::put('tasa_cambio.json', json_encode($data));
+
+        // Guardar en el historial
+        $historyData = [];
+        if (Storage::exists('tasa_cambio_historial.json')) {
+            $historyData = json_decode(Storage::get('tasa_cambio_historial.json'), true) ?? [];
+        }
+        
+        $historyData[$fechaIso] = $valorTasa;
+        Storage::put('tasa_cambio_historial.json', json_encode($historyData));
 
         return response()->json([
             'success' => true,
