@@ -56,6 +56,21 @@ class PagoController extends Controller
     {
         $user=Auth::user();
 
+        // Normalizar la referencia: quitar espacios, caracteres especiales y ceros a la izquierda
+        $referenciaNormalizada = trim(preg_replace('/[^0-9a-zA-Z]/', '', $request->referencia));
+        $referenciaNormalizada = ltrim($referenciaNormalizada, '0') ?: '0';
+
+        // Verificar que no exista un pago con la misma referencia (normalizada)
+        $referenciaExistente = Pagos::all()->first(function ($pago) use ($referenciaNormalizada) {
+            $refExistente = ltrim(trim(preg_replace('/[^0-9a-zA-Z]/', '', $pago->referencia)), '0') ?: '0';
+            return $refExistente === $referenciaNormalizada;
+        });
+        if ($referenciaExistente) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Ya existe un pago registrado con la referencia "' . $request->referencia . '". Verifique el número e intente de nuevo.');
+        }
+
         // Capturar la tasa de cambio de la fecha del pago (NO la de hoy)
         $tasaAplicable = 0;
         $fechaPago = \Carbon\Carbon::parse($request->fecha_pago)->format('Y-m-d');
@@ -88,7 +103,7 @@ class PagoController extends Controller
         $pago->tasa_momento=$tasaAplicable;
         $pago->asunto=$request->asunto;
         $pago->fecha_pago=$request->fecha_pago;
-        $pago->referencia=$request->referencia;
+        $pago->referencia=$referenciaNormalizada;
         $pago->estado="Pendiente";
         
         $pago->save();

@@ -73,7 +73,6 @@
                         <th>Asunto</th>
                         <th>Fecha de Registro</th>
                         <th>Estado de Pago</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,16 +89,10 @@
                             <td>{{ $pago->asunto }}</td>
                             <td>{{ $pago->created_at->format('d/m/Y H:i') }}</td>
                             <td>{{ $pago->estado }}</td>
-                            <td>
-                                <form action="{{ route('pago.actualizar', $pago->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="button_body">Actualizar</button>
-                                </form>
-                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" style="text-align: center; padding: 2rem; opacity: 0.7;">No hay pagos
+                            <td colspan="10" style="text-align: center; padding: 2rem; opacity: 0.7;">No hay pagos
                                 pendientes.</td>
                         </tr>
                     @endforelse

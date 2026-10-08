@@ -17,6 +17,16 @@ class AsuntoController extends Controller
     }
 
     /**
+     * Display a list of prices for students.
+     */
+    public function precios()
+    {
+        // Solo mostrar los asuntos base, no los que tienen una cédula de estudiante asignada ("ya pagados")
+        $asuntos = Asunto::whereNull('cedula_estudiante')->get();
+        return view('estudiante.precios_asuntos', compact('asuntos'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

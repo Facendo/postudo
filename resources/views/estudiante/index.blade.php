@@ -14,6 +14,10 @@
                 <i class="fa-solid fa-file-alt"></i>
                 <span>Registrar Pago</span>
             </a>
+            <a href="{{ route('asuntos.precios') }}" class="admin-card">
+                <i class="fa-solid fa-tags"></i>
+                <span>Costos de Trámites y Asuntos</span>
+            </a>
         </div>
     </div>
 </x-layout>
