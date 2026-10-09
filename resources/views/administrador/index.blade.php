@@ -19,6 +19,10 @@
                 <i class="fa-solid fa-file-invoice-dollar"></i>
                 <span>Pagos</span>
             </a>
+            <a href="{{ route('administrador.finanzas') }}" class="admin-card">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span>Ingresos y Egresos</span>
+            </a>
             <a href="{{ route('registro_estudiante.index') }}" class="admin-card">
                 <i class="fa-solid fa-user-plus"></i>
                 <span>Registrar Estudiante</span>
