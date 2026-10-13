@@ -2,6 +2,14 @@
 
 PostUDO: monolito Laravel 12 (PHP ^8.2, basado en Breeze) para gestión de posgrados universitarios. El código, los textos de interfaz, los comentarios y los nombres de rutas están en **español** — escribe nuevos textos y comentarios en español para mantener la coherencia. Desarrollo local en Laragon sobre Windows, MySQL con base de datos `postudo` según `.env`.
 
+## Reglas
+
+1. **No ejecutes ningún comando sin mi permiso previo.** Antes de correr cualquier comando en la terminal (artisan, composer, npm, pint, git, migrate, etc.), pídemelo y espera mi confirmación. Esto aplica también a comandos de instalación, migración, limpieza de caché y ejecución de tests.
+
+2. **Siempre antes de escirbir codigo piensa.** Siempre antes de escribir codigo, ejecuta un plan con tus ideas y diferentes implementaciones que quieras hacer para yo revisarlo primero antes de comenzar a ejecutarlo
+
+3. **Siempre** Actualizar `MEMORY.md` al terminar cada tarea.
+
 ## Comandos
 
 - `composer dev` — servidor + listener de colas + Vite en un solo proceso (vía `npx concurrently`).
@@ -40,3 +48,11 @@ PostUDO: monolito Laravel 12 (PHP ^8.2, basado en Breeze) para gestión de posgr
   - páginas de auth/profile de Breeze → `layouts/app.blade.php` y `layouts/guest.blade.php` → bundle `@vite` (Tailwind v3, contenido escaneado desde `resources/views/**`).
   - todos los paneles de la app → `<x-layout>` (`resources/views/components/layout.blade.php`) → CSS estático `public/css/style.css` (con cache-buster `?v={{ time() }}`) más Font Awesome/Google Fonts por CDN. **Los cambios en `tailwind.config.js` no afectan a las páginas de panel.**
 - `@tailwindcss/vite` ^4 en `package.json` no se usa (no está en `vite.config.js`); el pipeline real es PostCSS + `tailwindcss` v3. No "mejores" la configuración al estilo v4.
+
+
+## Memoria - Al empezar, lee `MEMORY.md` para conocer el estado del proyecto y las decisiones tomadas. 
+- Al terminar una tarea, actualízalo: estado actual, decisiones importantes (con su porqué) y errores a evitar. 
+- Mantenlo breve (máximo ~50 líneas): resume o elimina lo que ya no aporte. 
+- Si algo se convierte en una regla permanente, propón moverlo a `AGENTS.md` en lugar de dejarlo en la memoria. 
+- No guardes nunca datos sensibles (claves, tokens, datos personales).
+
