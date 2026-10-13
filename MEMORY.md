@@ -12,7 +12,7 @@ Memoria del proyecto entre sesiones.
   - Ingresos = pagos con `estado='Actualizado'` (solo verificados). Egresos: solo crear y ver (sin editar/eliminar).
   - El egreso guarda `tasa_momento` (de `tasa_cambio.json`) y `registrado_por` = `auth()->id()`.
 - Sin CI, sin lint/typecheck. `vendor/bin/pint` es el único formatter.
-- **Actualización de seguridad de dependencias (2026-10-12):** `composer audit` reportaba 46 avisos; se actualizaron `guzzlehttp/guzzle` (7.9.3→7.15.5) y `guzzlehttp/psr7` (2.7.1→2.13.1), quedando **33 avisos pendientes** (commonmark, Symfony, laravel/framework). `composer.lock` sin commitear aún. Composer no está en PATH: usar `C:\laragon\bin\composer\composer.bat`.
+- **Actualización de seguridad de dependencias (2026-10-12):** `composer audit` reportaba 46 avisos; se actualizaron `guzzlehttp/guzzle` (7.9.3→7.15.5) y `guzzlehttp/psr7` (2.7.1→2.13.1), quedando **33 avisos pendientes** (commonmark, Symfony, laravel/framework). `composer.lock` commiteado el 2026-10-12. Composer no está en PATH: usar `C:\laragon\bin\composer\composer.bat`.
 
 ## Aprendizajes y errores a evitar
 
