@@ -20,6 +20,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     // Panel principal del administrador
     Route::get('/administrador', [AdministradorController::class, 'index'])->name('administrador.index');
     Route::post('/administrador/tasa-cambio', [AdministradorController::class, 'saveTasaCambio'])->name('administrador.tasa_cambio.save');
+    Route::post('/administrador/tasa-cambio/bcv', [AdministradorController::class, 'sincronizarTasaBcv'])->name('administrador.tasa_cambio.bcv');
 
     // Gestión financiera: ingresos (pagos verificados) y egresos
     Route::get('/administrador/finanzas', [EgresoController::class, 'index'])->name('administrador.finanzas'); // Reporte de ingresos y egresos

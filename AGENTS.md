@@ -39,7 +39,7 @@ PostUDO: monolito Laravel 12 (PHP ^8.2, basado en Breeze) para gestión de posgr
 ## Particularidades del dominio
 
 - Las filas de `users` solo se crean en el registro, que deduce el `rol` buscando la `cedula` en las tablas `estudiante`/`profesor`/`administrador`/`coordinador_general`. Esas tablas no tienen columna de rol; el rol vive únicamente en `users.rol`.
-- La configuración en tiempo real son archivos JSON en el disco por defecto, no filas en BD: `tasa_cambio.json` (tasa de cambio) + `tasa_cambio_historial.json` (historial) en `AdministradorController`, `google_sheet_config.json` (URL del CSV publicado de Google Sheet) en `PagoController::verificarPagos`. Están en `storage/app/private/`.
+- La configuración en tiempo real son archivos JSON en el disco por defecto, no filas en BD: `tasa_cambio.json` (tasa de cambio) + `tasa_cambio_historial.json` (historial), manejados por `App\Services\TasaCambioService` — sincronización automática con el BCV vía `https://bcv.today/api/v1/rate.json` (comando `tasa:actualizar-bcv` + fallback al cargar el panel; historial claveado por día calendario = `date` de la API); `google_sheet_config.json` (URL del CSV publicado de Google Sheet) en `PagoController::verificarPagos`. Están en `storage/app/private/`.
 - La verificación de pagos descarga un Google Sheet publicado como CSV y analiza delimitadores `;` o `,` y montajes tipo `8.700,00` — sensible a la configuración regional; conserva ese parser intacto al tocar `PagoController`.
 
 ## Frontend

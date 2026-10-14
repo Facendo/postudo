@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asunto;
+use App\Services\TasaCambioService;
 use Illuminate\Http\Request;
 
 class AsuntoController extends Controller
 {
+    public function __construct(private TasaCambioService $tasaService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        // Fallback perezoso: la vista muestra precios en Bs. calculados con la tasa actual.
+        $this->tasaService->asegurarTasaAlDia();
+
         $asuntos = Asunto::all();
         return view('asuntos.index', compact('asuntos'));
     }
@@ -21,6 +29,9 @@ class AsuntoController extends Controller
      */
     public function precios()
     {
+        // Fallback perezoso: la vista muestra precios en Bs. calculados con la tasa actual.
+        $this->tasaService->asegurarTasaAlDia();
+
         // Solo mostrar los asuntos base, no los que tienen una cédula de estudiante asignada ("ya pagados")
         $asuntos = Asunto::whereNull('cedula_estudiante')->get();
         return view('estudiante.precios_asuntos', compact('asuntos'));
