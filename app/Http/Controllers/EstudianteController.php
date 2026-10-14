@@ -61,7 +61,7 @@ class EstudianteController extends Controller
         $estudiante->apellido=$request->apellido;
         $estudiante->correo=$request->correo;
         $estudiante->carrera=$request->carrera;
-        $estudiante->especialidad="No inscrita"; // Default value
+        $estudiante->especialidad=$request->especialidad ?? 'No inscrita';
         $estudiante->edad=$request->edad;
         $estudiante->save();
         $estudiantes=Estudiante::all();
@@ -72,6 +72,23 @@ class EstudianteController extends Controller
     {
         $estudiantes=Estudiante::all();
         return view('administrador.gestionestudiantes',compact('estudiantes'));
+    }
+
+    public function listByEspecialidad(Request $request)
+    {
+        $especialidades = \App\Models\Especialidades::all();
+        $selectedEspecialidad = $request->query('especialidad');
+        
+        if ($selectedEspecialidad) {
+            $estudiantes = Estudiante::where('especialidad', $selectedEspecialidad)->get();
+            $especialidadModel = \App\Models\Especialidades::where('codigo_especialidad', $selectedEspecialidad)->first();
+            $selectedEspecialidadNombre = $especialidadModel ? $especialidadModel->nombre : $selectedEspecialidad;
+        } else {
+            $estudiantes = collect(); 
+            $selectedEspecialidadNombre = null;
+        }
+
+        return view('administrador.prueba_especialidades', compact('estudiantes', 'especialidades', 'selectedEspecialidad', 'selectedEspecialidadNombre'));
     }
 
     public function editPerfil()

@@ -1,12 +1,19 @@
 <x-layout title="Control de Pago">
-        <h1 class="titulo">Lista de Pagos</h1>
-        <div class="action-buttons-container">
+
+
+
+
+    <div class="content_texto_bienvenida">
+        <label>Listado de Pagos</label>
+    </div>
+    <div class="action-buttons-container">
         <div>
             <table>
                 <thead>
                     <tr>
                         <th>Cédula</th>
                         <th>Nombre</th>
+                        <th>Especialidad</th>
                         <th>Banco Emisor</th>
                         <th>Banco Receptor</th>
                         <th>Referencia</th>
@@ -22,6 +29,8 @@
                         <tr>
                             <td>{{ $pago->cedula }}</td>
                             <td>{{ $pago->nombre }}</td>
+                            <td>{{ $pago->estudiante->especialidadRel->nombre ?? $pago->estudiante->especialidad ?? 'N/A' }}
+                            </td>
                             <td>{{ $pago->banco_emisor }}</td>
                             <td>{{ $pago->banco_receptor }}</td>
                             <td>{{ $pago->referencia }}</td>
@@ -47,5 +56,5 @@
                 </tbody>
             </table>
         </div>
-   
+
 </x-layout>

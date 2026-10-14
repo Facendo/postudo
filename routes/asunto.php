@@ -12,5 +12,9 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get('/asuntos/{id}/edit', [AsuntoController::class, 'edit'])->name('asuntos.edit');
     Route::put('/asuntos/{id}', [AsuntoController::class, 'update'])->name('asuntos.update');
     Route::delete('/asuntos/{id}', [AsuntoController::class, 'destroy'])->name('asuntos.destroy');
-    
+});
+
+// Ruta para que el estudiante vea los precios de los asuntos
+Route::middleware(['auth', 'role:estudiante'])->group(function () {
+    Route::get('/estudiante/asuntos/precios', [AsuntoController::class, 'precios'])->name('asuntos.precios');
 });

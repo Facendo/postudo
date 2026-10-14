@@ -461,6 +461,7 @@
                 <a href="{{ url('/perfil') }}" class="nav-link">Mi Perfil</a>
                 <a href="{{ url('/dashboard') }}" class="nav-link">Panel</a>
                 <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
+                    {}
                     @csrf
                     <button type="submit" class="btn-primary" style="padding: 10px 20px; font-size: 14px;">Cerrar Sesión <i
                             class="fa-solid fa-arrow-right-from-bracket ml-2"></i></button>

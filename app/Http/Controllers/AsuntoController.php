@@ -17,6 +17,16 @@ class AsuntoController extends Controller
     }
 
     /**
+     * Display a list of prices for students.
+     */
+    public function precios()
+    {
+        // Solo mostrar los asuntos base, no los que tienen una cédula de estudiante asignada ("ya pagados")
+        $asuntos = Asunto::whereNull('cedula_estudiante')->get();
+        return view('estudiante.precios_asuntos', compact('asuntos'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -32,6 +42,7 @@ class AsuntoController extends Controller
         $asunto = new Asunto();
         $asunto->nombre = $request->input('nombre');
         $asunto->descripcion = $request->input('descripcion');
+        $asunto->valor_usd = $request->input('valor_usd', 0);
         $asunto->cedula_estudiante = $request->input('cedula_estudiante');
         $asunto->activo = $request->input('activo', true);
         $asunto->save();
@@ -64,6 +75,7 @@ class AsuntoController extends Controller
         $asunto = Asunto::find($id);
         $asunto->nombre = $request->input('nombre');
         $asunto->descripcion = $request->input('descripcion');
+        $asunto->valor_usd = $request->input('valor_usd', 0);
         $asunto->cedula_estudiante = $request->input('cedula_estudiante');
         $asunto->activo = $request->input('activo', true);
         $asunto->save();

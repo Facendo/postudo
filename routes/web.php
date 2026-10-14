@@ -21,3 +21,4 @@ require __DIR__.'/profesor.php';
 require __DIR__.'/administrador.php';
 require __DIR__.'/postgrado.php';
 require __DIR__.'/asunto.php';
+require __DIR__.'/coordinador.php';

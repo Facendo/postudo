@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Administrador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Carrera;
 use App\Models\Area;
 use App\Models\Especialidades;
@@ -22,8 +23,55 @@ class AdministradorController extends Controller
      */
     public function index()
     {
+        $tasaData = $this->getTasaData();
+        return view('administrador.index', ['tasaCambio' => $tasaData]);
+    }
+
+    /**
+     * Guarda la tasa de cambio en storage.
+     */
+    public function saveTasaCambio(Request $request)
+    {
+        $request->validate([
+            'tasa' => 'required|numeric|min:0',
+        ]);
+
+        $fechaIso = now()->format('Y-m-d');
+        $valorTasa = $request->input('tasa');
+
+        $data = [
+            'valor' => $valorTasa,
+            'fecha' => now()->format('d/m/Y'),
+            'hora'  => now()->format('H:i'),
+        ];
+
+        Storage::put('tasa_cambio.json', json_encode($data));
+
+        // Guardar en el historial
+        $historyData = [];
+        if (Storage::exists('tasa_cambio_historial.json')) {
+            $historyData = json_decode(Storage::get('tasa_cambio_historial.json'), true) ?? [];
+        }
         
-        return view('administrador.index');
+        $historyData[$fechaIso] = $valorTasa;
+        Storage::put('tasa_cambio_historial.json', json_encode($historyData));
+
+        return response()->json([
+            'success' => true,
+            'tasa'    => $data,
+        ]);
+    }
+
+    /**
+     * Lee la tasa de cambio almacenada.
+     */
+    private function getTasaData(): array
+    {
+        if (Storage::exists('tasa_cambio.json')) {
+            $json = Storage::get('tasa_cambio.json');
+            return json_decode($json, true) ?? [];
+        }
+        return [];
     }
     
     public function registroEstudiante()

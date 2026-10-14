@@ -12,6 +12,7 @@ class Asunto extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'valor_usd',
         'activo',
         'cedula_estudiante',
     ];

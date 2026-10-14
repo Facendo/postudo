@@ -12,11 +12,16 @@ class Pagos extends Model
     protected $table= 'pago';
     protected $fillable = [
         'id',
-        'monto',
-        'fecha_pago',
-        'metodo_pago',
-        'estado',
+        'nombre',
         'cedula',
+        'banco_emisor',
+        'banco_receptor',
+        'referencia',
+        'monto',
+        'tasa_momento',
+        'asunto',
+        'fecha_pago',
+        'estado',
     ];
     protected $primaryKey = 'id';  
     protected $keyType = 'int';
