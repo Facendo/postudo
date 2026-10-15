@@ -23,10 +23,6 @@
                 <i class="fa-solid fa-scale-balanced"></i>
                 <span>Ingresos y Egresos</span>
             </a>
-            <a href="{{ route('registro_estudiante.index') }}" class="admin-card">
-                <i class="fa-solid fa-user-plus"></i>
-                <span>Registrar Estudiante</span>
-            </a>
             <a href="{{ route('pago.actualizados') }}" class="admin-card">
                 <i class="fa-solid fa-circle-check"></i>
                 <span>Pagos Actualizados</span>
@@ -34,14 +30,6 @@
             <a href="{{ route('pago.pendientes') }}" class="admin-card">
                 <i class="fa-solid fa-clock"></i>
                 <span>Pagos Pendientes</span>
-            </a>
-            <a href="{{ route('administrador.especialidades.index') }}" class="admin-card">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>Especialidades</span>
-            </a>
-            <a href="{{ route('administrador.prueba_especialidades') }}" class="admin-card">
-                <i class="fa-solid fa-users-viewfinder"></i>
-                <span>Estudiantes</span>
             </a>
             <a href="{{ route('administrador.coordinador.create') }}" class="admin-card">
                 <i class="fa-solid fa-user-tie"></i>
