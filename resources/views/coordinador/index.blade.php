@@ -11,17 +11,25 @@
         </div>
 
         <div class="admin-grid">
-            <a href="#" class="admin-card">
+            <a href="{{ route('administrador.prueba_especialidades') }}" class="admin-card">
                 <i class="fa-solid fa-users"></i>
                 <span>Estudiantes</span>
+            </a>
+            <a href="{{ route('registro_estudiante.index') }}" class="admin-card">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Registrar Estudiante</span>
+            </a>
+            <a href="{{ route('administrador.especialidades.index') }}" class="admin-card">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Especialidades</span>
+            </a>
+            <a href="{{ route('administrador.creacion.index') }}" class="admin-card">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Áreas y Carreras</span>
             </a>
             <a href="#" class="admin-card">
                 <i class="fa-solid fa-chalkboard-teacher"></i>
                 <span>Profesores</span>
-            </a>
-            <a href="#" class="admin-card">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>Especialidades</span>
             </a>
             <a href="#" class="admin-card">
                 <i class="fa-solid fa-book-open"></i>

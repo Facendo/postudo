@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administrador;
+use App\Services\TasaCambioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -18,17 +19,24 @@ use App\Models\Materias;
 
 class AdministradorController extends Controller
 {
+    public function __construct(private TasaCambioService $tasaService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tasaData = $this->getTasaData();
+        // Fallback perezoso: si la tasa no es la del día, intenta sincronizarla con el BCV.
+        $this->tasaService->asegurarTasaAlDia();
+
+        $tasaData = $this->tasaService->obtenerTasaActual();
         return view('administrador.index', ['tasaCambio' => $tasaData]);
     }
 
     /**
-     * Guarda la tasa de cambio en storage.
+     * Guarda la tasa de cambio capturada a mano (respaldo de emergencia).
      */
     public function saveTasaCambio(Request $request)
     {
@@ -36,25 +44,7 @@ class AdministradorController extends Controller
             'tasa' => 'required|numeric|min:0',
         ]);
 
-        $fechaIso = now()->format('Y-m-d');
-        $valorTasa = $request->input('tasa');
-
-        $data = [
-            'valor' => $valorTasa,
-            'fecha' => now()->format('d/m/Y'),
-            'hora'  => now()->format('H:i'),
-        ];
-
-        Storage::put('tasa_cambio.json', json_encode($data));
-
-        // Guardar en el historial
-        $historyData = [];
-        if (Storage::exists('tasa_cambio_historial.json')) {
-            $historyData = json_decode(Storage::get('tasa_cambio_historial.json'), true) ?? [];
-        }
-        
-        $historyData[$fechaIso] = $valorTasa;
-        Storage::put('tasa_cambio_historial.json', json_encode($historyData));
+        $data = $this->tasaService->guardarManual((float) $request->input('tasa'));
 
         return response()->json([
             'success' => true,
@@ -63,15 +53,23 @@ class AdministradorController extends Controller
     }
 
     /**
-     * Lee la tasa de cambio almacenada.
+     * Fuerza la sincronización de la tasa con el BCV (botón del panel).
      */
-    private function getTasaData(): array
+    public function sincronizarTasaBcv()
     {
-        if (Storage::exists('tasa_cambio.json')) {
-            $json = Storage::get('tasa_cambio.json');
-            return json_decode($json, true) ?? [];
+        try {
+            $data = $this->tasaService->actualizarDesdeBcv();
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo sincronizar con el BCV: '.$e->getMessage(),
+            ], 502);
         }
-        return [];
+
+        return response()->json([
+            'success' => true,
+            'tasa'    => $data,
+        ]);
     }
     
     public function registroEstudiante()

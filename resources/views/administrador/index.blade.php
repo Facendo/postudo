@@ -23,10 +23,6 @@
                 <i class="fa-solid fa-scale-balanced"></i>
                 <span>Ingresos y Egresos</span>
             </a>
-            <a href="{{ route('registro_estudiante.index') }}" class="admin-card">
-                <i class="fa-solid fa-user-plus"></i>
-                <span>Registrar Estudiante</span>
-            </a>
             <a href="{{ route('pago.actualizados') }}" class="admin-card">
                 <i class="fa-solid fa-circle-check"></i>
                 <span>Pagos Actualizados</span>
@@ -34,14 +30,6 @@
             <a href="{{ route('pago.pendientes') }}" class="admin-card">
                 <i class="fa-solid fa-clock"></i>
                 <span>Pagos Pendientes</span>
-            </a>
-            <a href="{{ route('administrador.especialidades.index') }}" class="admin-card">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>Especialidades</span>
-            </a>
-            <a href="{{ route('administrador.prueba_especialidades') }}" class="admin-card">
-                <i class="fa-solid fa-users-viewfinder"></i>
-                <span>Estudiantes</span>
             </a>
             <a href="{{ route('administrador.coordinador.create') }}" class="admin-card">
                 <i class="fa-solid fa-user-tie"></i>
@@ -57,7 +45,12 @@
             <div>
                 <span class="tasa-label">Tasa de Cambio</span>
                 <span class="tasa-fecha" id="tasaFecha">
-                    {{ isset($tasaCambio['fecha']) ? $tasaCambio['fecha'] . ' · ' . $tasaCambio['hora'] : 'Sin registrar' }}
+                    @if(isset($tasaCambio['fecha']))
+                        {{ $tasaCambio['fecha'] }} · {{ $tasaCambio['hora'] }} · Fuente:
+                        {{ ($tasaCambio['fuente'] ?? 'manual') === 'BCV' ? 'BCV' : 'Manual' }}
+                    @else
+                        Sin registrar
+                    @endif
                 </span>
             </div>
         </div>
@@ -84,6 +77,10 @@
             <button type="submit" class="tasa-btn-guardar" id="tasaBtnGuardar" title="Guardar tasa de cambio">
                 <i class="fa-solid fa-check" id="tasaBtnIcon"></i>
                 <span id="tasaBtnTexto">Actualizar</span>
+            </button>
+            <button type="button" class="tasa-btn-bcv" id="tasaBtnBcv" title="Obtener la tasa oficial publicada por el BCV">
+                <i class="fa-solid fa-rotate" id="tasaBtnBcvIcon"></i>
+                <span id="tasaBtnBcvTexto">Sincronizar con BCV</span>
             </button>
         </form>
 
@@ -292,6 +289,46 @@
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.35);
         }
 
+        /* Botón secundario: sincronizar con BCV */
+        .tasa-btn-bcv {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 9px 16px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tasa-btn-bcv:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .tasa-btn-bcv:active {
+            transform: translateY(0);
+        }
+
+        .tasa-btn-bcv.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .tasa-btn-bcv.success {
+            background: rgba(40, 167, 69, 0.15);
+            border-color: rgba(40, 167, 69, 0.5);
+            color: #5de98a;
+        }
+
         /* Feedback */
         .tasa-feedback {
             font-family: 'Outfit', sans-serif;
@@ -319,8 +356,25 @@
             const btnIcon = document.getElementById('tasaBtnIcon');
             const btnTexto = document.getElementById('tasaBtnTexto');
             const btn = document.getElementById('tasaBtnGuardar');
+            const btnBcv = document.getElementById('tasaBtnBcv');
+            const btnBcvIcon = document.getElementById('tasaBtnBcvIcon');
+            const btnBcvTexto = document.getElementById('tasaBtnBcvTexto');
             const tasaFecha = document.getElementById('tasaFecha');
             const tasaDisplay = document.getElementById('tasaValorDisplay');
+            const token = document.querySelector('input[name="_token"]').value;
+
+            // Actualiza el display del valor y la línea de fecha/fuente sin recargar
+            function actualizarDisplay(tasa) {
+                const v = parseFloat(tasa.valor);
+                const fuente = tasa.fuente === 'BCV' ? 'BCV' : 'Manual';
+                tasaDisplay.innerHTML = `
+                    <span class="tasa-moneda">Bs.</span>
+                    <span class="tasa-numero" id="tasaNumeroActual">${v.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span class="tasa-por">&nbsp;/ $</span>
+                `;
+                tasaFecha.textContent = `${tasa.fecha} · ${tasa.hora} · Fuente: ${fuente}`;
+                input.value = v;
+            }
 
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
@@ -344,7 +398,7 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'X-CSRF-TOKEN': token,
                             'Accept': 'application/json',
                         },
                         body: JSON.stringify({ tasa: valor }),
@@ -355,20 +409,13 @@
                     const data = await res.json();
 
                     if (data.success) {
-                        // Actualizar display sin recargar
-                        const v = parseFloat(data.tasa.valor);
-                        tasaDisplay.innerHTML = `
-                            <span class="tasa-moneda">Bs.</span>
-                            <span class="tasa-numero" id="tasaNumeroActual">${v.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                            <span class="tasa-por">&nbsp;/ $</span>
-                        `;
-                        tasaFecha.textContent = `${data.tasa.fecha} · ${data.tasa.hora}`;
+                        actualizarDisplay(data.tasa);
 
                         btn.classList.remove('loading');
                         btn.classList.add('success');
                         btnIcon.className = 'fa-solid fa-check';
                         btnTexto.textContent = 'Guardado';
-                        mostrarFeedback('¡Tasa actualizada correctamente!', 'ok');
+                        mostrarFeedback('¡Tasa guardada manualmente! Úsala solo si el BCV no responde.', 'ok');
 
                         setTimeout(() => {
                             btn.classList.remove('success');
@@ -385,10 +432,59 @@
                 }
             });
 
+            // Botón: sincronizar con la tasa oficial publicada por el BCV
+            btnBcv.addEventListener('click', async function () {
+                btnBcv.classList.add('loading');
+                btnBcv.disabled = true;
+                btnBcvIcon.className = 'fa-solid fa-spinner fa-spin';
+                btnBcvTexto.textContent = 'Sincronizando…';
+                feedback.className = 'tasa-feedback';
+                feedback.textContent = '';
+
+                try {
+                    const res = await fetch("{{ route('administrador.tasa_cambio.bcv') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                            'Accept': 'application/json',
+                        },
+                    });
+
+                    const data = await res.json().catch(() => null);
+
+                    if (!res.ok || !data || !data.success) {
+                        throw new Error(data && data.message ? data.message : 'La API del BCV no respondió.');
+                    }
+
+                    actualizarDisplay(data.tasa);
+
+                    btnBcv.classList.remove('loading');
+                    btnBcv.classList.add('success');
+                    btnBcvIcon.className = 'fa-solid fa-check';
+                    btnBcvTexto.textContent = 'Sincronizado';
+                    mostrarFeedback(`¡Tasa del BCV vigente para el ${data.tasa.fecha} sincronizada!`, 'ok');
+
+                    setTimeout(() => {
+                        btnBcv.classList.remove('success');
+                        btnBcvIcon.className = 'fa-solid fa-rotate';
+                        btnBcvTexto.textContent = 'Sincronizar con BCV';
+                        btnBcv.disabled = false;
+                    }, 2500);
+                } catch (err) {
+                    btnBcv.classList.remove('loading');
+                    btnBcv.disabled = false;
+                    btnBcvTexto.textContent = 'Sincronizar con BCV';
+                    mostrarFeedback(err.message || 'Error al sincronizar con el BCV. Puedes intentar de nuevo.', 'err');
+
+                    setTimeout(() => { btnBcvIcon.className = 'fa-solid fa-rotate'; }, 2500);
+                }
+            });
+
             function mostrarFeedback(msg, tipo) {
                 feedback.textContent = msg;
                 feedback.className = `tasa-feedback ${tipo}`;
-                setTimeout(() => { feedback.textContent = ''; feedback.className = 'tasa-feedback'; }, 3500);
+                setTimeout(() => { feedback.textContent = ''; feedback.className = 'tasa-feedback'; }, 5000);
             }
         })();
     </script>
