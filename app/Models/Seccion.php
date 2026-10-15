@@ -9,7 +9,7 @@ class Seccion extends Model
 {
     use HasFactory;
     protected $table = 'seccion';
-    protected $primaryKey = 'id_seccion';
+    protected $primaryKey = 'nro_seccion';
     public $keyType = 'integer';
 
     protected $fillable = [

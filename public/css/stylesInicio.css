@@ -121,12 +121,12 @@
             margin: 0 20px;
             padding: 15px 25px;
             text-decoration: none;
-            color: #a7d9ef;
-            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            font-family: 'Inter', cursive;
             font-size: 17px;
             border-radius: 10px;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-weight: 500;
+            font-weight: bold;
             position: relative;
             overflow: hidden;
             background: transparent;

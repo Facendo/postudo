@@ -35,6 +35,8 @@ class AuthenticatedSessionController extends Controller
             return redirect(route('profesor.index', absolute: false));
         } elseif ($user->rol === 'administrador') {
             return redirect(route('administrador.index', absolute: false));
+        } elseif ($user->rol === 'coordinador_general') {
+            return redirect(route('coordinador.index', absolute: false));
         } else {
             // Si el rol no es reconocido, redirigir a una página de error o inicio
             return redirect(route('inicio', absolute: false))->withErrors(['rol' => 'Rol no reconocido.']);

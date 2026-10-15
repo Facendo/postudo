@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Asunto;
+use App\Services\TasaCambioService;
+use Illuminate\Http\Request;
+
+class AsuntoController extends Controller
+{
+    public function __construct(private TasaCambioService $tasaService)
+    {
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // Fallback perezoso: la vista muestra precios en Bs. calculados con la tasa actual.
+        $this->tasaService->asegurarTasaAlDia();
+
+        $asuntos = Asunto::all();
+        return view('asuntos.index', compact('asuntos'));
+    }
+
+    /**
+     * Display a list of prices for students.
+     */
+    public function precios()
+    {
+        // Fallback perezoso: la vista muestra precios en Bs. calculados con la tasa actual.
+        $this->tasaService->asegurarTasaAlDia();
+
+        // Solo mostrar los asuntos base, no los que tienen una cédula de estudiante asignada ("ya pagados")
+        $asuntos = Asunto::whereNull('cedula_estudiante')->get();
+        return view('estudiante.precios_asuntos', compact('asuntos'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('asuntos.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $asunto = new Asunto();
+        $asunto->nombre = $request->input('nombre');
+        $asunto->descripcion = $request->input('descripcion');
+        $asunto->valor_usd = $request->input('valor_usd', 0);
+        $asunto->cedula_estudiante = $request->input('cedula_estudiante');
+        $asunto->activo = $request->input('activo', true);
+        $asunto->save();
+
+        return redirect()->route('asuntos.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Asunto $asunto)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(int $id)
+    {
+        $asunto = Asunto::find($id);
+        return view('asuntos.edit', compact('asunto'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, int $id)
+    {
+        $asunto = Asunto::find($id);
+        $asunto->nombre = $request->input('nombre');
+        $asunto->descripcion = $request->input('descripcion');
+        $asunto->valor_usd = $request->input('valor_usd', 0);
+        $asunto->cedula_estudiante = $request->input('cedula_estudiante');
+        $asunto->activo = $request->input('activo', true);
+        $asunto->save();
+
+        return redirect()->route('asuntos.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $id)
+    {
+        $asunto = Asunto::find($id);
+        $asunto->delete();
+
+        return redirect()->route('asuntos.index');
+    }
+}

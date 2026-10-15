@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administrador;
+use App\Services\TasaCambioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Carrera;
 use App\Models\Area;
 use App\Models\Especialidades;
@@ -17,13 +19,57 @@ use App\Models\Materias;
 
 class AdministradorController extends Controller
 {
+    public function __construct(private TasaCambioService $tasaService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        
-        return view('administrador.index');
+        // Fallback perezoso: si la tasa no es la del día, intenta sincronizarla con el BCV.
+        $this->tasaService->asegurarTasaAlDia();
+
+        $tasaData = $this->tasaService->obtenerTasaActual();
+        return view('administrador.index', ['tasaCambio' => $tasaData]);
+    }
+
+    /**
+     * Guarda la tasa de cambio capturada a mano (respaldo de emergencia).
+     */
+    public function saveTasaCambio(Request $request)
+    {
+        $request->validate([
+            'tasa' => 'required|numeric|min:0',
+        ]);
+
+        $data = $this->tasaService->guardarManual((float) $request->input('tasa'));
+
+        return response()->json([
+            'success' => true,
+            'tasa'    => $data,
+        ]);
+    }
+
+    /**
+     * Fuerza la sincronización de la tasa con el BCV (botón del panel).
+     */
+    public function sincronizarTasaBcv()
+    {
+        try {
+            $data = $this->tasaService->actualizarDesdeBcv();
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo sincronizar con el BCV: '.$e->getMessage(),
+            ], 502);
+        }
+
+        return response()->json([
+            'success' => true,
+            'tasa'    => $data,
+        ]);
     }
     
     public function registroEstudiante()

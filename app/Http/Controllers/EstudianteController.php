@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asunto;
 use App\Models\Carrera;
 use App\Models\Especialidades;
 use App\Models\Estudiante;
+use App\Models\Pagos;
+use App\Models\Postgrado;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +61,7 @@ class EstudianteController extends Controller
         $estudiante->apellido=$request->apellido;
         $estudiante->correo=$request->correo;
         $estudiante->carrera=$request->carrera;
-        $estudiante->especialidad="No inscrita"; // Default value
+        $estudiante->especialidad=$request->especialidad ?? 'No inscrita';
         $estudiante->edad=$request->edad;
         $estudiante->save();
         $estudiantes=Estudiante::all();
@@ -69,6 +72,23 @@ class EstudianteController extends Controller
     {
         $estudiantes=Estudiante::all();
         return view('administrador.gestionestudiantes',compact('estudiantes'));
+    }
+
+    public function listByEspecialidad(Request $request)
+    {
+        $especialidades = \App\Models\Especialidades::all();
+        $selectedEspecialidad = $request->query('especialidad');
+        
+        if ($selectedEspecialidad) {
+            $estudiantes = Estudiante::where('especialidad', $selectedEspecialidad)->get();
+            $especialidadModel = \App\Models\Especialidades::where('codigo_especialidad', $selectedEspecialidad)->first();
+            $selectedEspecialidadNombre = $especialidadModel ? $especialidadModel->nombre : $selectedEspecialidad;
+        } else {
+            $estudiantes = collect(); 
+            $selectedEspecialidadNombre = null;
+        }
+
+        return view('administrador.prueba_especialidades', compact('estudiantes', 'especialidades', 'selectedEspecialidad', 'selectedEspecialidadNombre'));
     }
 
     public function editPerfil()
@@ -107,7 +127,31 @@ class EstudianteController extends Controller
         return redirect()->route('estudiante.perfil')->with('success', 'Perfil actualizado exitosamente.');
     }
 
+    public function inscripcion()
+    {
+        $user = Auth::user();
+        $estudiante = Estudiante::where('cedula', $user->cedula)->first();
+        $carrera = Carrera::where('nombre', $estudiante->carrera)->first();
+        $especialidades = Especialidades::where('id_carrera', $carrera->id_carrera)->get();
+        $postgrados = Postgrado::where('codigo_especialidad', $estudiante->especialidad)->get();
+        $pagos = Pagos::where('cedula', $user->cedula)->first()->get();
 
+        foreach ($pagos as $item) {
+            if ($item->cedula == $user->cedula && $item->asunto == "Inscripción") {
+                if ($item->estado == "Pendiente") {
+                    $verificacion_pago = false;
+                } else {
+                    $verificacion_pago = true;
+                }
+            }
+        }
+        if($verificacion_pago) {
+            return view('estudiante.inscripcion', compact('user', 'carrera', 'especialidades', 'postgrados'));
+        }
+        else{
+            return redirect()->route('estudiante.index')->with('error', 'No se ha procesado el pago de inscripción.');
+        }
+    }
         
     
     public function update(Request $request, Estudiante $estudiante)
