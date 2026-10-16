@@ -27,7 +27,7 @@
                 <i class="fa-solid fa-chalkboard-teacher"></i>
                 <span>Profesores</span>
             </a>
-            <a href="#" class="admin-card">
+            <a href="{{ route('administrador.gestion_postgrado') }}" class="admin-card">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Postgrados</span>
             </a>

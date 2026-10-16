@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Gestión de Materias'>
-    <section class="main-content-section page-content">
+    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         <div class="content_texto_bienvenida">
             <label>Listado de Materias</label>
         </div>
@@ -35,7 +35,7 @@
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
                             {{-- Asegúrate de que tu ruta sea 'materias.edit' y acepte el modelo Materias --}}
-                            <a href="{{ route('administrador.gestionmaterias.edit', $materia) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestionmaterias.edit', $materia) }}" class="btn-table-action" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
@@ -44,7 +44,7 @@
                             <form action="{{ route('administrador.gestionmaterias.destroy', $materia) }}" method="POST" class="inline-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar">
+                                <button type="submit" class="btn-table-action" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -57,6 +57,6 @@
                 @endforelse
             </tbody>
         </table>
-    </section>
-    
+    </div>
+
 </x-layout>

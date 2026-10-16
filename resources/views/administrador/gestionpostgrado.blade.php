@@ -1,6 +1,6 @@
 
 <x-layout title='PostUDO || Postgrados'>
-    <section class="main-content-section page-content">
+    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
             <label>Listado de Postgrados</label>
@@ -42,7 +42,7 @@
                         <td>{{ $postgrado->nro_cohortes }}</td>
                         <td>
                             {{-- Enlace a la vista de detalles del postgrado --}}
-                            <a href="{{ route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado) }}" class="button_body" title="Ver Detalles">
+                            <a href="{{ route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado) }}" class="btn-table-action" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
                             </a>
                         </td>
@@ -51,7 +51,7 @@
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
                             {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
-                            <a href="{{ route('administrador.gestion_postgrado.edit', $postgrado->id_postgrado) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestion_postgrado.edit', $postgrado->id_postgrado) }}" class="btn-table-action" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
@@ -61,7 +61,7 @@
                                 data-eliminar-postgrado="{{ $postgrado->id_postgrado }}" data-nombre="{{ $postgrado->nombre }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar">
+                                <button type="submit" class="btn-table-action" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -78,7 +78,7 @@
                 @endforelse
             </tbody>
         </table>
-    </section>
+    </div>
 
     <script>
         // Confirmación previa al borrado: muestra todo lo que se elimina en cascada.

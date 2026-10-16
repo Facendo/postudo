@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Postgrados'>
-    <section class="main-content-section page-content">
+    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
             <label>Listado de Secciones Asignadas a {{ $materia->nombre }}</label>
@@ -44,7 +44,7 @@
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
                             {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
-                            <a href="{{ route('administrador.gestionseccion.edit', $seccion->nro_seccion) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestionseccion.edit', $seccion->nro_seccion) }}" class="btn-table-action" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
@@ -53,7 +53,7 @@
                             <form action="{{ route('administrador.gestionseccion.destroy', $seccion->nro_seccion) }}" method="POST" class="inline-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar">
+                                <button type="submit" class="btn-table-action" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -66,5 +66,5 @@
                 @endforelse
             </tbody>
         </table>
-    </section>
+    </div>
 </x-layout>

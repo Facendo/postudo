@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Postgrado'>
-    <section class="main-content-section page-content">
+    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
             <label>Detalles del Postgrado: {{ $postgrado->nombre }}</label>
@@ -41,7 +41,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="text" name="nombre" class="form-input" value="{{ old('nombre', $mencion->nombre) }}" required style="max-width: 320px;">
-                                <button type="submit" class="button_body" title="Guardar nombre">
+                                <button type="submit" class="btn-table-action" title="Guardar nombre">
                                     <i class="fas fa-save"></i>
                                 </button>
                             </form>
@@ -51,7 +51,7 @@
                                 onsubmit="return confirm('¿Eliminar la mención \"{{ $mencion->nombre }}\"? Los estudiantes que la tengan asignada quedarán sin mención.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar mención">
+                                <button type="submit" class="btn-table-action" title="Eliminar mención">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -96,21 +96,21 @@
                         <td>{{ $cohorte->fecha_inicio }} - {{ $cohorte->fecha_fin }}</td>
                         <td>{{ $cohorte->nro_de_cohorte }}</td>
                         <td>
-                            <a href="{{ route('administrador.gestioncohorte.showdetalles', $cohorte->codigo_cohorte) }}" class="button_body" title="Ver Detalles">
+                            <a href="{{ route('administrador.gestioncohorte.showdetalles', $cohorte->codigo_cohorte) }}" class="btn-table-action" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
                             </a>
                         </td>
 
                         {{-- Columna de acciones con botones para Editar y Eliminar --}}
                         <td class="table-actions">
-                            <a href="{{ route('administrador.gestioncohorte.edit', $cohorte->codigo_cohorte) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestioncohorte.edit', $cohorte->codigo_cohorte) }}" class="btn-table-action" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
                             <form action="{{ route('administrador.gestioncohorte.destroy', $cohorte->codigo_cohorte) }}" method="POST" class="inline-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar">
+                                <button type="submit" class="btn-table-action" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -123,5 +123,5 @@
                 @endforelse
             </tbody>
         </table>
-    </section>
+    </div>
 </x-layout>

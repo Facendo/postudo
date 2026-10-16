@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Gestión de Cohortes'>
-    <section class="main-content-section page-content">
+    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         <div class="content_texto_bienvenida">
             <label>Listado de Cohortes</label>
         </div>
@@ -33,7 +33,7 @@
                         <td>{{ $cohorte->nro_de_cohorte }}</td>
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
-                            <a href="{{ route('administrador.gestioncohorte.edit', $cohorte) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestioncohorte.edit', $cohorte) }}" class="btn-table-action" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
@@ -41,7 +41,7 @@
                             <form action="{{ route('administrador.gestioncohorte.destroy', $cohorte) }}" method="POST" class="inline-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cohorte?');">
+                                <button type="submit" class="btn-table-action" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cohorte?');">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -54,5 +54,5 @@
                 @endforelse
             </tbody>
         </table>
-    </section>
+    </div>
 </x-layout>

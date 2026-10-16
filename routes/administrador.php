@@ -39,15 +39,8 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::put('/administrador/gestion_profesor/{profesor}', [ProfesorController::class, 'update'])->name('administrador.gestion_profesor.update'); // Actualizar profesor
     Route::delete('/administrador/gestion_profesor/{profesor}', [ProfesorController::class, 'destroy'])->name('administrador.gestion_profesor.destroy'); // Eliminar profesor
 
-    // Gestión de Postgrados
-    Route::get('/administrador/gestion_postgrado', [PostgradoController::class, 'index'])->name('administrador.gestion_postgrado'); // Lista de postgrados
-    Route::get('/administrador/gestion_postgrado/create', [PostgradoController::class, 'create'])->name('administrador.gestion_postgrado.create'); // Formulario de registro de postgrado
-    Route::post('/administrador/gestion_postgrado', [PostgradoController::class, 'store'])->name('administrador.gestion_postgrado.store'); // Guardar nuevo postgrado
-    Route::get('/administrador/gestion_postgrado/{id}/edit', [PostgradoController::class, 'edit'])->name('administrador.gestion_postgrado.edit'); // Formulario de edición de postgrado
-    Route::get('/administrador/gestion_postgrado/{id}/detalles', [PostgradoController::class, 'showdetalles'])->name('administrador.gestion_postgrado.showdetalles'); // Ver detalles de postgrado
-    Route::get('/administrador/gestion_postgrado/{id}/impacto', [PostgradoController::class, 'impacto'])->name('administrador.gestion_postgrado.impacto'); // Qué se borrará en cascada al eliminar el postgrado
-    Route::put('/administrador/gestion_postgrado/{id}', [PostgradoController::class, 'update'])->name('administrador.gestion_postgrado.update'); // Actualizar postgrado
-    Route::delete('/administrador/gestion_postgrado/{id}', [PostgradoController::class, 'destroy'])->name('administrador.gestion_postgrado.destroy'); // Eliminar postgrado
+    // NOTA (2026-10-16): la gestión de postgrados y cohortes se trasladó al
+    // grupo de doble rol del final de este archivo (administrador|coordinador_general).
 
     // Gestión de Materias
     Route::get('/administrador/gestionmaterias', [MateriasController::class, 'index'])->name('administrador.gestionmaterias'); // Lista de materias
@@ -58,15 +51,6 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::delete('/administrador/gestionmaterias/{id}', [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
     Route::get('/administrador/gestionmaterias/{id}/detalles', [MateriasController::class, 'showdetalles'])->name('administrador.gestionmaterias.showdetalles'); // Ver detalles de materia
 
-    // Gestion de Cohortes
-    Route::get('/administrador/gestioncohorte', [CohorteController::class, 'index'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte');
-    Route::get('/administrador/gestioncohorte/create/{id}', [CohorteController::class, 'create'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte.create');
-    Route::post('/administrador/gestioncohorte', [CohorteController::class, 'store'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte.store');
-    Route::get('/administrador/gestioncohorte/{id}/edit', [CohorteController::class, 'edit'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte.edit');
-    Route::get('/administrador/gestioncohorte/{id}/detalles', [CohorteController::class, 'showdetalles'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte.showdetalles');
-    Route::put('/administrador/gestioncohorte/{id}', [CohorteController::class, 'update'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte.update');
-    Route::delete('/administrador/gestioncohorte/{id}', [CohorteController::class, 'destroy'])->middleware('auth', 'role:administrador')->name('administrador.gestioncohorte.destroy');
-
     // Gestión de Secciones
     Route::get('/administrador/gestionseccion', [SeccionController::class, 'index'])->name('administrador.gestionseccion'); // Lista de secciones
     Route::get('/administrador/gestionseccion/{id}/create', [SeccionController::class, 'create'])->name('administrador.gestionseccion.create'); // Formulario de registro de sección
@@ -74,4 +58,30 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get('/administrador/gestionseccion/{id}/edit', [SeccionController::class, 'edit'])->name('administrador.gestionseccion.edit'); // Formulario de edición de sección
     Route::put('/administrador/gestionseccion/{id}', [SeccionController::class, 'update'])->name('administrador.gestionseccion.update'); // Actualizar sección
     Route::delete('/administrador/gestionseccion/{id}', [SeccionController::class, 'destroy'])->name('administrador.gestionseccion.destroy'); // Eliminar sección
+});
+
+// Gestión de Postgrados y Cohortes: accesible también para el coordinador
+// general, porque los postgrados (y sus cohortes y menciones) son parte del
+// árbol académico Área -> Postgrado -> Mención que administra el coordinador.
+// Mismas URLs y nombres de ruta que antes, solo cambia el rol permitido.
+Route::middleware(['auth', 'role:administrador|coordinador_general'])->group(function () {
+
+    // Gestión de Postgrados
+    Route::get('/administrador/gestion_postgrado', [PostgradoController::class, 'index'])->name('administrador.gestion_postgrado'); // Lista de postgrados
+    Route::get('/administrador/gestion_postgrado/create', [PostgradoController::class, 'create'])->name('administrador.gestion_postgrado.create'); // Formulario de registro de postgrado
+    Route::post('/administrador/gestion_postgrado', [PostgradoController::class, 'store'])->name('administrador.gestion_postgrado.store'); // Guardar nuevo postgrado
+    Route::get('/administrador/gestion_postgrado/{id}/edit', [PostgradoController::class, 'edit'])->name('administrador.gestion_postgrado.edit'); // Formulario de edición de postgrado
+    Route::get('/administrador/gestion_postgrado/{id}/detalles', [PostgradoController::class, 'showdetalles'])->name('administrador.gestion_postgrado.showdetalles'); // Ver detalles de postgrado
+    Route::get('/administrador/gestion_postgrado/{id}/impacto', [PostgradoController::class, 'impacto'])->name('administrador.gestion_postgrado.impacto'); // Qué se borrará en cascada al eliminar el postgrado
+    Route::put('/administrador/gestion_postgrado/{id}', [PostgradoController::class, 'update'])->name('administrador.gestion_postgrado.update'); // Actualizar postgrado
+    Route::delete('/administrador/gestion_postgrado/{id}', [PostgradoController::class, 'destroy'])->name('administrador.gestion_postgrado.destroy'); // Eliminar postgrado
+
+    // Gestión de Cohortes (desde «Detalles del Postgrado»)
+    Route::get('/administrador/gestioncohorte', [CohorteController::class, 'index'])->name('administrador.gestioncohorte'); // Lista de cohortes
+    Route::get('/administrador/gestioncohorte/create/{id}', [CohorteController::class, 'create'])->name('administrador.gestioncohorte.create'); // Formulario de registro de cohorte
+    Route::post('/administrador/gestioncohorte', [CohorteController::class, 'store'])->name('administrador.gestioncohorte.store'); // Guardar nueva cohorte
+    Route::get('/administrador/gestioncohorte/{id}/edit', [CohorteController::class, 'edit'])->name('administrador.gestioncohorte.edit'); // Formulario de edición de cohorte
+    Route::get('/administrador/gestioncohorte/{id}/detalles', [CohorteController::class, 'showdetalles'])->name('administrador.gestioncohorte.showdetalles'); // Ver detalles de cohorte
+    Route::put('/administrador/gestioncohorte/{id}', [CohorteController::class, 'update'])->name('administrador.gestioncohorte.update'); // Actualizar cohorte
+    Route::delete('/administrador/gestioncohorte/{id}', [CohorteController::class, 'destroy'])->name('administrador.gestioncohorte.destroy'); // Eliminar cohorte
 });

@@ -1,5 +1,5 @@
 <x-layout title='PostUDO || Postgrados'>
-    <section class="main-content-section page-content">
+    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
             <label>Listado de materias Asignadas a {{ $cohorte->nro_de_cohorte }}° cohorte</label>
@@ -34,7 +34,7 @@
                         <td>{{ $materia->nombre }}</td>
                         <td>{{ $materia->prelacion }}</td>
                         <td>{{-- Enlace a la vista de secciones asignadas --}}
-                            <a href="{{ route('administrador.gestionmaterias.showdetalles', $materia->codigo_materia) }}" class="button_body" title="Ver Secciones">
+                            <a href="{{ route('administrador.gestionmaterias.showdetalles', $materia->codigo_materia) }}" class="btn-table-action" title="Ver Secciones">
                                 <i class="fas fa-eye"></i>
                             </a></td>
 
@@ -42,7 +42,7 @@
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
                             {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
-                            <a href="{{ route('administrador.gestionmaterias.edit', $materia->codigo_materia) }}" class="button_body" title="Editar">
+                            <a href="{{ route('administrador.gestionmaterias.edit', $materia->codigo_materia) }}" class="btn-table-action" title="Editar">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
 
@@ -51,7 +51,7 @@
                             <form action="{{ route('administrador.gestionmaterias.destroy', $materia->codigo_materia) }}" method="POST" class="inline-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="button_body" title="Eliminar">
+                                <button type="submit" class="btn-table-action" title="Eliminar">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -64,5 +64,5 @@
                 @endforelse
             </tbody>
         </table>
-    </section>
+    </div>
 </x-layout>
