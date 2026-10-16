@@ -6,6 +6,7 @@ use App\Models\Area;
 use App\Models\Cohorte;
 use App\Models\Postgrado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PostgradoController extends Controller
@@ -23,12 +24,18 @@ class PostgradoController extends Controller
 
     /**
      * Muestra el formulario para crear un nuevo postgrado.
+     * Admite ?area=CODIGO para preseleccionar el área: lo usa el botón
+     * «Nuevo Postgrado» de la fila desplegada en la vista de Áreas.
      */
     public function create()
     {
         $areas = Area::orderBy('nombre')->get();
 
-        return view('administrador.registropostgrado', compact('areas'));
+        // Si el código no corresponde a un área existente, el select queda
+        // sin marcar; la validación 'exists:area,codigo' de store() lo cubre.
+        $areaPreseleccionada = request()->query('area');
+
+        return view('administrador.registropostgrado', compact('areas', 'areaPreseleccionada'));
     }
 
     /**
@@ -54,7 +61,13 @@ class PostgradoController extends Controller
         $postgrado->nro_cohortes = $request->nro_de_cohortes;
         $postgrado->save();
 
-        return redirect()->route('administrador.gestion_postgrado')->with('success', 'Postgrado registrado exitosamente.');
+        // El coordinador vuelve a la vista de Áreas (su punto de partida);
+        // el administrador no puede ver esa ruta, así que vuelve a su listado.
+        $destino = Auth::user()->rol === 'coordinador_general'
+            ? 'administrador.creacion.index'
+            : 'administrador.gestion_postgrado';
+
+        return redirect()->route($destino)->with('success', 'Postgrado registrado exitosamente.');
     }
 
     /**

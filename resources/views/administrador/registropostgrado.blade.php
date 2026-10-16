@@ -54,7 +54,7 @@
                 <select id="codigo_area" name="codigo_area" class="form-select" required>
                     <option value="">Selecciona un área</option>
                     @foreach($areas as $area)
-                        <option value="{{ $area->codigo }}" {{ old('codigo_area') == $area->codigo ? 'selected' : '' }}>
+                        <option value="{{ $area->codigo }}" {{ old('codigo_area', $areaPreseleccionada ?? '') == $area->codigo ? 'selected' : '' }}>
                             {{ $area->nombre }}
                         </option>
                     @endforeach

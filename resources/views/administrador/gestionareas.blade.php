@@ -69,10 +69,17 @@
                         <tr class="fila-postgrados hidden" data-area="{{ $item->codigo }}">
                             <td colspan="5">
                                 <div class="caja-postgrados">
-                                    <h4 class="caja-postgrados-titulo">
-                                        <i class="fa-solid fa-book-open"></i>
-                                        Postgrados de «{{ $item->nombre }}»
-                                    </h4>
+                                    <div class="caja-postgrados-header">
+                                        <h4 class="caja-postgrados-titulo">
+                                            <i class="fa-solid fa-book-open"></i>
+                                            Postgrados de «{{ $item->nombre }}»
+                                        </h4>
+                                        {{-- Registro de postgrado con esta área preseleccionada (?area=) --}}
+                                        <a class="btn-nuevo-postgrado"
+                                            href="{{ route('administrador.gestion_postgrado.create') }}?area={{ $item->codigo }}">
+                                            <i class="fa-solid fa-plus"></i> Nuevo Postgrado
+                                        </a>
+                                    </div>
 
                                     @if ($item->postgrados->isEmpty())
                                         <p class="sin-postgrados">Este área no tiene postgrados registrados.</p>
@@ -260,8 +267,17 @@
             padding-top: 16px;
         }
 
+        .caja-postgrados-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
         .caja-postgrados-titulo {
-            margin: 0 0 14px;
+            margin: 0;
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             font-weight: 600;
@@ -271,6 +287,30 @@
         .caja-postgrados-titulo i {
             margin-right: 8px;
             color: #ff8a73;
+        }
+
+        /* Botón fantasma «Nuevo Postgrado» en la cabecera del área desplegada */
+        .btn-nuevo-postgrado {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-nuevo-postgrado:hover {
+            background: rgba(255, 77, 77, 0.15);
+            border-color: rgba(255, 77, 77, 0.5);
+            color: #ffffff;
         }
 
         .sin-postgrados {
