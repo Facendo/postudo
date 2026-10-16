@@ -14,10 +14,7 @@
                 <i class="fa-solid fa-plus icon-left"></i> Nueva Área
             </button>
 
-            <span class="contador-vista">
-                <i class="fa-solid fa-layer-group"></i>
-                {{ $area->count() }} área(s) en total · Pulsa una fila para ver sus postgrados
-            </span>
+            
         </div>
 
         {{-- Tabla de áreas: sola, sin caja propia --}}
@@ -25,7 +22,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Código</th>
+
                         <th>Nombre</th>
                         <th class="col-descripcion">Descripción</th>
                         <th>Postgrados</th>
@@ -40,11 +37,11 @@
                             data-nombre="{{ $item->nombre }}"
                             data-descripcion="{{ $item->descripcion }}"
                             tabindex="0">
-                            <td>
+                            <td class="nombre-area">
                                 <i class="fa-solid fa-chevron-right flecha-fila"></i>
-                                {{ $item->codigo }}
+                                {{ $item->nombre }}
                             </td>
-                            <td class="nombre-area">{{ $item->nombre }}</td>
+                            
                             <td class="descripcion-area">
                                 {{ $item->descripcion ? \Illuminate\Support\Str::limit($item->descripcion, 90) : 'Sin descripción' }}
                             </td>
@@ -67,7 +64,7 @@
 
                         {{-- Postgrados de la área: fila oculta que se despliega con el clic --}}
                         <tr class="fila-postgrados hidden" data-area="{{ $item->codigo }}">
-                            <td colspan="5">
+                            <td colspan="4">
                                 <div class="caja-postgrados">
                                     <div class="caja-postgrados-header">
                                         <h4 class="caja-postgrados-titulo">
@@ -103,7 +100,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 30px; font-style: italic; opacity: 0.5;">
+                            <td colspan="4" style="text-align: center; padding: 30px; font-style: italic; opacity: 0.5;">
                                 No hay áreas registradas. Pulsa «Nueva Área» para crear la primera.
                             </td>
                         </tr>
