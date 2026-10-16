@@ -27,9 +27,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        $user=Auth::user();
-        
-        if($user->rol == "estudiante"){
+        $user = Auth::user();
+
+        if ($user->rol == 'estudiante') {
             return redirect()->intended(route('estudiante.index', absolute: false));
         } elseif ($user->rol === 'profesor') {
             return redirect(route('profesor.index', absolute: false));

@@ -15,6 +15,7 @@ class CohorteController extends Controller
     public function index()
     {
         $cohortes = Cohorte::all();
+
         return view('administrador.gestioncohorte', compact('cohortes'));
     }
 
@@ -24,6 +25,7 @@ class CohorteController extends Controller
     public function create(string $id)
     {
         $postgrado = Postgrado::find($id); // Asegúrate de que el postgrado existe
+
         return view('administrador.registrocohorte', compact('postgrado'));
     }
 
@@ -33,13 +35,14 @@ class CohorteController extends Controller
     public function store(Request $request)
     {
         $postgrado = Postgrado::findOrFail($request->codigo_postgrado); // Validar que el postgrado existe
-        $cohorte = new Cohorte();
+        $cohorte = new Cohorte;
         $cohorte->codigo_cohorte = $request->codigo_cohorte;
         $cohorte->fecha_inicio = $request->fecha_inicio;
         $cohorte->fecha_fin = $request->fecha_fin;
         $cohorte->nro_de_cohorte = $request->nro_de_cohorte;
         $cohorte->codigo_postgrado = $request->codigo_postgrado; // Ensure this matches your migration
         $cohorte->save();
+
         return redirect()->route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado)->with('success', 'Cohorte registrada correctamente.', compact('postgrado'));
     }
 
@@ -50,6 +53,7 @@ class CohorteController extends Controller
     {
         $cohorte = Cohorte::find($id);
         $materias = Materias::where('codigo_cohorte', $cohorte->codigo_cohorte)->get(); // Obtener materias asociadas a la cohorte
+
         return view('administrador.detallescohortes', compact('cohorte', 'materias'));
     }
 
@@ -59,6 +63,7 @@ class CohorteController extends Controller
     public function edit(string $id)
     {
         $cohorte = Cohorte::find($id); // Asegúrate de que la cohorte existe
+
         return view('administrador.editarcohorte', compact('cohorte'));
     }
 
@@ -74,6 +79,7 @@ class CohorteController extends Controller
         $cohorte->nro_de_cohorte = $request->nro_de_cohorte; // Ensure this matches your migration
         $cohorte->codigo_postgrado = $request->codigo_postgrado; // Ensure this matches your migration
         $cohorte->save();
+
         return redirect()->route('administrador.gestion_postgrado.showdetalles', $cohorte->codigo_postgrado)->with('success', 'Cohorte actualizada correctamente.');
     }
 
@@ -82,10 +88,11 @@ class CohorteController extends Controller
      */
     public function destroy(string $id)
     {
-       
+
         $cohorte = Cohorte::find($id);
         $codigo_postgrado = $cohorte->codigo_postgrado; // Guardar el código del postgrado antes de eliminar la cohorte
         $cohorte->delete();
-        return redirect()->route('administrador.gestion_postgrado.showdetalles',$codigo_postgrado)->with('success', 'Cohorte eliminada correctamente.');
+
+        return redirect()->route('administrador.gestion_postgrado.showdetalles', $codigo_postgrado)->with('success', 'Cohorte eliminada correctamente.');
     }
 }

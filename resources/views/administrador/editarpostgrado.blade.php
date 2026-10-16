@@ -42,18 +42,18 @@
                     @enderror
                 </div>
 
-                <!-- Campo para codigo_especialidad -->
+                <!-- Campo para el área -->
                 <div class="form-group">
-                    <label for="codigo_especialidad" class="form-label">Especialidad</label>
-                    <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
-                        @foreach($especialidades as $especialidad)
-                            <option value="{{ $especialidad->codigo_especialidad }}" 
-                                {{ old('codigo_especialidad', $postgrado->codigo_especialidad) == $especialidad->codigo_especialidad ? 'selected' : '' }}>
-                                {{ $especialidad->nombre }}
+                    <label for="codigo_area" class="form-label">Área</label>
+                    <select id="codigo_area" name="codigo_area" class="form-select" required>
+                        @foreach($areas as $area)
+                            <option value="{{ $area->codigo }}"
+                                {{ old('codigo_area', $postgrado->codigo_area) == $area->codigo ? 'selected' : '' }}>
+                                {{ $area->nombre }}
                             </option>
                         @endforeach
                     </select>
-                    @error('codigo_especialidad')
+                    @error('codigo_area')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

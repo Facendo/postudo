@@ -18,13 +18,12 @@ return new class extends Migration
             $table->integer('prelacion')->nullable();
             $table->timestamps();
 
-
             $table->foreign('codigo_cohorte')
                 ->references('codigo_cohorte')
                 ->on('cohorte')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-                
+
         });
     }
 

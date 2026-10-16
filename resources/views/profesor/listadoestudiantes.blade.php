@@ -43,8 +43,8 @@
                         <th>Cédula</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Carrera</th>
-                        <th>Especialidad</th>
+                        <th>Postgrado</th>
+                        <th>Mención</th>
                         <th>Correo</th>
                         <th>Edad</th>
                         {{-- La columna de Acciones ha sido eliminada --}}

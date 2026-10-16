@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('seccion', function (Blueprint $table) {
             $table->integer('nro_seccion')->primary();
             $table->integer('codigo_materia');
-            $table->time('hora_inicio'); 
-            $table->time('hora_fin'); 
+            $table->time('hora_inicio');
+            $table->time('hora_fin');
             $table->string('cedula_docente');
             $table->string('aula');
             $table->integer('cupo_maximo');
@@ -26,7 +26,7 @@ return new class extends Migration
                 ->references('codigo_materia')
                 ->on('materia')
                 ->onDelete('cascade');
-                
+
         });
     }
 

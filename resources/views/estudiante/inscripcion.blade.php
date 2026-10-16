@@ -7,11 +7,11 @@
             <form action="{{ route('estudiante.inscribir') }}" method="POST">
                 @csrf {{-- Token CSRF para protección contra ataques --}}
 
-                {{-- Campo para seleccionar la Especialidad/Postgrado --}}
+                {{-- Campo para seleccionar el Postgrado --}}
                 <div class="form-group">
-                    <label for="id_postgrado" class="form-label">Especialidad/Postgrado</label>
+                    <label for="id_postgrado" class="form-label">Postgrado</label>
                     <select id="id_postgrado" name="id_postgrado" class="form-input" required>
-                        <option value="">Selecciona una Especialidad</option>
+                        <option value="">Selecciona un Postgrado</option>
                         @forelse($postgrados as $postgrado)
                             <option value="{{ $postgrado->id_postgrado }}" {{ old('id_postgrado') == $postgrado->id_postgrado ? 'selected' : '' }}>
                                 {{ $postgrado->nombre }}

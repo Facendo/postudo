@@ -10,313 +10,198 @@
             <button id="btnArea" class="button_body active-button">
                 Áreas de Postgrado
             </button>
-            <button id="btnCarrera" class="button_body hidden">
-                Carreras por Área
+            <button id="btnPostgrado" class="button_body hidden">
+                Postgrados por Área
             </button>
-            <button id="btnEspecialidad" class="button_body hidden">
-                Especialidades por Carrera
+            <button id="btnMencion" class="button_body hidden">
+                Menciones por Postgrado
             </button>
         </section>
 
+        {{-- 1) ÁREAS --}}
         <section id="infoArea" class="info-section active">
             <h3>Áreas de Postgrado de la UDO</h3>
             <ul class="info-list">
-                <li><a href="#" class="area-link" data-target="ingenieria">Ciencias de la Ingeniería</a></li>
-                <li><a href="#" class="area-link" data-target="salud">Ciencias de la Salud</a></li>
-                <li><a href="#" class="area-link" data-target="administrativas">Ciencias Administrativas y Gerenciales</a></li>
-                <li><a href="#" class="area-link" data-target="basicas">Ciencias Básicas</a></li>
-                <li><a href="#" class="area-link" data-target="humanidades">Humanidades y Educación</a></li>
+                @forelse ($areas as $area)
+                    <li>
+                        <a href="#" class="area-link" data-area="{{ $area->codigo }}" data-nombre="{{ $area->nombre }}">
+                            {{ $area->nombre }}
+                        </a>
+                    </li>
+                @empty
+                    <li>No hay áreas registradas por el momento.</li>
+                @endforelse
             </ul>
         </section>
 
-        <section id="infoCarrera" class="info-section">
-            <h3>Carreras por Área</h3>
-            <ul class="info-list">
-                <li id="ingenieria">
-                    <a href="#" class="area-return-link" data-area-name="Ciencias de la Ingeniería">Ciencias de la Ingeniería</a>
-                    <ul class="info-list-nested">
-                        <li><a href="#" class="carrera-link" data-target="maestria-ingenieria-civil">Maestría en Ingeniería Civil</a></li>
-                        <li><a href="#" class="carrera-link" data-target="doctorado-ingenieria-quimica">Doctorado en Ingeniería Química</a></li>
-                        <li><a href="#" class="carrera-link" data-target="especializacion-automatizacion">Especialización en Automatización Industrial</a></li>
+        {{-- 2) POSTGRADOS DE CADA ÁREA --}}
+        <section id="infoPostgrado" class="info-section">
+            <h3>Postgrados por Área</h3>
+            @forelse ($areas as $area)
+                <div class="postgrado-group" data-area="{{ $area->codigo }}" style="display: none;">
+                    <ul class="info-list">
+                        <li>
+                            <a href="#" class="area-return-link" data-nombre="{{ $area->nombre }}">
+                                {{ $area->nombre }}
+                            </a>
+                            @if ($area->postgrados->isEmpty())
+                                <ul class="info-list-nested">
+                                    <li>No hay postgrados registrados en esta área.</li>
+                                </ul>
+                            @else
+                                <ul class="info-list-nested">
+                                    @foreach ($area->postgrados as $postgrado)
+                                        <li>
+                                            <a href="#" class="postgrado-link"
+                                               data-postgrado="{{ $postgrado->id_postgrado }}"
+                                               data-area="{{ $area->codigo }}"
+                                               data-nombre="{{ $postgrado->nombre }}">
+                                                {{ $postgrado->nombre }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </li>
                     </ul>
-                </li>
-                <li id="salud">
-                    <a href="#" class="area-return-link" data-area-name="Ciencias de la Salud">Ciencias de la Salud</a>
-                    <ul class="info-list-nested">
-                        <li><a href="#" class="carrera-link" data-target="maestria-salud-publica">Maestría en Salud Pública</a></li>
-                        <li><a href="#" class="carrera-link" data-target="especializacion-pediatria">Especialización en Pediatría</a></li>
-                        <li><a href="#" class="carrera-link" data-target="doctorado-ciencias-biomedicas">Doctorado en Ciencias Biomédicas</a></li>
-                    </ul>
-                </li>
-                <li id="administrativas">
-                    <a href="#" class="area-return-link" data-area-name="Ciencias Administrativas y Gerenciales">Ciencias Administrativas y Gerenciales</a>
-                    <ul class="info-list-nested">
-                        <li><a href="#" class="carrera-link" data-target="maestria-gerencia-proyectos">Maestría en Gerencia de Proyectos</a></li>
-                        <li><a href="#" class="carrera-link" data-target="especializacion-finanzas">Especialización en Finanzas Corporativas</a></li>
-                    </ul>
-                </li>
-                <li id="basicas">
-                    <a href="#" class="area-return-link" data-area-name="Ciencias Básicas">Ciencias Básicas</a>
-                    <ul class="info-list-nested">
-                        <li><a href="#" class="carrera-link" data-target="licenciatura-fisica">Licenciatura en Física</a></li>
-                        <li><a href="#" class="carrera-link" data-target="maestria-matematicas">Maestría en Matemáticas</a></li>
-                    </ul>
-                </li>
-                <li id="humanidades">
-                    <a href="#" class="area-return-link" data-area-name="Humanidades y Educación">Humanidades y Educación</a>
-                    <ul class="info-list-nested">
-                        <li><a href="#" class="carrera-link" data-target="maestria-educacion">Maestría en Educación</a></li>
-                        <li><a href="#" class="carrera-link" data-target="doctorado-literatura">Doctorado en Literatura</a></li>
-                    </ul>
-                </li>
-            </ul>
+                </div>
+            @empty
+                <ul class="info-list">
+                    <li>No hay áreas registradas por el momento.</li>
+                </ul>
+            @endforelse
         </section>
 
-        <section id="infoEspecialidad" class="info-section">
-            <h3>Especialidades por Carrera</h3>
-            <ul class="info-list">
-                <li id="maestria-ingenieria-civil">
-                    <a href="#" class="especialidad-return-link" data-target="ingenieria">Maestría en Ingeniería Civil</a>
-                    <ul class="info-list-nested">
-                        <li>Estructuras</li>
-                        <li>Hidráulica</li>
-                        <li>Geotecnia</li>
-                    </ul>
-                </li>
-                <li id="maestria-salud-publica">
-                    <a href="#" class="especialidad-return-link" data-target="salud">Maestría en Salud Pública</a>
-                    <ul class="info-list-nested">
-                        <li>Epidemiología</li>
-                        <li>Gestión Hospitalaria</li>
-                    </ul>
-                </li>
-                <li id="especializacion-pediatria">
-                    <a href="#" class="especialidad-return-link" data-target="salud">Especialización en Pediatría</a>
-                    <ul class="info-list-nested">
-                        <li>Neonatología</li>
-                        <li>Cardiología Pediátrica</li>
-                    </ul>
-                </li>
-                <li id="doctorado-ingenieria-quimica">
-                    <a href="#" class="especialidad-return-link" data-target="ingenieria">Doctorado en Ingeniería Química</a>
-                    <ul class="info-list-nested">
-                        <li>Catálisis</li>
-                        <li>Simulación de Procesos</li>
-                    </ul>
-                </li>
-                <li id="especializacion-automatizacion">
-                    <a href="#" class="especialidad-return-link" data-target="ingenieria">Especialización en Automatización Industrial</a>
-                    <ul class="info-list-nested">
-                        <li>Robótica</li>
-                        <li>Control de Procesos</li>
-                    </ul>
-                </li>
-                 <li id="doctorado-ciencias-biomedicas">
-                    <a href="#" class="especialidad-return-link" data-target="salud">Doctorado en Ciencias Biomédicas</a>
-                    <ul class="info-list-nested">
-                        <li>Neurociencias</li>
-                        <li>Genética Molecular</li>
-                    </ul>
-                </li>
-                <li id="maestria-gerencia-proyectos">
-                    <a href="#" class="especialidad-return-link" data-target="administrativas">Maestría en Gerencia de Proyectos</a>
-                    <ul class="info-list-nested">
-                        <li>Gestión de Riesgos</li>
-                        <li>Planificación Estratégica</li>
-                    </ul>
-                </li>
-                <li id="especializacion-finanzas">
-                    <a href="#" class="especialidad-return-link" data-target="administrativas">Especialización en Finanzas Corporativas</a>
-                    <ul class="info-list-nested">
-                        <li>Mercados de Capitales</li>
-                        <li>Análisis de Inversiones</li>
-                    </ul>
-                </li>
-                 <li id="licenciatura-fisica">
-                    <a href="#" class="especialidad-return-link" data-target="basicas">Licenciatura en Física</a>
-                    <ul class="info-list-nested">
-                        <li>Física Cuántica</li>
-                        <li>Astrofísica</li>
-                    </ul>
-                </li>
-                 <li id="maestria-matematicas">
-                    <a href="#" class="especialidad-return-link" data-target="basicas">Maestría en Matemáticas</a>
-                    <ul class="info-list-nested">
-                        <li>Álgebra Avanzada</li>
-                        <li>Análisis Numérico</li>
-                    </ul>
-                </li>
-                 <li id="maestria-educacion">
-                    <a href="#" class="especialidad-return-link" data-target="humanidades">Maestría en Educación</a>
-                    <ul class="info-list-nested">
-                        <li>Didáctica Universitaria</li>
-                        <li>Currículo y Evaluación</li>
-                    </ul>
-                </li>
-                 <li id="doctorado-literatura">
-                    <a href="#" class="especialidad-return-link" data-target="humanidades">Doctorado en Literatura</a>
-                    <ul class="info-list-nested">
-                        <li>Literatura Latinoamericana</li>
-                        <li>Crítica Literaria</li>
-                    </ul>
-                </li>
-            </ul>
+        {{-- 3) MENCIONES DE CADA POSTGRADO --}}
+        <section id="infoMencion" class="info-section">
+            <h3>Menciones por Postgrado</h3>
+            @forelse ($areas as $area)
+                @foreach ($area->postgrados as $postgrado)
+                    <div class="mencion-group" data-postgrado="{{ $postgrado->id_postgrado }}" data-area="{{ $area->codigo }}" style="display: none;">
+                        <ul class="info-list">
+                            <li>
+                                <a href="#" class="postgrado-return-link" data-area="{{ $area->codigo }}">
+                                    {{ $postgrado->nombre }}
+                                </a>
+                                @if ($postgrado->menciones->isEmpty())
+                                    <ul class="info-list-nested">
+                                        <li>Este postgrado aún no tiene menciones.</li>
+                                    </ul>
+                                @else
+                                    <ul class="info-list-nested">
+                                        @foreach ($postgrado->menciones as $mencion)
+                                            <li>{{ $mencion->nombre }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        </ul>
+                    </div>
+                @endforeach
+            @empty
+                <ul class="info-list">
+                    <li>No hay postgrados registrados por el momento.</li>
+                </ul>
+            @endforelse
         </section>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const btnArea = document.getElementById('btnArea');
-            const btnCarrera = document.getElementById('btnCarrera');
-            const btnEspecialidad = document.getElementById('btnEspecialidad');
+            const secciones = {
+                area: document.getElementById('infoArea'),
+                postgrado: document.getElementById('infoPostgrado'),
+                mencion: document.getElementById('infoMencion')
+            };
+            const botones = {
+                area: document.getElementById('btnArea'),
+                postgrado: document.getElementById('btnPostgrado'),
+                mencion: document.getElementById('btnMencion')
+            };
 
-            const infoArea = document.getElementById('infoArea');
-            const infoCarrera = document.getElementById('infoCarrera');
-            const infoEspecialidad = document.getElementById('infoEspecialidad');
+            let areaActual = null;
+            let nombreAreaActual = '';
+            let postgradoActual = null;
+            let nombrePostgradoActual = '';
 
-            const infoSections = [infoArea, infoCarrera, infoEspecialidad];
-            const actionButtons = [btnArea, btnCarrera, btnEspecialidad];
+            function mostrar(seccion) {
+                Object.values(secciones).forEach(s => s.classList.remove('active'));
+                secciones[seccion].classList.add('active');
 
-            // Inicialmente muestra la sección de Áreas
-            infoArea.classList.add('active');
-            btnArea.classList.add('active-button');
-
-            function hideAllInfoSections() {
-                infoSections.forEach(section => {
-                    section.classList.remove('active');
+                Object.entries(botones).forEach(([clave, boton]) => {
+                    boton.classList.toggle('active-button', clave === seccion);
                 });
             }
 
-            function deactivateAllButtons() {
-                actionButtons.forEach(button => {
-                    button.classList.remove('active-button');
+            function mostrarPostgradosDeArea(codigoArea, nombreArea) {
+                areaActual = codigoArea;
+                nombreAreaActual = nombreArea;
+
+                document.querySelectorAll('.postgrado-group').forEach(grupo => {
+                    grupo.style.display = grupo.dataset.area === String(codigoArea) ? '' : 'none';
                 });
+
+                botones.postgrado.classList.remove('hidden');
+                botones.postgrado.textContent = `Postgrados: ${nombreAreaActual}`;
+                mostrar('postgrado');
             }
 
-            function hideAllButtons() {
-                actionButtons.forEach(button => {
-                    button.classList.add('hidden');
+            function mostrarMencionesDePostgrado(idPostgrado, codigoArea, nombrePostgrado) {
+                postgradoActual = idPostgrado;
+                nombrePostgradoActual = nombrePostgrado;
+
+                document.querySelectorAll('.mencion-group').forEach(grupo => {
+                    grupo.style.display = grupo.dataset.postgrado === String(idPostgrado) ? '' : 'none';
                 });
+
+                botones.mencion.classList.remove('hidden');
+                botones.mencion.textContent = `Menciones: ${nombrePostgradoActual}`;
+                mostrar('mencion');
             }
 
-            // Manejo de clics en los botones principales
-            btnArea.addEventListener('click', () => {
-                hideAllInfoSections();
-                deactivateAllButtons();
-                hideAllButtons();
-                infoArea.classList.add('active');
-                btnArea.classList.add('active-button');
-                btnArea.classList.remove('hidden');
-            });
-
-            btnCarrera.addEventListener('click', () => {
-                hideAllInfoSections();
-                deactivateAllButtons();
-                hideAllButtons(); // Oculta todos los botones
-                infoCarrera.classList.add('active');
-                btnCarrera.classList.add('active-button');
-                btnCarrera.classList.remove('hidden');
-                // btnEspecialidad.classList.remove('hidden'); // <-- ESTO SE ELIMINÓ/MODIFICÓ
-                btnEspecialidad.classList.add('hidden'); // <-- NUEVO: OCULTAR EN ESTA VISTA
-            });
-
-            btnEspecialidad.addEventListener('click', () => {
-                hideAllInfoSections();
-                deactivateAllButtons();
-                hideAllButtons();
-                infoEspecialidad.classList.add('active');
-                btnEspecialidad.classList.add('active-button');
-                btnCarrera.classList.remove('hidden');
-                btnEspecialidad.classList.remove('hidden');
-            });
-
-            // Manejo de clics en los enlaces de Área (desde la sección de Áreas)
-            const areaLinks = document.querySelectorAll('.area-link');
-            areaLinks.forEach(link => {
-                link.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    const targetId = event.target.dataset.target;
-
-                    hideAllInfoSections();
-                    deactivateAllButtons();
-
-                    infoCarrera.classList.add('active');
-                    btnCarrera.classList.add('active-button');
-
-                    btnArea.classList.add('hidden');
-                    btnCarrera.classList.remove('hidden');
-                    btnEspecialidad.classList.add('hidden'); // <-- NUEVO: OCULTAR EN ESTA VISTA
-                    
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+            // Áreas -> Postgrados
+            document.querySelectorAll('.area-link').forEach(enlace => {
+                enlace.addEventListener('click', evento => {
+                    evento.preventDefault();
+                    mostrarPostgradosDeArea(enlace.dataset.area, enlace.dataset.nombre);
                 });
             });
 
-            // Manejo de clics en los enlaces de Retorno de Área (desde la sección de Carreras)
-            const areaReturnLinks = document.querySelectorAll('.area-return-link');
-            areaReturnLinks.forEach(link => {
-                link.addEventListener('click', (event) => {
-                    event.preventDefault();
-
-                    hideAllInfoSections();
-                    deactivateAllButtons();
-
-                    infoArea.classList.add('active');
-                    btnArea.classList.add('active-button');
-
-                    btnArea.classList.remove('hidden');
-                    btnCarrera.classList.add('hidden');
-                    btnEspecialidad.classList.add('hidden');
+            // Postgrados -> Menciones
+            document.querySelectorAll('.postgrado-link').forEach(enlace => {
+                enlace.addEventListener('click', evento => {
+                    evento.preventDefault();
+                    mostrarMencionesDePostgrado(enlace.dataset.postgrado, enlace.dataset.area, enlace.dataset.nombre);
                 });
             });
 
-            // Manejo de clics en los enlaces de Carrera (desde la sección de Carreras a Especialidades)
-            const carreraLinks = document.querySelectorAll('.carrera-link');
-            carreraLinks.forEach(link => {
-                link.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    const targetId = event.target.dataset.target;
-
-                    hideAllInfoSections();
-                    deactivateAllButtons();
-
-                    infoEspecialidad.classList.add('active');
-                    btnEspecialidad.classList.add('active-button');
-
-                    btnArea.classList.add('hidden');
-                    btnCarrera.classList.add('hidden');
-                    btnEspecialidad.classList.remove('hidden');
-                    
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+            // Volver de Menciones -> Postgrados del área
+            document.querySelectorAll('.postgrado-return-link').forEach(enlace => {
+                enlace.addEventListener('click', evento => {
+                    evento.preventDefault();
+                    mostrarPostgradosDeArea(enlace.dataset.area, nombreAreaActual || 'la');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
 
-            // Manejo de clics en los enlaces de Retorno de Especialidad (desde la sección de Especialidades)
-            const especialidadReturnLinks = document.querySelectorAll('.especialidad-return-link');
-            especialidadReturnLinks.forEach(link => {
-                link.addEventListener('click', (event) => {
-                    event.preventDefault();
-
-                    hideAllInfoSections();
-                    deactivateAllButtons();
-
-                    infoCarrera.classList.add('active');
-                    btnCarrera.classList.add('active-button');
-
-                    btnArea.classList.add('hidden');
-                    btnCarrera.classList.remove('hidden');
-                    btnEspecialidad.classList.add('hidden'); // <-- NUEVO: OCULTAR EN ESTA VISTA
-                    
-                    const targetElement = document.getElementById(event.target.closest('li').id);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+            // Volver de Postgrados -> Áreas
+            document.querySelectorAll('.area-return-link').forEach(enlace => {
+                enlace.addEventListener('click', evento => {
+                    evento.preventDefault();
+                    mostrar('area');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
+            });
+
+            // Navegación por los botones superiores
+            botones.area.addEventListener('click', () => mostrar('area'));
+            botones.postgrado.addEventListener('click', () => {
+                if (areaActual !== null) mostrarPostgradosDeArea(areaActual, nombreAreaActual);
+                else mostrar('postgrado');
+            });
+            botones.mencion.addEventListener('click', () => {
+                if (postgradoActual !== null) mostrarMencionesDePostgrado(postgradoActual, areaActual, nombrePostgradoActual);
+                else mostrar('mencion');
             });
         });
     </script>

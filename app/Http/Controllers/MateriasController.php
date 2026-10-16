@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cohorte;
 use App\Models\Materias;
-use Illuminate\Http\Request;
-use App\Models\Especialidades;
 use App\Models\Seccion;
+use Illuminate\Http\Request;
 
 class MateriasController extends Controller
 {
@@ -16,8 +15,8 @@ class MateriasController extends Controller
     public function index()
     {
         $materias = Materias::all();
-        $especialidades = Especialidades::all();
-        return view('administrador.gestionmaterias', compact('materias', 'especialidades'));
+
+        return view('administrador.gestionmaterias', compact('materias'));
     }
 
     /**
@@ -27,6 +26,7 @@ class MateriasController extends Controller
     {
         $cohorte = Cohorte::find($id);
         $materias = Materias::all();
+
         return view('administrador.registromateria', compact('cohorte', 'materias'));
     }
 
@@ -36,7 +36,7 @@ class MateriasController extends Controller
     public function store(Request $request)
     {
         $codigo_cohorte = $request->codigo_cohorte;
-        $materia = new Materias();
+        $materia = new Materias;
         $materia->codigo_materia = $request->codigo_materia;
         $materia->nombre = $request->nombre;
         $materia->codigo_cohorte = $request->codigo_cohorte;
@@ -51,8 +51,9 @@ class MateriasController extends Controller
      */
     public function showdetalles(string $id)
     {
-        $materia= Materias::find($id);
+        $materia = Materias::find($id);
         $secciones = Seccion::where('codigo_materia', $id)->get();
+
         return view('administrador.detallesmaterias', compact('materia', 'secciones'));
     }
 
@@ -62,6 +63,7 @@ class MateriasController extends Controller
     public function edit(string $id)
     {
         $materia = Materias::where('codigo_materia', $id)->firstOrFail();
+
         // ...otras variables si necesitas...
         return view('administrador.editarmateria', compact('materia'));
     }
@@ -91,6 +93,7 @@ class MateriasController extends Controller
         $materia = Materias::find($id);
         $codigo_cohorte = $materia->codigo_cohorte;
         $materia->delete();
+
         return redirect()->route('administrador.gestioncohorte.showdetalles', $codigo_cohorte)->with('success', 'Materia eliminada exitosamente.');
     }
 }

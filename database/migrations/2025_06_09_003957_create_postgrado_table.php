@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('descripcion');
             $table->integer('nro_cohortes');
             $table->string('duracion');
-          
+
             $table->foreign('codigo_especialidad')
                 ->references('codigo_especialidad')
                 ->on('especialidades')
                 ->onDelete('cascade');
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists('postgrado');

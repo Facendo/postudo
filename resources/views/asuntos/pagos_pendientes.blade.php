@@ -65,7 +65,7 @@
                     <tr>
                         <th>Cédula</th>
                         <th>Nombre</th>
-                        <th>Especialidad</th>
+                        <th>Mención</th>
                         <th>Banco Emisor</th>
                         <th>Banco Receptor</th>
                         <th>Referencia</th>
@@ -80,7 +80,7 @@
                         <tr>
                             <td>{{ $pago->cedula }}</td>
                             <td>{{ $pago->nombre }}</td>
-                            <td>{{ $pago->estudiante->especialidadRel->nombre ?? $pago->estudiante->especialidad ?? 'N/A' }}
+                            <td>{{ $pago->estudiante?->especialidad ?? 'N/A' }}
                             </td>
                             <td>{{ $pago->banco_emisor }}</td>
                             <td>{{ $pago->banco_receptor }}</td>

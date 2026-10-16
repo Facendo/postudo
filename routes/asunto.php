@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AsuntoController;
-use App\Http\Middleware\CheckRole;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get('/asuntos', [AsuntoController::class, 'index'])->name('asuntos.index');

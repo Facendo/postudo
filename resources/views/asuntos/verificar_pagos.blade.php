@@ -60,7 +60,7 @@
                                 <th>Estado</th>
                                 <th>Cédula</th>
                                 <th>Nombre</th>
-                                <th>Especialidad</th>
+                                <th>Mención</th>
                                 <th>Referencia</th>
                                 <th>Asunto</th>
                                 <th>Monto Registrado</th>
@@ -107,7 +107,7 @@
                                     </td>
                                     <td>{{ $pago->cedula }}</td>
                                     <td>{{ $pago->nombre }}</td>
-                                    <td>{{ $pago->estudiante->especialidadRel->nombre ?? $pago->estudiante->especialidad ?? 'N/A' }}
+                                    <td>{{ $pago->estudiante?->especialidad ?? 'N/A' }}
                                     </td>
                                     <td class="celda-referencia">{{ $pago->referencia }}</td>
                                     <td>{{ $pago->asunto }}</td>

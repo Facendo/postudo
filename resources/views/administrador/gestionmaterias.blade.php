@@ -18,8 +18,6 @@
                 <tr>
                     <th>Código Materia</th>
                     <th>Nombre</th>
-                    <th>Carrera</th>
-                    <th>Especialidad</th>
                     <th>Sección</th>
                     <th>Prelación</th>
                     <th>Acciones</th>
@@ -31,8 +29,6 @@
                     <tr>
                         <td>{{ $materia->codigo_materia }}</td>
                         <td>{{ $materia->nombre}}</td>
-                        <td>{{ $materia->nombre_carrera }}</td>
-                        <td>{{ $materia->nombre_especialidad }}</td>
                         <td>{{ $materia->nro_seccion }}</td>
                         <td>{{ $materia->prelacion }}</td>
 
@@ -56,7 +52,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">No hay materias registradas.</td>
+                        <td colspan="5" style="text-align: center; padding: 20px;">No hay materias registradas.</td>
                     </tr>
                 @endforelse
             </tbody>

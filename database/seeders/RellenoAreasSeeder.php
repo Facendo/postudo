@@ -2,19 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
+use App\Models\Asunto;
+use App\Models\Cohorte;
 use App\Models\Estudiante;
 use App\Models\Evaluacion;
 use App\Models\Materias;
-use App\Models\Seccion;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Area;
-use App\Models\Asunto;
-use App\Models\Carrera;
-use App\Models\Cohorte;
-use App\Models\Especialidades;
+use App\Models\Mencion;
 use App\Models\Postgrado;
 use App\Models\Profesor;
+use App\Models\Seccion;
+use Illuminate\Database\Seeder;
 
 class RellenoAreasSeeder extends Seeder
 {
@@ -57,58 +55,6 @@ class RellenoAreasSeeder extends Seeder
             'codigo' => 7,
             'nombre' => 'Tecnologías de la Información',
             'descripcion' => 'Área encargada de la formación en tecnologías de la información.',
-        ]);
-
-        Carrera::create([
-            'id_carrera' => 1,
-            'nombre' => 'Ingeniería de Sistemas',
-            'codigo_area' => 2,
-        ]);
-        Carrera::create([
-            'id_carrera' => 2,
-            'nombre' => 'Administración de Empresas',
-            'codigo_area' => 1,
-        ]);
-        Carrera::create([
-            'id_carrera' => 3,
-            'nombre' => 'Psicología',
-            'codigo_area' => 3,
-        ]);
-        Carrera::create([
-            'id_carrera' => 4,
-            'nombre' => 'Medicina',
-            'codigo_area' => 4,
-        ]);
-        Carrera::create([
-            'id_carrera' => 5,
-            'nombre' => 'Pedagogía',
-            'codigo_area' => 5,
-        ]);
-
-        Especialidades::create([
-            'codigo_especialidad' => 1,
-            'nombre' => 'Desarrollo de Software',
-            'id_carrera' => 1,
-        ]);
-        Especialidades::create([
-            'codigo_especialidad' => 2,
-            'nombre' => 'Gestión Empresarial',
-            'id_carrera' => 2,
-        ]);
-        Especialidades::create([
-            'codigo_especialidad' => 3,
-            'nombre' => 'Psicología Clínica',
-            'id_carrera' => 3,
-        ]);
-        Especialidades::create([
-            'codigo_especialidad' => 4,
-            'nombre' => 'Cirugía General',
-            'id_carrera' => 4,
-        ]);
-        Especialidades::create([
-            'codigo_especialidad' => 5,
-            'nombre' => 'Educación Inicial',
-            'id_carrera' => 5,
         ]);
 
         Estudiante::create([
@@ -162,7 +108,7 @@ class RellenoAreasSeeder extends Seeder
             'nombre' => 'Maestría en Ingeniería de Software',
             'descripcion' => 'Programa de posgrado enfocado en el desarrollo avanzado de software.',
             'duracion' => 24,
-            'codigo_especialidad' => 1,
+            'codigo_area' => 2, // Área Ingeniería
             'nro_cohortes' => 3,
         ]);
         Postgrado::create([
@@ -170,7 +116,7 @@ class RellenoAreasSeeder extends Seeder
             'nombre' => 'Maestría en Administración de Empresas',
             'descripcion' => 'Programa de posgrado enfocado en la gestión empresarial.',
             'duracion' => 18,
-            'codigo_especialidad' => 2,
+            'codigo_area' => 1, // Área Administración
             'nro_cohortes' => 2,
         ]);
         Postgrado::create([
@@ -178,8 +124,23 @@ class RellenoAreasSeeder extends Seeder
             'nombre' => 'Maestría en Psicología',
             'descripcion' => 'Programa de posgrado enfocado en la formación avanzada en psicología.',
             'duracion' => 24,
-            'codigo_especialidad' => 3,
+            'codigo_area' => 3, // Área Ciencias Sociales
             'nro_cohortes' => 3,
+        ]);
+
+        // Menciones de cada postgrado (árbol Área -> Postgrado -> Mención).
+        // Los estudiantes sembrados quedan sin mención (codigo_mencion NULL).
+        Mencion::create([
+            'id_postgrado' => 'POST-INF-2024',
+            'nombre' => 'Desarrollo de Software',
+        ]);
+        Mencion::create([
+            'id_postgrado' => 'POST-ADM-2024',
+            'nombre' => 'Gestión Empresarial',
+        ]);
+        Mencion::create([
+            'id_postgrado' => 'POST-PSI-2024',
+            'nombre' => 'Psicología Clínica',
         ]);
 
         Profesor::create([
@@ -310,7 +271,7 @@ class RellenoAreasSeeder extends Seeder
             'apellido' => 'Gómez',
             'telefono' => '9876543210',
             'correo' => 'ana.gomez@example.com',
-            'edad' => 35
+            'edad' => 35,
         ]);
         Profesor::create([
             'cedula' => '35131315',
@@ -318,7 +279,7 @@ class RellenoAreasSeeder extends Seeder
             'apellido' => 'Pérez',
             'telefono' => '5555555555',
             'correo' => 'carlos.perez@example.com',
-            'edad' => 40
+            'edad' => 40,
         ]);
         Profesor::create([
             'cedula' => '87654321',
@@ -326,7 +287,7 @@ class RellenoAreasSeeder extends Seeder
             'apellido' => 'López',
             'telefono' => '4444444444',
             'correo' => 'maria.lopez@example.com',
-            'edad' => 38
+            'edad' => 38,
         ]);
         Estudiante::create([
             'cedula' => '123456789',
@@ -335,7 +296,7 @@ class RellenoAreasSeeder extends Seeder
             'carrera' => 'Ingeniería de Sistemas',
             'especialidad' => 'Desarrollo de Software',
             'correo' => 'juan.martinez@example.com',
-            'edad' => 22
+            'edad' => 22,
         ]);
         Estudiante::create([
             'cedula' => '987654321',
@@ -344,7 +305,7 @@ class RellenoAreasSeeder extends Seeder
             'carrera' => 'Administración de Empresas',
             'especialidad' => 'Gestión Empresarial',
             'correo' => 'laura.garcia@example.com',
-            'edad' => 21
+            'edad' => 21,
         ]);
         Estudiante::create([
             'cedula' => '456789123',
@@ -353,7 +314,7 @@ class RellenoAreasSeeder extends Seeder
             'carrera' => 'Ingeniería de Software',
             'especialidad' => 'Desarrollo Web',
             'correo' => 'pedro.ramirez@example.com',
-            'edad' => 23
+            'edad' => 23,
         ]);
 
         Evaluacion::create([
@@ -385,7 +346,7 @@ class RellenoAreasSeeder extends Seeder
         ]);
         Evaluacion::create([
             'codigo_materia' => 101,
-            'codigo_seccion' => 2, 
+            'codigo_seccion' => 2,
             'titulo' => 'Proyecto Final',
             'porcentaje' => 70,
             'metodologia' => 'Proyecto práctico',
@@ -522,4 +483,3 @@ class RellenoAreasSeeder extends Seeder
         ]);
     }
 }
-

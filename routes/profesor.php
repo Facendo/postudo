@@ -1,14 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\EvaluacionController;
-use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\ProfesorController;
+use Illuminate\Support\Facades\Route;
 
-
-Route::view(("/profesor"), 'profesor.index')->name('profesor.index');
+Route::view(('/profesor'), 'profesor.index')->name('profesor.index');
 Route::get('/profesor/perfil', [ProfesorController::class, 'perfil'])->name('profesor.perfil');
 Route::get('/profesor/listadoestudiantes', [ProfesorController::class, 'listadoestudiantes'])->name('profesor.listadoestudiantes');
 Route::get('/profesor/gestionevaluacion', [EvaluacionController::class, 'index'])->name('profesor.gestionevaluacion.index');
@@ -20,4 +16,3 @@ Route::delete('/profesor/gestionevaluacion/{id_evaluacion}', [EvaluacionControll
 Route::get('/profesor/gestionnotas', [ProfesorController::class, 'gestionnotas'])->name('profesor.gestionnotas');
 
 Route::get('/profesor/consultarhorario', [ProfesorController::class, 'consultarhorario'])->name('profesor.consultarhorario');
-

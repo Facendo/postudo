@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Estudiante extends Model
 {
     use HasFactory;
-    protected $table= 'estudiantes';
-    protected $primaryKey= 'cedula';
-    public $keyType= 'string';
+
+    protected $table = 'estudiantes';
+
+    protected $primaryKey = 'cedula';
+
+    public $keyType = 'string';
 
     protected $fillable = [
         'cedula',
@@ -18,17 +21,27 @@ class Estudiante extends Model
         'apellido',
         'carrera',
         'especialidad',
+        'codigo_mencion',
         'correo',
-        'edad'
+        'edad',
     ];
-    public function pago(){
-        return $this->hasMany(Pagos::class,'cedula','cedula');
+
+    public function pago()
+    {
+        return $this->hasMany(Pagos::class, 'cedula', 'cedula');
     }
-    
-    public function especialidadRel(){
-        return $this->belongsTo(Especialidades::class, 'especialidad', 'codigo_especialidad');
+
+    /**
+     * Mención a la que está asociado el estudiante.
+     * Nullable: los estudiantes antiguos pueden no tener mención asignada.
+     */
+    public function mencion()
+    {
+        return $this->belongsTo(Mencion::class, 'codigo_mencion', 'id_mencion');
     }
-    public function seccion(){
-        return $this->belongsTo(Seccion::class,'id_seccion','id_seccion');
+
+    public function seccion()
+    {
+        return $this->belongsTo(Seccion::class, 'id_seccion', 'id_seccion');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //Asignando un usuario por defecto
+        // Asignando un usuario por defecto
         $this->call(AdmindSeeder::class);
         $this->call(RellenoAreasSeeder::class);
     }

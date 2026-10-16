@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estudiante;
+use App\Models\Evaluacion;
 use App\Models\Profesor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Estudiante;
-use App\Models\Evaluacion;
 
 class ProfesorController extends Controller
 {
@@ -16,6 +16,7 @@ class ProfesorController extends Controller
     public function index()
     {
         $profesores = Profesor::all();
+
         return view('administrador.gestionprofesor', compact('profesores'));
     }
 
@@ -30,18 +31,21 @@ class ProfesorController extends Controller
     public function perfil()
     {
         $profesor = auth()->user();
+
         return view('profesor.perfil_profesor', compact('profesor'));
     }
 
     public function listadoestudiantes()
     {
         $estudiantes = Estudiante::all(); // O tu lógica de filtrado
+
         return view('profesor.listadoestudiantes', compact('estudiantes'));
     }
 
     public function gestionevaluacion()
     {
         $evaluaciones = Evaluacion::all(); // O tu lógica de filtrado
+
         return view('profesor.gestionevaluacion', compact('evaluaciones'));
     }
 
@@ -49,6 +53,7 @@ class ProfesorController extends Controller
     {
         $profesor = Auth::user();
         $secciones = $profesor->seccion; // Asumiendo que el modelo Profesor tiene una relación con Seccion
+
         return view('profesor.gestionnotas', compact('secciones'));
     }
 
@@ -56,6 +61,7 @@ class ProfesorController extends Controller
     {
         $profesor = Auth::user();
         $horario = $profesor->horario; // Asumiendo que el modelo Profesor tiene una relación con Horario
+
         return view('profesor.consultarhorario', compact('horario'));
     }
 
@@ -64,7 +70,7 @@ class ProfesorController extends Controller
      */
     public function store(Request $request)
     {
-        $profesor = new Profesor();
+        $profesor = new Profesor;
         $profesor->cedula = $request->cedula;
         $profesor->nombre = $request->nombre;
         $profesor->apellido = $request->apellido;
@@ -72,16 +78,14 @@ class ProfesorController extends Controller
         $profesor->correo = $request->correo;
         $profesor->edad = $request->edad;
         $profesor->save();
+
         return redirect()->route('administrador.gestion_profesor')->with('success', 'Profesor registrado exitosamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Profesor $profesor)
-    {
-        
-    }
+    public function show(Profesor $profesor) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -103,6 +107,7 @@ class ProfesorController extends Controller
         $profesor->correo = $request->correo;
         $profesor->edad = $request->edad;
         $profesor->save();
+
         return redirect()->route('administrador.gestion_profesor')->with('success', 'Profesor actualizado exitosamente.');
     }
 
@@ -112,6 +117,7 @@ class ProfesorController extends Controller
     public function destroy(Profesor $profesor)
     {
         $profesor->delete();
+
         return redirect()->route('administrador.gestion_profesor')->with('success', 'Profesor eliminado exitosamente.');
     }
 }

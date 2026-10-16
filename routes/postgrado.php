@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostgradoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EstudianteController;
-use App\Http\Middleware\CheckRole;
 
-Route::view(("/postgrado"), 'postgrado.index')->name('postgrado.index');
+// Catálogo público de postgrados: Áreas -> Postgrados -> Menciones
+Route::get('/postgrado', [PostgradoController::class, 'portal'])->name('postgrado.index');

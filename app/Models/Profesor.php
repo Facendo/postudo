@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Profesor extends Model
 {
     use HasFactory;
+
     protected $table = 'profesor';
+
     protected $primaryKey = 'cedula';
+
     public $keyType = 'string';
 
     protected $fillable = [
@@ -18,8 +21,9 @@ class Profesor extends Model
         'apellido',
         'telefono',
         'correo',
-        'edad'
+        'edad',
     ];
+
     public function seccion()
     {
         return $this->belongsTo(Seccion::class, 'cedula_profesor', 'cedula');

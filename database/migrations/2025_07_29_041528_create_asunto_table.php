@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cedula_estudiante')->nullable();
             $table->boolean('activo')->default(false);
             $table->timestamps();
-          
+
         });
     }
 

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Postgrado;
-use App\Models\Especialidades;
-use App\Models\Area; // Se importa el nuevo modelo Area
+use App\Models\Area;
 use App\Models\Cohorte;
+use App\Models\Postgrado;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class PostgradoController extends Controller
 {
@@ -16,8 +15,9 @@ class PostgradoController extends Controller
      */
     public function index()
     {
-        // Carga los postgrados con sus relaciones para optimizar consultas
-        $postgrados = Postgrado::all();
+        // Carga los postgrados con su área para mostrarla en el listado
+        $postgrados = Postgrado::with('area')->get();
+
         return view('administrador.gestionpostgrado', compact('postgrados'));
     }
 
@@ -26,8 +26,9 @@ class PostgradoController extends Controller
      */
     public function create()
     {
-        $especialidades = Especialidades::all(); // Obtiene todas las especialidades
-        return view('administrador.registropostgrado', compact('especialidades'));
+        $areas = Area::orderBy('nombre')->get();
+
+        return view('administrador.registropostgrado', compact('areas'));
     }
 
     /**
@@ -35,12 +36,18 @@ class PostgradoController extends Controller
      */
     public function store(Request $request)
     {
-        // Crea una nueva instancia del modelo Postgrado
-        $postgrado = new Postgrado();
+        $request->validate([
+            'Id_postgrado' => 'required|string|max:255|unique:postgrado,id_postgrado',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:1000',
+            'duracion' => 'required|string|max:255',
+            'nro_de_cohortes' => 'required|integer|min:1',
+            'codigo_area' => 'required|string|exists:area,codigo',
+        ]);
 
-        // Asigna los atributos directamente desde el request
-        $postgrado->Id_postgrado = $request->Id_postgrado;
-        $postgrado->codigo_especialidad = $request->codigo_especialidad;
+        $postgrado = new Postgrado;
+        $postgrado->id_postgrado = $request->Id_postgrado;
+        $postgrado->codigo_area = $request->codigo_area;
         $postgrado->nombre = $request->nombre;
         $postgrado->descripcion = $request->descripcion;
         $postgrado->duracion = $request->duracion;
@@ -51,12 +58,13 @@ class PostgradoController extends Controller
     }
 
     /**
-     * Muestra los detalles de un postgrado específico.
+     * Muestra los detalles de un postgrado: sus menciones y sus cohortes.
      */
     public function showdetalles(string $id)
     {
-        $cohortes = Cohorte::where('codigo_postgrado', $id)->get(); // Obtiene las cohortes asociadas al postgrado
-        $postgrado = Postgrado::find($id);
+        $postgrado = Postgrado::with('menciones')->findOrFail($id);
+        $cohortes = Cohorte::where('codigo_postgrado', $id)->get();
+
         return view('administrador.detallespostgrado', compact('postgrado', 'cohortes'));
     }
 
@@ -65,43 +73,87 @@ class PostgradoController extends Controller
      */
     public function edit(string $id)
     {
-        $postgrado = Postgrado::find($id);
+        $postgrado = Postgrado::findOrFail($id);
+        $areas = Area::orderBy('nombre')->get();
 
-        // Obtiene la especialidad para el formulario de edición
-        $especialidad_ = Especialidades::find($postgrado->codigo_especialidad);
-        $especialidades = Especialidades::all(); // Obtiene todas las especialidades para el select
-       return view('administrador.editarpostgrado', compact('postgrado', 'especialidad_', 'especialidades'));
+        return view('administrador.editarpostgrado', compact('postgrado', 'areas'));
     }
 
     /**
      * Actualiza un postgrado específico en la base de datos.
+     * El ID no es editable porque las cohortes apuntan a él.
      */
     public function update(Request $request, string $id)
     {
-        $postgrado = Postgrado::find($id);
-        $postgrado->Id_postgrado = $request->Id_postgrado;
-        $postgrado->codigo_especialidad = $request->codigo_especialidad;
+        $postgrado = Postgrado::findOrFail($id);
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:1000',
+            'duracion' => 'required|string|max:255',
+            'codigo_area' => 'required|string|exists:area,codigo',
+        ]);
+
         $postgrado->nombre = $request->nombre;
         $postgrado->descripcion = $request->descripcion;
         $postgrado->duracion = $request->duracion;
+        $postgrado->codigo_area = $request->codigo_area;
         $postgrado->save();
-
-        $especialidad = Especialidades::find($request->codigo_especialidad);
-        if (!$especialidad) {
-            return back()->withInput()
-                ->with('error', 'La especialidad seleccionada no existe');
-        }
 
         return redirect()->route('administrador.gestion_postgrado')->with('success', 'Postgrado actualizado exitosamente.');
     }
 
     /**
-     * Elimina un postgrado específico de la base de datos.
+     * Devuelve en JSON todo lo que se borrará en cascada si se elimina el
+     * postgrado. Los estudiantes no se borran: quedan sin mención asignada.
+     */
+    public function impacto(string $id)
+    {
+        $idsMenciones = DB::table('mencion')
+            ->where('id_postgrado', $id)
+            ->pluck('id_mencion');
+
+        $idsCohortes = DB::table('cohorte')
+            ->where('codigo_postgrado', $id)
+            ->pluck('codigo_cohorte');
+
+        $idsMaterias = DB::table('materia')
+            ->whereIn('codigo_cohorte', $idsCohortes)
+            ->pluck('codigo_materia');
+
+        $idsSecciones = DB::table('seccion')
+            ->whereIn('codigo_materia', $idsMaterias)
+            ->pluck('nro_seccion');
+
+        return response()->json([
+            'menciones' => $idsMenciones->count(),
+            'cohortes' => $idsCohortes->count(),
+            'materias' => $idsMaterias->count(),
+            'secciones' => $idsSecciones->count(),
+            'listados' => DB::table('listado')->whereIn('nro_seccion', $idsSecciones)->count(),
+            'estudiantes_desasignados' => DB::table('estudiantes')->whereIn('codigo_mencion', $idsMenciones)->count(),
+        ]);
+    }
+
+    /**
+     * Catálogo público: Áreas -> Postgrados -> Menciones.
+     */
+    public function portal()
+    {
+        $areas = Area::with('postgrados.menciones')->orderBy('nombre')->get();
+
+        return view('postgrado.index', compact('areas'));
+    }
+
+    /**
+     * Elimina un postgrado específico (la confirmación con impacto se hace
+     * desde el listado antes de enviar la petición).
      */
     public function destroy(string $id)
     {
         $postgrado = Postgrado::find($id);
         $postgrado->delete();
-        return redirect()->route('administrador.gestion_postgrado')->with('success', 'Postgrado eliminado exitosamente.');
+
+        return redirect()->route('administrador.gestion_postgrado')->with('success', 'Postgrado eliminado exitosamente, junto con sus menciones y cohortes.');
     }
 }

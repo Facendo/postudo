@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Evaluacion extends Model
 {
     use HasFactory;
+
     protected $table = 'evaluacion';
+
     protected $primaryKey = 'id_evaluacion';
+
     public $incrementing = true; // Esto lo hace autoincremental
+
     public $keyType = 'int';
 
     protected $fillable = [
@@ -20,10 +24,11 @@ class Evaluacion extends Model
         'porcentaje',
         'metodologia',
         'fecha', // Asegúrate de que este campo exista en tu modelo
-        'nota' // Asegúrate de que este campo sea nullable si es necesario
+        'nota', // Asegúrate de que este campo sea nullable si es necesario
     ];
 
-    public function Materias(){
+    public function Materias()
+    {
         return $this->belongsTo(Materias::class, 'codigo_materia', 'codigo_materia');
     }
 }

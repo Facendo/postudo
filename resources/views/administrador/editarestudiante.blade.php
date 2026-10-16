@@ -3,13 +3,23 @@
         <div class="registration-form">
             <h2 class="registration-form-title">Editar Estudiante</h2>
 
+            @if ($errors->any())
+                <div class="form-group" style="border: 1px solid #e05757; background: rgba(224, 87, 87, 0.15); border-radius: 8px; padding: 12px 16px;">
+                    <strong>Revisa los siguientes campos:</strong>
+                    <ul style="margin: 8px 0 0 18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('administrador.gestion_estudiante.update', $estudiante) }}" method="POST">
                 @csrf
-                @method('PUT') {{-- This blade directive spoofs the PUT method for HTML forms --}}
+                @method('PUT')
 
                 <div class="form-group">
                     <label for="cedula" class="form-label">Cédula</label>
-                    {{-- Populate the input with the existing student data --}}
                     <input type="text" id="cedula" name="cedula" class="form-input" placeholder="Ej: V-12345678" value="{{ old('cedula', $estudiante->cedula) }}" required>
                 </div>
 
@@ -33,24 +43,36 @@
                     <input type="number" id="edad" name="edad" class="form-input" placeholder="Ej: 20" min="15" max="99" value="{{ old('edad', $estudiante->edad) }}" required>
                 </div>
 
+                {{-- Cascade Área -> Postgrado -> Mención --}}
                 <div class="form-group">
-                    <label for="carrera" class="form-label">Carrera</label>
-                    <select id="carrera" name="carrera" class="form-select" required>
-                        <option value="">Selecciona tu carrera</option>
-                        @foreach ($carreras as $carrera)
-                            <option value="{{ $carrera->id }}" {{ old('carrera', $estudiante->carrera_id) == $carrera->id ? 'selected' : '' }}>
-                                {{ $carrera->nombre }}
-                            </option>
+                    <label for="area" class="form-label">Área</label>
+                    <select id="area" class="form-select">
+                        <option value="">Selecciona un Área</option>
+                        @foreach ($areas as $area)
+                            <option value="{{ $area->codigo }}">{{ $area->nombre }}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="especialidad" class="form-label">Especialidad</label>
-                    <select id="especialidad" name="especialidad" class="form-select">
-                        <option value="">Selecciona una especialidad (Opcional)</option>
-                        {{-- Options will be populated by JavaScript --}}
+                    <label for="postgrado" class="form-label">Postgrado</label>
+                    <select id="postgrado" class="form-select">
+                        <option value="">Selecciona primero un Área</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="codigo_mencion" class="form-label">Mención</label>
+                    {{-- Opcional: si no se elige ninguna, el estudiante conserva su mención (o su estado actual) --}}
+                    <select id="codigo_mencion" name="codigo_mencion" class="form-select">
+                        <option value="">Selecciona primero un Postgrado</option>
+                    </select>
+                    <span class="form-label" style="font-size: 0.8rem; opacity: 0.7;">
+                        Déjalo vacío para mantener al estudiante sin mención asignada.
+                    </span>
+                    @error('codigo_mencion')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="form-actions" style="justify-content: center;">
@@ -61,106 +83,72 @@
     </section>
 
     <script>
-        // Define las especialidades por carrera
-        const especialidadesPorCarrera = {
-            informatica: [
-                "Desarrollo de Software",
-                "Redes y Telecomunicaciones",
-                "Ciberseguridad",
-                "Inteligencia Artificial",
-                "Base de Datos"
-            ],
-            civil: [
-                "Estructuras",
-                "Hidráulica",
-                "Vías y Transportes",
-                "Construcción",
-                "Ingeniería Sanitaria"
-            ],
-            electrica: [
-                "Sistemas de Potencia",
-                "Control y Automatización",
-                "Máquinas Eléctricas",
-                "Electrónica de Potencia"
-            ],
-            mecanica: [
-                "Diseño Mecánico",
-                "Termodinámica y Fluidos",
-                "Automatización Industrial",
-                "Manufactura"
-            ],
-            quimica: [
-                "Procesos Industriales",
-                "Bioingeniería",
-                "Petroquímica",
-                "Ingeniería Ambiental"
-            ],
-            administracion: [
-                "Gerencia Empresarial",
-                "Recursos Humanos",
-                "Finanzas",
-                "Mercadeo",
-                "Operaciones"
-            ],
-            contaduria: [
-                "Auditoría",
-                "Tributaria",
-                "Costos",
-                "Finanzas Corporativas"
-            ],
-            derecho: [
-                "Derecho Penal",
-                "Derecho Civil",
-                "Derecho Laboral",
-                "Derecho Mercantil",
-                "Derecho Internacional"
-            ]
-            // Añade más carreras y sus especialidades aquí
-        };
+        const postgradosData = @json($postgrados);
+        const mencionesData = @json($menciones);
 
-        // Obtener las referencias a los elementos select
-        const selectCarrera = document.getElementById('carrera');
-        const selectEspecialidad = document.getElementById('especialidad');
+        const areaSelect = document.getElementById('area');
+        const postgradoSelect = document.getElementById('postgrado');
+        const mencionSelect = document.getElementById('codigo_mencion');
 
-        // Capture the original student's career and specialty
-        const currentCareer = "{{ old('carrera', $estudiante->carrera) }}";
-        const currentEspecialidad = "{{ old('especialidad', $estudiante->especialidad) }}";
+        function poblarPostgrados(codigoArea, seleccionado = null) {
+            postgradoSelect.innerHTML = '';
+            mencionSelect.innerHTML = '<option value="">Selecciona primero un Postgrado</option>';
 
-
-        // Función para actualizar las opciones de especialidad
-        function actualizarEspecialidades() {
-            const carreraSeleccionada = selectCarrera.value;
-            selectEspecialidad.innerHTML = ''; // Limpiar opciones actuales
-
-            // Añadir la opción por defecto
-            const defaultOption = document.createElement('option');
-            defaultOption.value = "";
-            defaultOption.textContent = "Selecciona una especialidad (Opcional)";
-            selectEspecialidad.appendChild(defaultOption);
-
-            // Si se ha seleccionado una carrera y tiene especialidades definidas
-            if (carreraSeleccionada && especialidadesPorCarrera[carreraSeleccionada]) {
-                especialidadesPorCarrera[carreraSeleccionada].forEach(especialidad => {
-                    const option = document.createElement('option');
-                    // Ensure the value matches the format stored in your database if applicable
-                    const formattedEspecialidadValue = especialidad.toLowerCase().replace(/\s/g, '-');
-                    option.value = formattedEspecialidadValue;
-                    option.textContent = especialidad;
-
-                    // If this specialty matches the current student's specialty, mark it as selected
-                    if (formattedEspecialidadValue === currentEspecialidad) {
-                        option.selected = true;
-                    }
-                    selectEspecialidad.appendChild(option);
-                });
+            if (!codigoArea) {
+                postgradoSelect.innerHTML = '<option value="">Selecciona primero un Área</option>';
+                return;
             }
+
+            const filtrados = postgradosData.filter(p => String(p.codigo_area) === String(codigoArea));
+            if (!filtrados.length) {
+                postgradoSelect.innerHTML = '<option value="">No hay postgrados en esta área</option>';
+                return;
+            }
+
+            postgradoSelect.append(new Option('Selecciona un Postgrado', ''));
+            filtrados.forEach(p => postgradoSelect.append(new Option(p.nombre, p.id_postgrado)));
+
+            if (seleccionado) postgradoSelect.value = seleccionado;
         }
 
-        // Escuchar el evento 'change' en el select de carrera
-        selectCarrera.addEventListener('change', actualizarEspecialidades);
+        function poblarMenciones(idPostgrado, seleccionada = null) {
+            mencionSelect.innerHTML = '';
 
-        // Ejecutar la función una vez al cargar la página para inicializar
-        // This will populate specialties based on the pre-selected career
-        actualizarEspecialidades();
+            if (!idPostgrado) {
+                mencionSelect.innerHTML = '<option value="">Selecciona primero un Postgrado</option>';
+                return;
+            }
+
+            const filtradas = mencionesData.filter(m => String(m.id_postgrado) === String(idPostgrado));
+            if (!filtradas.length) {
+                mencionSelect.innerHTML = '<option value="">Este postgrado no tiene menciones registradas</option>';
+                return;
+            }
+
+            // La opción vacía permite dejar al estudiante sin mención
+            mencionSelect.append(new Option('Selecciona una Mención', ''));
+            filtradas.forEach(m => mencionSelect.append(new Option(m.nombre, m.id_mencion)));
+
+            if (seleccionada) mencionSelect.value = seleccionada;
+        }
+
+        areaSelect.addEventListener('change', function () {
+            poblarPostgrados(areaSelect.value);
+        });
+
+        postgradoSelect.addEventListener('change', function () {
+            poblarMenciones(postgradoSelect.value);
+        });
+
+        // Inicialización: selección actual del estudiante (o la anterior si hubo error)
+        const mencionAnterior = @json(old('codigo_mencion', $estudiante->codigo_mencion));
+        if (mencionAnterior) {
+            const mencion = mencionesData.find(m => String(m.id_mencion) === String(mencionAnterior));
+            if (mencion && mencion.postgrado) {
+                areaSelect.value = mencion.postgrado.codigo_area;
+                poblarPostgrados(mencion.postgrado.codigo_area, mencion.id_postgrado);
+                poblarMenciones(mencion.id_postgrado, mencion.id_mencion);
+            }
+        }
     </script>
 </x-layout>

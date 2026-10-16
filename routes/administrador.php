@@ -27,10 +27,9 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get('/administrador/registro_coordinador', [CoordinadorGeneralController::class, 'create'])->name('administrador.coordinador.create');
     Route::post('/administrador/registro_coordinador', [CoordinadorGeneralController::class, 'store'])->name('administrador.coordinador.store');
 
-    // NOTA (2026-10-14): la gestión de estudiantes, especialidades y la creación de
-    // áreas/carreras/especialidades se trasladó al panel del coordinador general
-    // (ver routes/coordinador.php). El panel del administrador se enfoca en pagos,
-    // asuntos y finanzas.
+    // NOTA (2026-10-14): la gestión de estudiantes y la creación de áreas
+    // se trasladó al panel del coordinador general (ver routes/coordinador.php).
+    // El panel del administrador se enfoca en pagos, asuntos y finanzas.
 
     // Gestión de Profesores
     Route::get('/administrador/gestion_profesor', [ProfesorController::class, 'index'])->name('administrador.gestion_profesor'); // Lista de profesores
@@ -46,6 +45,7 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::post('/administrador/gestion_postgrado', [PostgradoController::class, 'store'])->name('administrador.gestion_postgrado.store'); // Guardar nuevo postgrado
     Route::get('/administrador/gestion_postgrado/{id}/edit', [PostgradoController::class, 'edit'])->name('administrador.gestion_postgrado.edit'); // Formulario de edición de postgrado
     Route::get('/administrador/gestion_postgrado/{id}/detalles', [PostgradoController::class, 'showdetalles'])->name('administrador.gestion_postgrado.showdetalles'); // Ver detalles de postgrado
+    Route::get('/administrador/gestion_postgrado/{id}/impacto', [PostgradoController::class, 'impacto'])->name('administrador.gestion_postgrado.impacto'); // Qué se borrará en cascada al eliminar el postgrado
     Route::put('/administrador/gestion_postgrado/{id}', [PostgradoController::class, 'update'])->name('administrador.gestion_postgrado.update'); // Actualizar postgrado
     Route::delete('/administrador/gestion_postgrado/{id}', [PostgradoController::class, 'destroy'])->name('administrador.gestion_postgrado.destroy'); // Eliminar postgrado
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Evaluacion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class EvaluacionController extends Controller
 {
@@ -14,6 +13,7 @@ class EvaluacionController extends Controller
     public function index()
     {
         $evaluaciones = []; // O tu consulta real: Evaluacion::all() o filtrada
+
         return view('profesor.gestionevaluacion', compact('evaluaciones'));
     }
 
@@ -31,7 +31,7 @@ class EvaluacionController extends Controller
      */
     public function store(Request $request)
     {
-        $evaluacion = new Evaluacion();
+        $evaluacion = new Evaluacion;
         $evaluacion->codigo_materia = $request->codigo_materia;
         $evaluacion->codigo_seccion = $request->codigo_seccion;
         $evaluacion->titulo = $request->titulo;
@@ -40,6 +40,7 @@ class EvaluacionController extends Controller
         $evaluacion->fecha = $request->fecha; // Asegúrate de que este campo exista en tu modelo
         $evaluacion->nota = $request->nota;
         $evaluacion->save();
+
         return redirect()->route('profesor.gestionevaluacion.index')->with('success', 'Evaluación registrada exitosamente.');
     }
 
@@ -71,6 +72,7 @@ class EvaluacionController extends Controller
         $evaluacion->metodologia = $request->metodologia;
         $evaluacion->nota = $request->nota;
         $evaluacion->save();
+
         return redirect()->route('profesor.gestionevaluacion.index')->with('success', 'Evaluación actualizada exitosamente.');
     }
 
@@ -80,6 +82,7 @@ class EvaluacionController extends Controller
     public function destroy(Evaluacion $evaluacion)
     {
         $evaluacion->delete();
+
         return redirect()->route('profesor.gestionevaluacion.index')->with('success', 'Evaluación eliminada exitosamente.');
     }
 }
