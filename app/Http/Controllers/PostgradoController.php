@@ -17,7 +17,8 @@ class PostgradoController extends Controller
     public function index()
     {
         // Carga los postgrados con su área para mostrarla en el listado
-        $postgrados = Postgrado::with('area')->get();
+        // 'menciones' se usa en la fila desplegable de cada postgrado de la tabla.
+        $postgrados = Postgrado::with(['area', 'menciones'])->get();
 
         return view('administrador.gestionpostgrado', compact('postgrados'));
     }

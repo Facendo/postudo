@@ -21,8 +21,10 @@ class MencionController extends Controller
             'nombre' => $request->nombre,
         ]);
 
+        // back(): si se crea desde la lista de postgrados se vuelve a ella;
+        // si se crea desde «Detalles del Postgrado» se vuelve al mismo sitio.
         return redirect()
-            ->route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado)
+            ->back()
             ->with('success', 'Mención registrada exitosamente.');
     }
 
@@ -50,12 +52,12 @@ class MencionController extends Controller
      */
     public function destroy(Mencion $mencion)
     {
-        $idPostgrado = $mencion->id_postgrado;
-
         $mencion->delete();
 
+        // back(): conserva la página desde la que se borró (lista de postgrados
+        // o «Detalles del Postgrado»).
         return redirect()
-            ->route('administrador.gestion_postgrado.showdetalles', $idPostgrado)
+            ->back()
             ->with('success', 'Mención eliminada. Los estudiantes que la tenían asignada quedaron sin mención.');
     }
 }
