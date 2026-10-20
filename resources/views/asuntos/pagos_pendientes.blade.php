@@ -135,7 +135,7 @@
         }
 
         .sheet-config-header i:first-child {
-            color: #ff4d4d;
+            color: #f7941d;
             font-size: 1.1rem;
         }
 
@@ -196,7 +196,7 @@
 
         /* Botón de verificar principal */
         .btn-verificar-principal {
-            background: linear-gradient(135deg, #1a3a5c, #2d5a8a) !important;
+            background: linear-gradient(135deg, #001233, #003da5) !important;
             border-color: rgba(93, 148, 233, 0.3) !important;
             font-size: 1.05rem !important;
             padding: 14px 30px !important;

@@ -52,9 +52,9 @@
                             <table style="min-width: 500px; border-collapse: collapse; width: 100%;">
                                 <thead>
                                     <tr>
-                                        {{-- Cambiado el color de fondo a naranja (#FFA500) --}}
-                                        <th style="width: 70%; text-align: left; padding: 12px; background-color: #FFA500; border-bottom: 1px solid #ddd;">Materia</th>
-                                        <th style="width: 30%; text-align: center; padding: 12px; background-color: #FFA500; border-bottom: 1px solid #ddd;">Nota Final</th>
+                                        {{-- Cambiado el color de fondo a naranja (#f7941d) --}}
+                                        <th style="width: 70%; text-align: left; padding: 12px; background-color: #f7941d; border-bottom: 1px solid #ddd;">Materia</th>
+                                        <th style="width: 30%; text-align: center; padding: 12px; background-color: #f7941d; border-bottom: 1px solid #ddd;">Nota Final</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -13,13 +13,22 @@
     <title>PostUDO || Inicio</title>
     <style>
         :root {
-            --bg-dark: #0a0303;
-            --bg-grad-1: #1a0404;
-            --bg-grad-2: #4a0808;
-            --accent: #ff4d4d;
-            --accent-hover: #ff1a1a;
-            --text-main: #f0f0f0;
-            --text-muted: #a0a0a0;
+            /* --- Paleta de prueba UDO (2026-10-20): blanco + naranja + azul ---
+               Solo afecta a esta página de inicio; el resto de la app usa public/css/style.css */
+            --udo-blanco: #ffffff;
+            --udo-azul: #003da5;
+            --udo-azul-marino: #001233;
+            --udo-naranja: #f7941d;
+            --udo-naranja-suave: #ffd9b8;
+
+            --bg-dark: #001233;
+            --bg-grad-1: #001a4d;
+            --bg-grad-2: #003da5;
+            --accent: #f7941d;
+            --accent-hover: #ff9f2e;
+            --accent-soft: #ffd9b8;
+            --text-main: #f2f5f9;
+            --text-muted: #9fb3d1;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -64,7 +73,7 @@
             left: -10%;
             width: 500px;
             height: 500px;
-            background: #ff0000;
+            background: #2563eb;
         }
 
         .light-2 {
@@ -72,7 +81,7 @@
             right: -10%;
             width: 600px;
             height: 600px;
-            background: #7a0000;
+            background: #0a3d91;
             animation-delay: -5s;
         }
 
@@ -129,7 +138,7 @@
         .logo {
             width: 45px;
             height: auto;
-            filter: drop-shadow(0 0 10px rgba(255, 77, 77, 0.4));
+            filter: drop-shadow(0 0 10px rgba(247, 148, 29, 0.45));
             transition: transform 0.3s ease;
         }
 
@@ -141,7 +150,7 @@
             font-size: 26px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            background: linear-gradient(to right, #fff, #ffb3b3);
+            background: linear-gradient(to right, #fff, var(--accent-soft));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -173,7 +182,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent), #cc0000);
+            background: linear-gradient(135deg, var(--accent), #d97306);
             color: #fff;
             padding: 12px 28px;
             border-radius: 30px;
@@ -182,7 +191,7 @@
             font-size: 15px;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+            box-shadow: 0 4px 15px rgba(247, 148, 29, 0.35);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
@@ -204,7 +213,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 77, 77, 0.5);
+            box-shadow: 0 6px 20px rgba(247, 148, 29, 0.5);
         }
 
         .btn-primary:hover::before {
@@ -225,7 +234,7 @@
 
         .btn-outline:hover {
             border-color: var(--accent);
-            background: rgba(255, 77, 77, 0.1);
+            background: rgba(247, 148, 29, 0.12);
         }
 
         /* Hero Section */
@@ -253,7 +262,7 @@
             border-radius: 20px;
             font-size: 13px;
             font-weight: 500;
-            color: #ffb3b3;
+            color: var(--accent-soft);
             margin-bottom: 25px;
             backdrop-filter: blur(10px);
         }
@@ -263,7 +272,7 @@
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 25px;
-            background: linear-gradient(to right, #fff, #ffb3b3, #ff4d4d);
+            background: linear-gradient(to right, #fff, var(--accent-soft), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -288,7 +297,7 @@
 
         /* Footer */
         footer {
-            background: rgba(10, 3, 3, 0.9);
+            background: rgba(0, 10, 32, 0.92);
             border-top: 1px solid var(--glass-border);
             padding: 40px 20px;
             text-align: center;
@@ -388,7 +397,7 @@
     width: 450px;
     height: 450px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(220, 38, 38, 0.6) 0%, rgba(153, 27, 27, 0.2) 50%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.6) 0%, rgba(10, 47, 120, 0.25) 50%, rgba(0, 0, 0, 0) 70%);
     filter: blur(80px); /* Crea el efecto difuminado suave */
     opacity: 0.8;
 }

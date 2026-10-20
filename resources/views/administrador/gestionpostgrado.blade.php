@@ -152,15 +152,15 @@
         }
 
         table .fila-activa .flecha-fila {
-            color: #ff6b6b;
+            color: #ff9f2e;
         }
 
         table .fila-postgrado.fila-activa {
-            background: rgba(255, 77, 77, 0.1);
+            background: rgba(247, 148, 29, 0.1);
         }
 
         table .fila-postgrado:focus-visible {
-            outline: 2px solid rgba(255, 77, 77, 0.6);
+            outline: 2px solid rgba(247, 148, 29, 0.6);
             outline-offset: -2px;
         }
 
@@ -199,7 +199,7 @@
 
         .caja-menciones-titulo i {
             margin-right: 8px;
-            color: #ff8a73;
+            color: #ff9f2e;
         }
 
         .sin-menciones {
@@ -262,8 +262,8 @@
         }
 
         .btn-nueva-mencion:hover {
-            background: rgba(255, 77, 77, 0.15);
-            border-color: rgba(255, 77, 77, 0.5);
+            background: rgba(247, 148, 29, 0.15);
+            border-color: rgba(247, 148, 29, 0.5);
             color: #ffffff;
         }
 

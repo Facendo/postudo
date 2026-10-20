@@ -68,10 +68,10 @@
                 <a href="#" class="button_body">
                     <i class="fas fa-plus-circle icon-left"></i> Nueva Publicación
                 </a>
-                <a href="#" class="button_body" style="background-color: #007bff;">
+                <a href="#" class="button_body" style="background-color: #003da5;">
                     <i class="fas fa-list-alt icon-left"></i> Ver Mis Publicaciones
                 </a>
-                <a href="#" class="button_body" style="background-color: #ffc107; color: #333;">
+                <a href="#" class="button_body" style="background-color: #f7941d; color: #333;">
                     <i class="fas fa-user-circle icon-left"></i> Editar Perfil
                 </a>
                  <a href="#" class="button_body" style="background-color: #6c757d;">

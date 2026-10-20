@@ -141,9 +141,9 @@
         .precio-usd {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #ffb3b3;
+            color: #ffd9b8;
             font-size: 1rem;
-            background: rgba(255, 77, 77, 0.1);
+            background: rgba(247, 148, 29, 0.1);
             padding: 4px 10px;
             border-radius: 6px;
         }

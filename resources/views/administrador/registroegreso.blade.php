@@ -23,7 +23,7 @@
                 {{-- ===== MONTO ===== --}}
                 <div class="form-group">
                     <label for="monto" class="form-label">
-                        <i class="fa-solid fa-coins" style="color:#ff4d4d; margin-right:6px;"></i>
+                        <i class="fa-solid fa-coins" style="color:#f7941d; margin-right:6px;"></i>
                         Monto del Egreso (Bs.)
                     </label>
                     <div class="egreso-monto-wrapper">
@@ -39,7 +39,7 @@
                 {{-- ===== FECHA ===== --}}
                 <div class="form-group">
                     <label for="fecha" class="form-label">
-                        <i class="fa-solid fa-calendar-days" style="color:#ff4d4d; margin-right:6px;"></i>
+                        <i class="fa-solid fa-calendar-days" style="color:#f7941d; margin-right:6px;"></i>
                         Fecha del Egreso
                     </label>
                     <input type="date" id="fecha" name="fecha" class="form-input"
@@ -52,7 +52,7 @@
                 {{-- ===== MOTIVO ===== --}}
                 <div class="form-group">
                     <label for="motivo" class="form-label">
-                        <i class="fa-solid fa-tag" style="color:#ff4d4d; margin-right:6px;"></i>
+                        <i class="fa-solid fa-tag" style="color:#f7941d; margin-right:6px;"></i>
                         Motivo
                     </label>
                     <select id="motivo" name="motivo" class="form-input" required>
@@ -71,7 +71,7 @@
                 {{-- ===== DETALLE (visible si motivo es "Otro") ===== --}}
                 <div class="form-group" id="grupo-detalle" style="display: none;">
                     <label for="detalle" class="form-label">
-                        <i class="fa-solid fa-pen" style="color:#ff4d4d; margin-right:6px;"></i>
+                        <i class="fa-solid fa-pen" style="color:#f7941d; margin-right:6px;"></i>
                         Detalle del Motivo
                     </label>
                     <input type="text" id="detalle" name="detalle" class="form-input"
@@ -99,8 +99,8 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 8px;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 50px;
             padding: 8px 20px;
             margin-bottom: 24px;
@@ -110,7 +110,7 @@
         }
 
         .egreso-tasa-badge i {
-            color: #ff4d4d;
+            color: #f7941d;
         }
 
         .egreso-tasa-badge strong {
@@ -142,8 +142,8 @@
         }
 
         .egreso-monto-wrapper:focus-within {
-            border-color: #ff4d4d;
-            box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.2);
+            border-color: #f7941d;
+            box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.2);
         }
 
         .egreso-monto-prefix {
@@ -151,8 +151,8 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.05rem;
             font-weight: 600;
-            color: #ff4d4d;
-            background: rgba(255, 77, 77, 0.08);
+            color: #f7941d;
+            background: rgba(247, 148, 29, 0.08);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             align-self: stretch;
             display: flex;

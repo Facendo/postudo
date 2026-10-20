@@ -1,12 +1,23 @@
 /* --- Global Variables (New) --- */
 /* Define your color palette and other global values here for easy management */
 :root {
-    --primary-blue: #0c0101ff;
-    /* Deep Navy Blue (from your nav) */
-    --secondary-blue: #790b0bff;
-    /* Vibrant Blue */
-    --accent-orange: #790b0bff;
-    /* Energetic Orange */
+    /* --- Paleta UDO (2026-10-20): azul primario + naranja + blanco --- */
+    --udo-blanco: #ffffff;
+    --udo-azul: #003da5;
+    --udo-azul-marino: #001233;
+    --udo-azul-claro: #0056b3;
+    --udo-naranja: #f7941d;
+    --udo-naranja-oscuro: #d97306;
+    --udo-naranja-suave: #ffd9b8;
+
+    --primary-blue: #003da5;
+    /* Azul UDO: color primario */
+    --secondary-blue: #0056b3;
+    /* Azul medio: degradados y bordes */
+    --accent-orange: #f7941d;
+    /* Naranja UDO: detalles y acentos */
+    --accent-orange-dark: #c26a00;
+    /* Naranja legible sobre fondos claros */
     --light-gray: #f8f9fa;
     /* Off-white for section backgrounds */
     --medium-gray: #e0e0e0;
@@ -41,12 +52,12 @@ html {
     padding: 0;
     height: 100%;
     scroll-behavior: smooth;
-    background-color: #353535;
+    background-color: #001233;
 }
 
 body {
     /* Subtle gradient background for a modern feel */
-    background: linear-gradient(135deg, #0c0101ff 40%, #440707 60%);
+    background: linear-gradient(135deg, #001233 40%, #002a6e 60%);
     background-repeat: no-repeat;
     background-size: 400% 400%;
     background-position: center center;
@@ -112,32 +123,33 @@ main {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--secondary-blue) 0%, #003a70 100%);
-    /* Gradient for depth */
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #d97306 100%);
+    /* Degradado naranja UDO (igual que el botón Registrarse del index) */
     color: var(--white);
     border: none;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #003a70 0%, var(--secondary-blue) 100%);
+    background: linear-gradient(135deg, #d97306 0%, var(--accent-orange) 100%);
     transform: translateY(-3px);
     /* More noticeable lift */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(247, 148, 29, 0.4);
 }
 
 .btn-secondary {
     background-color: transparent;
-    color: var(--primary-blue);
-    /* Match primary color */
-    border: 2px solid var(--primary-blue);
+    color: var(--accent-orange);
+    /* Contorno naranja UDO, coherente con el primario */
+    border: 2px solid var(--accent-orange);
     box-shadow: none;
     /* No shadow for secondary */
 }
 
 .btn-secondary:hover {
-    background-color: rgba(var(--primary-blue), 0.1);
+    background-color: rgba(247, 148, 29, 0.1);
     /* Subtle background on hover */
-    color: var(--primary-blue);
+    color: #c26a00;
+    /* Naranja más oscuro: legibilidad sobre fondos claros */
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -355,7 +367,7 @@ main {
 }
 
 .cerrar_sesion {
-    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    background: linear-gradient(135deg, #f7941d, #d97306);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -365,12 +377,12 @@ main {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: 500;
-    box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+    box-shadow: 0 4px 15px rgba(247, 148, 29, 0.3);
 }
 
 .cerrar_sesion:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 77, 77, 0.5);
+    box-shadow: 0 8px 20px rgba(247, 148, 29, 0.5);
 }
 
 /* --- Content Section Styles --- */
@@ -383,7 +395,7 @@ main {
     /* More margin */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     /* Stronger, softer shadow */
-    background: #570e0ef5;
+    background: #003da5f5;
     border-radius: 15px;
     /* Softer corners */
     padding: 35px;
@@ -528,7 +540,7 @@ main {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 77, 77, 0.3);
+    border-color: rgba(247, 148, 29, 0.3);
 }
 
 .button_body:active {
@@ -537,7 +549,7 @@ main {
 }
 
 .button_body.active-button {
-    background: linear-gradient(135deg, var(--accent-orange) 0%, #d6542d 100%);
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #d97306 100%);
     /* Orange active state */
     color: var(--white);
     border: black;
@@ -546,7 +558,7 @@ main {
 }
 
 .button_body.active-button:hover {
-    background: linear-gradient(135deg, #d6542d 0%, var(--accent-orange) 100%);
+    background: linear-gradient(135deg, #d97306 0%, var(--accent-orange) 100%);
     transform: translateY(-4px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
 }
@@ -642,8 +654,8 @@ main {
 }
 
 .form-input:focus {
-    border-color: #ff4d4d;
-    box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.2);
+    border-color: #f7941d;
+    box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.2);
     background: rgba(255, 255, 255, 0.1);
     outline: none;
 }
@@ -651,7 +663,7 @@ main {
 /* Estilos para las opciones de los menús desplegables nativos */
 select.form-input option,
 .form-select option {
-    background-color: #2b0b0b;
+    background-color: #001233;
     color: #ffffff;
     font-size: 1em;
 }
@@ -683,7 +695,7 @@ select.form-input option,
 
 .form-select:focus {
     border-color: var(--secondary-blue);
-    box-shadow: 0 0 0 4px rgba(var(--secondary-blue), 0.2);
+    box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.2);
     outline: none;
 }
 
@@ -766,7 +778,7 @@ select.form-input option,
 .register-link {
     font-family: 'Outfit', sans-serif;
     font-size: 1em;
-    color: #d1adad;
+    color: #9fb3d1;
     text-decoration: none;
     transition: color 0.3s ease, text-decoration 0.3s ease;
     font-weight: bold;
@@ -784,7 +796,7 @@ select.form-input option,
 .already-registered-link {
     font-family: 'Outfit', sans-serif;
     font-size: 1em;
-    color: #ffb3b3;
+    color: #ffd9b8;
     text-decoration: none;
     transition: color 0.3s ease, text-decoration 0.3s ease;
     font-weight: bold;
@@ -794,12 +806,13 @@ select.form-input option,
 .forgot-password-link:hover,
 .already-registered-link:hover,
 .register-link:hover {
-    color: #ff4d4d;
+    color: #f7941d;
     text-decoration: underline;
 }
 
 .submit-button {
-    background: linear-gradient(135deg, #250b0b, #701212);
+    background: linear-gradient(135deg, var(--accent-orange), #d97306);
+    /* Degradado naranja UDO (antes azul); las sombras ya eran naranjas */
     color: #ffffff;
     padding: 14px 30px;
     border: none;
@@ -809,24 +822,24 @@ select.form-input option,
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+    box-shadow: 0 5px 15px rgba(247, 148, 29, 0.3);
     display: flex;
     justify-content: flex-end;
 }
 
 .submit-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 77, 77, 0.5);
+    box-shadow: 0 8px 20px rgba(247, 148, 29, 0.5);
 }
 
 .submit-button:active {
     transform: translateY(0);
-    box-shadow: 0 3px 8px rgba(255, 77, 77, 0.2);
+    box-shadow: 0 3px 8px rgba(247, 148, 29, 0.2);
 }
 
 .form-error-message {
     display: block;
-    color: #ff4d4d;
+    color: var(--danger-red);
     font-family: 'Outfit', sans-serif;
     font-size: 0.9em;
     margin-top: 8px;
@@ -1037,7 +1050,7 @@ table td:last-child {
 .admin-subtitle {
     font-family: 'Outfit', sans-serif;
     font-size: 1.2rem;
-    color: #ffb3b3;
+    color: #ffd9b8;
 }
 
 .admin-grid {
@@ -1065,7 +1078,7 @@ table td:last-child {
 
 .admin-card i {
     font-size: 3.5rem;
-    color: #ff4d4d;
+    color: #f7941d;
     margin-bottom: 20px;
     transition: transform 0.3s ease;
 }
@@ -1080,7 +1093,7 @@ table td:last-child {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-10px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 77, 77, 0.3);
+    border-color: rgba(247, 148, 29, 0.3);
 }
 
 .admin-card:hover i {
@@ -1245,8 +1258,8 @@ table td:last-child {
 .carrera-link:hover,
 .especialidad-return-link:hover {
     text-decoration: underline;
-    color: #d6542d;
-    /* Slightly darker orange on hover */
+    color: #c26a00;
+    /* Naranja legible sobre fondo claro */
 }
 
 /* If you want the titles of area/carrera/especialidad to be more prominent */
@@ -1797,8 +1810,8 @@ table td:last-child {
 .carrera-link,
 .especialidad-return-link {
     cursor: pointer;
-    color: #007bff;
-    /* Un color estándar para enlaces clicables */
+    color: #003da5;
+    /* Enlace en azul UDO */
     text-decoration: none;
 }
 

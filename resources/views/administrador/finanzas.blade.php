@@ -144,7 +144,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(15, 5, 5, 0.6);
+            background: rgba(0, 10, 32, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 18px 20px;
@@ -222,7 +222,7 @@
         .finanzas-tabs {
             display: flex;
             gap: 8px;
-            background: rgba(15, 5, 5, 0.6);
+            background: rgba(0, 10, 32, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 5px;
@@ -249,9 +249,9 @@
         }
 
         .finanzas-tab--activo {
-            background: linear-gradient(135deg, #cc0000, #ff4d4d);
+            background: linear-gradient(135deg, #f7941d, #ff9f2e);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(204, 0, 0, 0.35);
+            box-shadow: 0 4px 12px rgba(247, 148, 29, 0.35);
         }
 
         /* ===== Paneles de tablas ===== */
@@ -278,8 +278,8 @@
 
         .badge-motivo {
             display: inline-block;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 50px;
             padding: 3px 12px;
             font-family: 'Outfit', sans-serif;

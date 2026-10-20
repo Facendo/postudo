@@ -192,8 +192,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 50px;
             padding: 8px 20px;
             font-family: 'Outfit', sans-serif;
@@ -202,7 +202,7 @@
         }
 
         .contador-vista i {
-            color: #ff4d4d;
+            color: #f7941d;
         }
 
         /* Tabla: ocupa todo el ancho disponible, sin caja propia */
@@ -219,15 +219,15 @@
         }
 
         table .fila-activa .flecha-fila {
-            color: #ff6b6b;
+            color: #ff9f2e;
         }
 
         table .fila-area.fila-activa {
-            background: rgba(255, 77, 77, 0.1);
+            background: rgba(247, 148, 29, 0.1);
         }
 
         table .fila-area:focus-visible {
-            outline: 2px solid rgba(255, 77, 77, 0.6);
+            outline: 2px solid rgba(247, 148, 29, 0.6);
             outline-offset: -2px;
         }
 
@@ -244,7 +244,7 @@
         table .contador-postgrados {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #ff8a73;
+            color: #ff9f2e;
             font-size: 0.95rem;
         }
 
@@ -283,7 +283,7 @@
 
         .caja-postgrados-titulo i {
             margin-right: 8px;
-            color: #ff8a73;
+            color: #ff9f2e;
         }
 
         /* Botón fantasma «Nuevo Postgrado» en la cabecera del área desplegada */
@@ -305,8 +305,8 @@
         }
 
         .btn-nuevo-postgrado:hover {
-            background: rgba(255, 77, 77, 0.15);
-            border-color: rgba(255, 77, 77, 0.5);
+            background: rgba(247, 148, 29, 0.15);
+            border-color: rgba(247, 148, 29, 0.5);
             color: #ffffff;
         }
 
@@ -407,8 +407,8 @@
         }
 
         .btn-glass:hover {
-            background: rgba(255, 77, 77, 0.15);
-            border-color: rgba(255, 77, 77, 0.5);
+            background: rgba(247, 148, 29, 0.15);
+            border-color: rgba(247, 148, 29, 0.5);
             transform: translateY(-2px);
         }
 

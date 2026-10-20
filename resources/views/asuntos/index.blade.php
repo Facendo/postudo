@@ -117,8 +117,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 50px;
             padding: 8px 20px;
             margin-bottom: 20px;
@@ -128,7 +128,7 @@
         }
 
         .tasa-badge i {
-            color: #ff4d4d;
+            color: #f7941d;
         }
 
         .tasa-badge strong {

@@ -22,7 +22,7 @@
                 {{-- ===== CAMPO VALOR EN USD ===== --}}
                 <div class="form-group">
                     <label for="valor_usd" class="form-label">
-                        <i class="fa-solid fa-dollar-sign" style="color:#ff4d4d; margin-right:6px;"></i>
+                        <i class="fa-solid fa-dollar-sign" style="color:#f7941d; margin-right:6px;"></i>
                         Valor del Asunto (USD)
                     </label>
                     <div class="valor-usd-wrapper">
@@ -57,8 +57,8 @@
         }
 
         .valor-usd-wrapper:focus-within {
-            border-color: #ff4d4d;
-            box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.2);
+            border-color: #f7941d;
+            box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.2);
         }
 
         .valor-usd-prefix {
@@ -66,8 +66,8 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.1rem;
             font-weight: 600;
-            color: #ff4d4d;
-            background: rgba(255, 77, 77, 0.08);
+            color: #f7941d;
+            background: rgba(247, 148, 29, 0.08);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             align-self: stretch;
             display: flex;

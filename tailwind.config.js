@@ -14,6 +14,17 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                // Paleta UDO (2026-10-20): azul primario + naranja + blanco
+                brand: {
+                    light: '#0056b3',
+                    DEFAULT: '#003da5',
+                    dark: '#001233',
+                    soft: '#eef5fc',
+                    accent: '#f7941d',
+                    'accent-light': '#ff9f2e',
+                },
+            },
         },
     },
 
