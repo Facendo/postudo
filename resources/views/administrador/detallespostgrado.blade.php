@@ -48,7 +48,7 @@
                         </td>
                         <td class="table-actions">
                             <form action="{{ route('administrador.mencion.destroy', $mencion) }}" method="POST" class="inline-form"
-                                onsubmit="return confirm('¿Eliminar la mención \"{{ $mencion->nombre }}\"? Los estudiantes que la tengan asignada quedarán sin mención.');">
+                                onsubmit="return confirm('¿Eliminar la mención \"{{ $mencion->nombre }}\"? Los estudiantes que la tengan asignada quedarán sin mención. Si la mención tiene cohortes, no se podrá eliminar: primero elimínalas o cámbiales de mención.');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-table-action" title="Eliminar mención">
@@ -81,7 +81,7 @@
             <thead>
                 <tr>
                     <th>Código</th>
-                    <th>Postgrado</th>
+                    <th>Mención</th>
                     <th>Fechas</th>
                     <th>Nro. de Cohorte</th>
                     <th>Ver Materias</th>
@@ -92,7 +92,7 @@
                 @forelse ($cohortes as $cohorte)
                     <tr>
                         <td>{{ $cohorte->codigo_cohorte }}</td>
-                        <td>{{ $cohorte->codigo_postgrado }}</td>
+                        <td>{{ $cohorte->mencion?->nombre ?? '—' }}</td>
                         <td>{{ $cohorte->fecha_inicio }} - {{ $cohorte->fecha_fin }}</td>
                         <td>{{ $cohorte->nro_de_cohorte }}</td>
                         <td>

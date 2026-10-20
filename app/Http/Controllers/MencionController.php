@@ -49,9 +49,23 @@ class MencionController extends Controller
     /**
      * Elimina una mención. Los estudiantes asociados quedan sin mención
      * (la FK 'codigo_mencion' es con onDelete("set null")), nunca se borran.
+     *
+     * Si la mención tiene cohortes NO se puede eliminar (decisión del usuario
+     * 2026-10-20): primero hay que eliminar o reasignar sus cohortes.
      */
     public function destroy(Mencion $mencion)
     {
+        $totalCohortes = $mencion->cohortes()->count();
+
+        if ($totalCohortes > 0) {
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    "No se puede eliminar la mención \"{$mencion->nombre}\": tiene {$totalCohortes} cohorte(s) asignada(s). Elimínalas o cámbiales de mención primero."
+                );
+        }
+
         $mencion->delete();
 
         // back(): conserva la página desde la que se borró (lista de postgrados

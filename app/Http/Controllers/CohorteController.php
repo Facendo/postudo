@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cohorte;
 use App\Models\Materias;
+use App\Models\Mencion;
 use App\Models\Postgrado;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CohorteController extends Controller
 {
@@ -14,40 +16,66 @@ class CohorteController extends Controller
      */
     public function index()
     {
-        $cohortes = Cohorte::all();
+        // eager-load mención y postgrado para pintar las columnas de la tabla.
+        $cohortes = Cohorte::with(['mencion', 'postgrado'])->get();
 
         return view('administrador.gestioncohorte', compact('cohortes'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Formulario de creación de cohorte.
+     *
+     * $postgrado es opcional: llega desde «Detalles del Postgrado» (se muestra
+     * solo ese postgrado) o sin parámetro desde el listado de cohortes (se
+     * muestran todas las menciones agrupadas por postgrado). La mención es
+     * obligatoria: no existe la cohorte "suelta" sin mención.
      */
-    public function create(string $id)
+    public function create(?string $postgrado = null)
     {
-        $postgrado = Postgrado::find($id); // Asegúrate de que el postgrado existe
+        $postgradoSel = $postgrado ? Postgrado::findOrFail($postgrado) : null;
+        $menciones = Mencion::with('postgrado')->orderBy('id_postgrado')->get();
 
-        return view('administrador.registrocohorte', compact('postgrado'));
+        return view('administrador.registrocohorte', compact('postgradoSel', 'menciones'));
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * El codigo_postgrado NO se toma del formulario: se deriva de la mención
+     * elegida (nunca confiar en el dato del cliente). Número de cohorte único
+     * dentro de la misma mención.
      */
     public function store(Request $request)
     {
-        $postgrado = Postgrado::findOrFail($request->codigo_postgrado); // Validar que el postgrado existe
+        $datos = $request->validate([
+            'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')],
+            'codigo_mencion' => ['required', 'integer', Rule::exists('mencion', 'id_mencion')],
+            'fecha_inicio' => ['required', 'date'],
+            'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
+            'nro_de_cohorte' => [
+                'required', 'integer', 'min:1',
+                Rule::unique('cohorte', 'nro_de_cohorte')->where('codigo_mencion', $request->codigo_mencion),
+            ],
+        ]);
+
+        $mencion = Mencion::findOrFail($datos['codigo_mencion']);
+
         $cohorte = new Cohorte;
-        $cohorte->codigo_cohorte = $request->codigo_cohorte;
-        $cohorte->fecha_inicio = $request->fecha_inicio;
-        $cohorte->fecha_fin = $request->fecha_fin;
-        $cohorte->nro_de_cohorte = $request->nro_de_cohorte;
-        $cohorte->codigo_postgrado = $request->codigo_postgrado; // Ensure this matches your migration
+        $cohorte->codigo_cohorte = $datos['codigo_cohorte'];
+        $cohorte->codigo_mencion = $mencion->id_mencion;
+        $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
+        $cohorte->fecha_inicio = $datos['fecha_inicio'];
+        $cohorte->fecha_fin = $datos['fecha_fin'];
+        $cohorte->nro_de_cohorte = $datos['nro_de_cohorte'];
         $cohorte->save();
 
-        return redirect()->route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado)->with('success', 'Cohorte registrada correctamente.', compact('postgrado'));
+        return redirect()
+            ->route('administrador.gestion_postgrado.showdetalles', $mencion->id_postgrado)
+            ->with('success', 'Cohorte registrada correctamente.');
     }
 
     /**
-     * Display the specified resource.
+     * Show the specified resource.
      */
     public function showdetalles(string $id)
     {
@@ -58,13 +86,15 @@ class CohorteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Formulario de edición: la mención también es obligatoria aquí (las
+     * cohortes sin mención dejaron de existir con la limpieza del 2026-10-20).
      */
     public function edit(string $id)
     {
-        $cohorte = Cohorte::find($id); // Asegúrate de que la cohorte existe
+        $cohorte = Cohorte::with('mencion')->findOrFail($id);
+        $menciones = Mencion::with('postgrado')->orderBy('id_postgrado')->get();
 
-        return view('administrador.editarcohorte', compact('cohorte'));
+        return view('administrador.editarcohorte', compact('cohorte', 'menciones'));
     }
 
     /**
@@ -72,15 +102,34 @@ class CohorteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $cohorte = Cohorte::find($id);
-        $cohorte->codigo_cohorte = $request->codigo_cohorte;
-        $cohorte->fecha_inicio = $request->fecha_inicio;
-        $cohorte->fecha_fin = $request->fecha_fin;
-        $cohorte->nro_de_cohorte = $request->nro_de_cohorte; // Ensure this matches your migration
-        $cohorte->codigo_postgrado = $request->codigo_postgrado; // Ensure this matches your migration
+        $cohorte = Cohorte::findOrFail($id);
+
+        $datos = $request->validate([
+            'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')->ignore($cohorte->codigo_cohorte)],
+            'codigo_mencion' => ['required', 'integer', Rule::exists('mencion', 'id_mencion')],
+            'fecha_inicio' => ['required', 'date'],
+            'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
+            'nro_de_cohorte' => [
+                'required', 'integer', 'min:1',
+                Rule::unique('cohorte', 'nro_de_cohorte')
+                    ->ignore($cohorte->codigo_cohorte, 'codigo_cohorte')
+                    ->where('codigo_mencion', $request->codigo_mencion),
+            ],
+        ]);
+
+        $mencion = Mencion::findOrFail($datos['codigo_mencion']);
+
+        $cohorte->codigo_cohorte = $datos['codigo_cohorte'];
+        $cohorte->codigo_mencion = $mencion->id_mencion;
+        $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
+        $cohorte->fecha_inicio = $datos['fecha_inicio'];
+        $cohorte->fecha_fin = $datos['fecha_fin'];
+        $cohorte->nro_de_cohorte = $datos['nro_de_cohorte'];
         $cohorte->save();
 
-        return redirect()->route('administrador.gestion_postgrado.showdetalles', $cohorte->codigo_postgrado)->with('success', 'Cohorte actualizada correctamente.');
+        return redirect()
+            ->route('administrador.gestion_postgrado.showdetalles', $mencion->id_postgrado)
+            ->with('success', 'Cohorte actualizada correctamente.');
     }
 
     /**

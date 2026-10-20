@@ -5,8 +5,7 @@
         </div>
 
         <div class="action-buttons-container">
-            {{-- Asegúrate de que la ruta sea correcta para crear una nueva cohorte --}}
-            {{-- Se asume que la ruta es 'administrador.gestioncohorte.create' --}}
+            {{-- create no exige postgrado: el formulario pide elegir la mención --}}
             <a href="{{ route('administrador.gestioncohorte.create') }}" class="button_body">
                 <i class="fa-solid fa-plus icon-left"></i> Nueva Cohorte
             </a>
@@ -16,7 +15,8 @@
             <thead>
                 <tr>
                     <th>Código de Cohorte</th>
-                    <th>Código de Postgrado</th>
+                    <th>Postgrado</th>
+                    <th>Mención</th>
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Fin</th>
                     <th>Número de Cohorte</th>
@@ -27,7 +27,8 @@
                 @forelse ($cohortes as $cohorte)
                     <tr>
                         <td>{{ $cohorte->codigo_cohorte }}</td>
-                        <td>{{ $cohorte->codigo_postgrado }}</td>
+                        <td>{{ $cohorte->postgrado?->nombre ?? $cohorte->codigo_postgrado }}</td>
+                        <td>{{ $cohorte->mencion?->nombre ?? '—' }}</td>
                         <td>{{ \Carbon\Carbon::parse($cohorte->fecha_inicio)->format('d/m/Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($cohorte->fecha_fin)->format('d/m/Y') }}</td>
                         <td>{{ $cohorte->nro_de_cohorte }}</td>
@@ -49,7 +50,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">No hay cohortes registradas.</td>
+                        <td colspan="7" style="text-align: center; padding: 20px;">No hay cohortes registradas. Crea una desde «Nueva Cohorte».</td>
                     </tr>
                 @endforelse
             </tbody>

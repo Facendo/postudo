@@ -189,7 +189,17 @@ class EstudianteController extends Controller
             ? Postgrado::where('id_postgrado', $mencion->id_postgrado)->get()
             : Postgrado::orderBy('nombre')->get();
 
-        $cohortes = Cohorte::whereIn('codigo_postgrado', $postgrados->pluck('id_postgrado'))->get();
+        // Cohortes de esos postgrados; si el estudiante tiene mención, solo
+        // las de SU mención (más las antiguas "sin mención", por robustez).
+        // El JS de la vista además filtra por postgrado al cascada.
+        $cohortes = Cohorte::whereIn('codigo_postgrado', $postgrados->pluck('id_postgrado'))
+            ->when($mencion, function ($query) use ($estudiante) {
+                $query->where(function ($sub) use ($estudiante) {
+                    $sub->where('codigo_mencion', $estudiante->codigo_mencion)
+                        ->orWhereNull('codigo_mencion');
+                });
+            })
+            ->get();
         $materias = Materias::whereIn('codigo_cohorte', $cohortes->pluck('codigo_cohorte'))->get();
         $secciones = Seccion::whereIn('codigo_materia', $materias->pluck('codigo_materia'))->get();
 

@@ -38,4 +38,12 @@ class Mencion extends Model
     {
         return $this->hasMany(Estudiante::class, 'codigo_mencion', 'id_mencion');
     }
+
+    /**
+     * Cohortes ancladas a esta mención (no se pueden crear cohortes sueltas).
+     */
+    public function cohortes()
+    {
+        return $this->hasMany(Cohorte::class, 'codigo_mencion', 'id_mencion');
+    }
 }

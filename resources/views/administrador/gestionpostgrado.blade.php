@@ -366,7 +366,7 @@
 
                 evento.preventDefault();
 
-                const mensaje = `¿Eliminar la mención "${form.dataset.nombre}"? Los estudiantes que la tengan asignada quedarán SIN mención (no se borran).`;
+                const mensaje = `¿Eliminar la mención "${form.dataset.nombre}"? Los estudiantes que la tengan asignada quedarán SIN mención (no se borran). Si la mención tiene cohortes, no se podrá eliminar: primero elimínalas o cámbiales de mención.`;
 
                 if (confirm(mensaje)) {
                     form.dataset.confirmado = '1';
