@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CoordinadorGeneralController;
+use App\Http\Controllers\CoordinadorPostgradoController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\MencionController;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +34,24 @@ Route::middleware(['auth', 'role:coordinador_general'])->group(function () {
 
     // Menciones (dependen de un postgrado)
     // Se permite también el rol administrador: la página de detalles del
-    // postgrado vive hoy en el panel del administrador.
-    Route::middleware(['auth', 'role:coordinador_general|administrador'])->group(function () {
+    // postgrado vive hoy en el panel del administrador. El coordinador de
+    // postgrado solo puede con las de SUS postgrados (lo filtra el controller).
+    Route::middleware(['auth', 'role:coordinador_general|administrador|coordinador_postgrado'])->group(function () {
         Route::post('/coordinador/postgrado/{postgrado}/menciones', [MencionController::class, 'store'])->name('administrador.mencion.store'); // Guardar nueva mención
         Route::put('/coordinador/mencion/{mencion}', [MencionController::class, 'update'])->name('administrador.mencion.update'); // Actualizar mención
         Route::delete('/coordinador/mencion/{mencion}', [MencionController::class, 'destroy'])->name('administrador.mencion.destroy'); // Eliminar mención
     });
+
+    // Coordinadores de Postgrado: el coordinador general los crea y les
+    // asigna sus postgrados (1 coordinador por postgrado; unique en la pivote).
+    // El CRUD disponible hoy es crear + listado: editar y borrar quedan pendientes.
+    Route::get('/coordinador/coordinadores_postgrado', [CoordinadorPostgradoController::class, 'index'])->name('coordinador.coordinador_postgrado.index'); // Lista de coordinadores de postgrado
+    Route::get('/coordinador/coordinadores_postgrado/create', [CoordinadorPostgradoController::class, 'create'])->name('coordinador.coordinador_postgrado.create'); // Formulario de registro
+    Route::post('/coordinador/coordinadores_postgrado', [CoordinadorPostgradoController::class, 'store'])->name('coordinador.coordinador_postgrado.store'); // Guardar coordinador con sus postgrados
+});
+
+// Panel del coordinador de postgrado: solo ve SUS postgrados asignados
+// (el filtrado por rol vive en el trait FiltrablePorCoordinador).
+Route::middleware(['auth', 'role:coordinador_postgrado'])->group(function () {
+    Route::get('/coordinador_postgrado', [CoordinadorPostgradoController::class, 'panel'])->name('coordinador_postgrado.index'); // Panel principal del coordinador de postgrado
 });

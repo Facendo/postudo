@@ -63,8 +63,12 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
 // Gestión de Postgrados y Cohortes: accesible también para el coordinador
 // general, porque los postgrados (y sus cohortes y menciones) son parte del
 // árbol académico Área -> Postgrado -> Mención que administra el coordinador.
+// El coordinador de postgrado entra por las mismas URLs, pero solo a SUS
+// postgrados asignados: cada controller filtra con el trait
+// FiltrablePorCoordinador (y crear/editar/borrar postgrados le queda
+// prohibido ahí mismo).
 // Mismas URLs y nombres de ruta que antes, solo cambia el rol permitido.
-Route::middleware(['auth', 'role:administrador|coordinador_general'])->group(function () {
+Route::middleware(['auth', 'role:administrador|coordinador_general|coordinador_postgrado'])->group(function () {
 
     // Gestión de Postgrados
     Route::get('/administrador/gestion_postgrado', [PostgradoController::class, 'index'])->name('administrador.gestion_postgrado'); // Lista de postgrados

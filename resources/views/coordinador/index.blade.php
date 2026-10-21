@@ -31,6 +31,10 @@
                 <i class="fa-solid fa-book-open"></i>
                 <span>Postgrados</span>
             </a>
+            <a href="{{ route('coordinador.coordinador_postgrado.index') }}" class="admin-card">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Coordinadores de Postgrado</span>
+            </a>
         </div>
     </div>
 

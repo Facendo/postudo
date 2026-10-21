@@ -6,13 +6,16 @@
             <label>Listado de Postgrados</label>
         </div>
 
-        {{-- Botón para crear un nuevo postgrado --}}
-        <div class="action-buttons-container">
-            {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
-            <a href="{{ route('administrador.gestion_postgrado.create') }}" class="button_body">
-                <i class="fa-solid fa-plus icon-left"></i> Nuevo Postgrado
-            </a>
-        </div>
+        {{-- Botón para crear un nuevo postgrado (no lo ve el coordinador de
+             postgrado: crear postgrados es del general/administrador) --}}
+        @if (Auth::user()->rol !== 'coordinador_postgrado')
+            <div class="action-buttons-container">
+                {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
+                <a href="{{ route('administrador.gestion_postgrado.create') }}" class="button_body">
+                    <i class="fa-solid fa-plus icon-left"></i> Nuevo Postgrado
+                </a>
+            </div>
+        @endif
 
         {{-- Aviso si «Nueva mención» no pasa la validación (store() vuelve con back()) --}}
         @error('nombre')
@@ -58,24 +61,28 @@
                             </a>
                         </td>
                         
-                        {{-- Columna de acciones con botones para Editar y Eliminar --}}
+                        {{-- Columna de acciones con botones para Editar y Eliminar
+                             (no los ve el coordinador de postgrado: tocar el
+                             postgrado mismo es del general/administrador) --}}
                         <td class="table-actions">
-                            {{-- Botón de Editar --}}
-                            {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
-                            <a href="{{ route('administrador.gestion_postgrado.edit', $postgrado->id_postgrado) }}" class="btn-table-action" title="Editar">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
+                            @if (Auth::user()->rol !== 'coordinador_postgrado')
+                                {{-- Botón de Editar --}}
+                                {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
+                                <a href="{{ route('administrador.gestion_postgrado.edit', $postgrado->id_postgrado) }}" class="btn-table-action" title="Editar">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
 
-                            {{-- Botón de Eliminar (usando un formulario para solicitudes DELETE) --}}
-                            {{-- Se asume que la ruta para eliminar es 'administrador.gestion_postgrado.destroy' --}}
-                            <form action="{{ route('administrador.gestion_postgrado.destroy', $postgrado->id_postgrado) }}" method="POST" class="inline-form"
-                                data-eliminar-postgrado="{{ $postgrado->id_postgrado }}" data-nombre="{{ $postgrado->nombre }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-table-action" title="Eliminar">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
+                                {{-- Botón de Eliminar (usando un formulario para solicitudes DELETE) --}}
+                                {{-- Se asume que la ruta para eliminar es 'administrador.gestion_postgrado.destroy' --}}
+                                <form action="{{ route('administrador.gestion_postgrado.destroy', $postgrado->id_postgrado) }}" method="POST" class="inline-form"
+                                    data-eliminar-postgrado="{{ $postgrado->id_postgrado }}" data-nombre="{{ $postgrado->nombre }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-table-action" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
 

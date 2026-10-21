@@ -28,6 +28,12 @@
                     <a href="{{ route('coordinador.index') }}" class="button_barra">Inicio</a>
 
                 @endif
+
+                @if (Auth::user()->rol == 'coordinador_postgrado')
+
+                    <a href="{{ route('coordinador_postgrado.index') }}" class="button_barra">Inicio</a>
+
+                @endif
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="cerrar_sesion">

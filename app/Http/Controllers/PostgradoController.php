@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Area;
 use App\Models\Cohorte;
 use App\Models\Postgrado;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class PostgradoController extends Controller
 {
+    use FiltrablePorCoordinador;
+
     /**
      * Muestra una lista de los postgrados.
      */
@@ -18,7 +21,12 @@ class PostgradoController extends Controller
     {
         // Carga los postgrados con su área para mostrarla en el listado
         // 'menciones' se usa en la fila desplegable de cada postgrado de la tabla.
-        $postgrados = Postgrado::with(['area', 'menciones'])->get();
+        // El coordinador de postgrado solo ve los suyos (null = sin filtro).
+        $permitidos = $this->idsPostgradosPermitidos(Auth::user());
+
+        $postgrados = Postgrado::with(['area', 'menciones'])
+            ->when($permitidos, fn ($query) => $query->whereIn('id_postgrado', $permitidos))
+            ->get();
 
         return view('administrador.gestionpostgrado', compact('postgrados'));
     }
@@ -30,6 +38,13 @@ class PostgradoController extends Controller
      */
     public function create()
     {
+        // Crear postgrados es del administrador/coordinador general.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), null)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Los coordinadores de postgrado no pueden crear postgrados.');
+        }
+
         $areas = Area::orderBy('nombre')->get();
 
         // Si el código no corresponde a un área existente, el select queda
@@ -44,6 +59,13 @@ class PostgradoController extends Controller
      */
     public function store(Request $request)
     {
+        // Crear postgrados es del administrador/coordinador general.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), null)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Los coordinadores de postgrado no pueden crear postgrados.');
+        }
+
         $request->validate([
             'Id_postgrado' => 'required|string|max:255|unique:postgrado,id_postgrado',
             'nombre' => 'required|string|max:255',
@@ -76,6 +98,13 @@ class PostgradoController extends Controller
      */
     public function showdetalles(string $id)
     {
+        // El coordinador de postgrado solo entra a los detalles de SUS postgrados.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $id)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Este postgrado no está asignado a tu cuenta.');
+        }
+
         $postgrado = Postgrado::with('menciones')->findOrFail($id);
         $cohortes = Cohorte::where('codigo_postgrado', $id)->get();
 
@@ -87,6 +116,13 @@ class PostgradoController extends Controller
      */
     public function edit(string $id)
     {
+        // Editar el postgrado mismo es del administrador/coordinador general.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $id)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Los coordinadores de postgrado no pueden editar el postgrado.');
+        }
+
         $postgrado = Postgrado::findOrFail($id);
         $areas = Area::orderBy('nombre')->get();
 
@@ -99,6 +135,13 @@ class PostgradoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Editar el postgrado mismo es del administrador/coordinador general.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $id)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Los coordinadores de postgrado no pueden editar el postgrado.');
+        }
+
         $postgrado = Postgrado::findOrFail($id);
 
         $request->validate([
@@ -123,6 +166,13 @@ class PostgradoController extends Controller
      */
     public function impacto(string $id)
     {
+        // Solo el admin/coordinador general consulta el impacto de borrado.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $id)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Este postgrado no está asignado a tu cuenta.');
+        }
+
         $idsMenciones = DB::table('mencion')
             ->where('id_postgrado', $id)
             ->pluck('id_mencion');
@@ -165,6 +215,13 @@ class PostgradoController extends Controller
      */
     public function destroy(string $id)
     {
+        // Borrar postgrados es del administrador/coordinador general.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $id)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Los coordinadores de postgrado no pueden eliminar postgrados.');
+        }
+
         $postgrado = Postgrado::find($id);
         $postgrado->delete();
 

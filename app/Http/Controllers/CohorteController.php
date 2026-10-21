@@ -2,22 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Cohorte;
 use App\Models\Materias;
 use App\Models\Mencion;
 use App\Models\Postgrado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CohorteController extends Controller
 {
+    use FiltrablePorCoordinador;
+
     /**
-     * Display a listing of the resource.
+     * Listado de cohortes. El coordinador de postgrado solo ve las de
+     * SUS postgrados asignados.
      */
     public function index()
     {
         // eager-load mención y postgrado para pintar las columnas de la tabla.
-        $cohortes = Cohorte::with(['mencion', 'postgrado'])->get();
+        $permitidos = $this->idsPostgradosPermitidos(Auth::user());
+
+        $cohortes = Cohorte::with(['mencion', 'postgrado'])
+            ->when($permitidos, fn ($query) => $query->whereIn('codigo_postgrado', $permitidos))
+            ->get();
 
         return view('administrador.gestioncohorte', compact('cohortes'));
     }
@@ -32,8 +41,25 @@ class CohorteController extends Controller
      */
     public function create(?string $postgrado = null)
     {
+        $usuario = Auth::user();
+
+        // Si viene un postgrado, debe estar asignado al usuario.
+        if ($postgrado !== null && ! $this->puedeGestionarPostgrado($usuario, $postgrado)) {
+            return redirect()
+                ->route('administrador.gestioncohorte')
+                ->with('error', 'Este postgrado no está asignado a tu cuenta.');
+        }
+
         $postgradoSel = $postgrado ? Postgrado::findOrFail($postgrado) : null;
-        $menciones = Mencion::with('postgrado')->orderBy('id_postgrado')->get();
+
+        // Solo las menciones de los postgrados que el usuario puede gestionar
+        // (null = sin filtro para admin y coordinador general).
+        $permitidos = $this->idsPostgradosPermitidos($usuario);
+
+        $menciones = Mencion::with('postgrado')
+            ->when($permitidos, fn ($query) => $query->whereIn('id_postgrado', $permitidos))
+            ->orderBy('id_postgrado')
+            ->get();
 
         return view('administrador.registrocohorte', compact('postgradoSel', 'menciones'));
     }
@@ -49,7 +75,7 @@ class CohorteController extends Controller
     {
         $datos = $request->validate([
             'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')],
-            'codigo_mencion' => ['required', 'integer', Rule::exists('mencion', 'id_mencion')],
+            'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
             'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
             'nro_de_cohorte' => [
@@ -79,7 +105,15 @@ class CohorteController extends Controller
      */
     public function showdetalles(string $id)
     {
-        $cohorte = Cohorte::find($id);
+        $cohorte = Cohorte::findOrFail($id);
+
+        // El coordinador de postgrado solo entra a cohortes de SUS postgrados.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $cohorte->codigo_postgrado)) {
+            return redirect()
+                ->route('administrador.gestioncohorte')
+                ->with('error', 'Esta cohorte no pertenece a tus postgrados.');
+        }
+
         $materias = Materias::where('codigo_cohorte', $cohorte->codigo_cohorte)->get(); // Obtener materias asociadas a la cohorte
 
         return view('administrador.detallescohortes', compact('cohorte', 'materias'));
@@ -91,8 +125,20 @@ class CohorteController extends Controller
      */
     public function edit(string $id)
     {
-        $cohorte = Cohorte::with('mencion')->findOrFail($id);
-        $menciones = Mencion::with('postgrado')->orderBy('id_postgrado')->get();
+        $cohorte = Cohorte::findOrFail($id);
+
+        // Solo cohortes de los postgrados asignados al usuario.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $cohorte->codigo_postgrado)) {
+            return redirect()
+                ->route('administrador.gestioncohorte')
+                ->with('error', 'Esta cohorte no pertenece a tus postgrados.');
+        }
+
+        $cohorte->load('mencion');
+        $menciones = Mencion::with('postgrado')
+            ->whereIn('id_postgrado', $this->idsPostgradosPermitidos(Auth::user()) ?? Mencion::query()->pluck('id_postgrado'))
+            ->orderBy('id_postgrado')
+            ->get();
 
         return view('administrador.editarcohorte', compact('cohorte', 'menciones'));
     }
@@ -104,9 +150,15 @@ class CohorteController extends Controller
     {
         $cohorte = Cohorte::findOrFail($id);
 
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $cohorte->codigo_postgrado)) {
+            return redirect()
+                ->route('administrador.gestioncohorte')
+                ->with('error', 'Esta cohorte no pertenece a tus postgrados.');
+        }
+
         $datos = $request->validate([
             'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')->ignore($cohorte->codigo_cohorte)],
-            'codigo_mencion' => ['required', 'integer', Rule::exists('mencion', 'id_mencion')],
+            'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
             'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
             'nro_de_cohorte' => [
@@ -137,11 +189,36 @@ class CohorteController extends Controller
      */
     public function destroy(string $id)
     {
-
         $cohorte = Cohorte::find($id);
+
+        if (! $cohorte || ! $this->puedeGestionarPostgrado(Auth::user(), $cohorte->codigo_postgrado)) {
+            return redirect()
+                ->route('administrador.gestioncohorte')
+                ->with('error', 'Esta cohorte no pertenece a tus postgrados.');
+        }
+
         $codigo_postgrado = $cohorte->codigo_postgrado; // Guardar el código del postgrado antes de eliminar la cohorte
         $cohorte->delete();
 
         return redirect()->route('administrador.gestion_postgrado.showdetalles', $codigo_postgrado)->with('success', 'Cohorte eliminada correctamente.');
+    }
+
+    /**
+     * La mención del formulario debe existir Y pertenecer a un postgrado que
+     * el usuario pueda gestionar (sin filtro para admin y coordinador general).
+     */
+    private function reglaMencionPropia(): Rule
+    {
+        $permitidos = $this->idsPostgradosPermitidos(Auth::user());
+
+        $regla = Rule::exists('mencion', 'id_mencion');
+
+        if ($permitidos !== null) {
+            $regla->where(function ($query) use ($permitidos) {
+                $query->whereIn('id_postgrado', $permitidos);
+            });
+        }
+
+        return $regla;
     }
 }

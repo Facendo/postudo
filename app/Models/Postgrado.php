@@ -55,4 +55,18 @@ class Postgrado extends Model
     {
         return $this->hasMany(Cohorte::class, 'codigo_postgrado', 'id_postgrado');
     }
+
+    /**
+     * Coordinador de postgrado asignado (pivote con 'unique': UN coordinador
+     * por postgrado, como máximo uno aquí).
+     */
+    public function coordinadores()
+    {
+        return $this->belongsToMany(
+            CoordinadorPostgrado::class,
+            'asignacion_coordinador_postgrado',
+            'codigo_postgrado',
+            'cedula'
+        )->withTimestamps();
+    }
 }

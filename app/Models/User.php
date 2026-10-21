@@ -48,4 +48,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Fila del rol de coordinador de postgrado (por cédula). Solo existe si
+     * la cédula fue creada por el coordinador general; alimenta el filtrado
+     * de «sus» postgrados en los controladores.
+     */
+    public function coordinadorPostgrado()
+    {
+        return $this->belongsTo(CoordinadorPostgrado::class, 'cedula', 'cedula');
+    }
 }

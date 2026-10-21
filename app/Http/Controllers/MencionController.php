@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Mencion;
 use App\Models\Postgrado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MencionController extends Controller
 {
+    use FiltrablePorCoordinador;
+
     /**
      * Registra una nueva mención dentro de un postgrado.
      */
     public function store(Request $request, Postgrado $postgrado)
     {
+        // El coordinador de postgrado solo gestiona menciones de SUS postgrados.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $postgrado->id_postgrado)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Este postgrado no está asignado a tu cuenta.');
+        }
+
         $request->validate([
             'nombre' => 'required|string|max:255',
         ]);
@@ -33,6 +44,13 @@ class MencionController extends Controller
      */
     public function update(Request $request, Mencion $mencion)
     {
+        // El coordinador de postgrado solo gestiona menciones de SUS postgrados.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $mencion->id_postgrado)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Esta mención no pertenece a tus postgrados.');
+        }
+
         $request->validate([
             'nombre' => 'required|string|max:255',
         ]);
@@ -55,6 +73,13 @@ class MencionController extends Controller
      */
     public function destroy(Mencion $mencion)
     {
+        // El coordinador de postgrado solo gestiona menciones de SUS postgrados.
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $mencion->id_postgrado)) {
+            return redirect()
+                ->route('administrador.gestion_postgrado')
+                ->with('error', 'Esta mención no pertenece a tus postgrados.');
+        }
+
         $totalCohortes = $mencion->cohortes()->count();
 
         if ($totalCohortes > 0) {
