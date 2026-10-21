@@ -33,16 +33,7 @@
                     @enderror
                 </div>
 
-                <!-- Campo para duracion -->
-                <div class="form-group">
-                    <label for="duracion" class="form-label">Duración</label>
-                    <input type="text" id="duracion" name="duracion" class="form-input" placeholder="Ej: 2 años / 4 semestres" value="{{ old('duracion', $postgrado->duracion) }}" required>
-                    @error('duracion')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Campo para el área -->
+                {{-- Sin «Duración»: el campo desapareció del alta y del listado --}}
                 <div class="form-group">
                     <label for="codigo_area" class="form-label">Área</label>
                     <select id="codigo_area" name="codigo_area" class="form-select" required>

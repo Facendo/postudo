@@ -5,10 +5,11 @@
             <label>Detalles del Postgrado: {{ $postgrado->nombre }}</label>
         </div>
 
+        {{-- Sin «Duración»; el total de cohortes se cuenta de las cohortes
+             reales ($cohortes), no del campo nro_cohortes (obsoleto). --}}
         <p style="color: white; opacity: 0.8; text-align: center; margin-bottom: 10px;">
             Área: <strong>{{ $postgrado->area->nombre ?? 'Sin área' }}</strong> &nbsp;|&nbsp;
-            Duración: <strong>{{ $postgrado->duracion }}</strong> &nbsp;|&nbsp;
-            Cohortes: <strong>{{ $postgrado->nro_cohortes }}</strong>
+            Cohortes: <strong>{{ $cohortes->count() }}</strong>
         </p>
 
         {{-- Botón para crear un nuevo cohorte --}}

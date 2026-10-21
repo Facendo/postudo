@@ -29,9 +29,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
-                    <th>Duración</th>
                     <th>Área</th>
-                    <th>Nro. Cohortes</th>
                     <th>Detalles</th>
                     <th>Acciones</th>
                 </tr>
@@ -51,9 +49,7 @@
                             {{ $postgrado->nombre }}
                         </td>
                         <td>{{ $postgrado->descripcion }}</td>
-                        <td>{{ $postgrado->duracion }}</td>
                         <td>{{ $postgrado->area->nombre ?? 'Sin área' }}</td>
-                        <td>{{ $postgrado->nro_cohortes }}</td>
                         <td class="table-actions">
                             {{-- Enlace a la vista de detalles del postgrado --}}
                             <a href="{{ route('administrador.gestion_postgrado.showdetalles', $postgrado->id_postgrado) }}" class="btn-table-action" title="Ver Detalles">
@@ -88,7 +84,7 @@
 
                     {{-- Menciones del postgrado: fila oculta que se despliega con el clic --}}
                     <tr class="fila-menciones hidden" data-postgrado="{{ $postgrado->id_postgrado }}">
-                        <td colspan="8">
+                        <td colspan="6">
                             <div class="caja-menciones">
                                 <div class="caja-menciones-header">
                                     <h4 class="caja-menciones-titulo">
@@ -135,10 +131,10 @@
                 @empty
                     {{--
                         Este bloque se muestra si la colección $postgrados está vacía.
-                        El colspan se ajusta a 7 para coincidir con el número de columnas.
+                        El colspan se ajusta al número de columnas de la tabla.
                     --}}
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 20px;">No hay postgrados registrados.</td>
+                        <td colspan="6" style="text-align: center; padding: 20px;">No hay postgrados registrados.</td>
                     </tr>
                 @endforelse
             </tbody>

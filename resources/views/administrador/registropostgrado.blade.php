@@ -34,20 +34,9 @@
                     <textarea id="descripcion" name="descripcion" class="form-input" placeholder="Breve descripción del postgrado..." rows="4" required></textarea>
                 </div>
 
-                <!-- Campo para duracion -->
-                <div class="form-group">
-                    <label for="duracion" class="form-label">Duración</label>
-                    <input type="text" id="duracion" name="duracion" class="form-input" placeholder="Ej: 2 años / 4 semestres" required>
-                </div>
-
-                <!-- Campo para el numero de cohortes -->
-                <div class="form-group">
-                    <label for="nro_de_cohortes" class="form-label">Número de Cohortes</label>
-                    <input type="number" id="nro_de_cohortes" name="nro_de_cohortes" class="form-input" placeholder="Ej: 3" required>
-                </div>
-                @error('nro_de_cohortes')
-                    <span class="error-message">{{ $message }}</span>
-                @enderror
+                {{-- Sin «Duración» ni «Número de Cohortes»: la duración ya no
+                     interesa y el total de cohortes se cuenta de las cohortes
+                     reales creadas (no se declara al crear el postgrado). --}}
                 <!-- Campo para el área al que pertenece el postgrado -->
                 <div class="form-group">
                 <label for="codigo_area" class="form-label">Área</label>

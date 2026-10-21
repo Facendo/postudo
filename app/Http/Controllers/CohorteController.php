@@ -68,8 +68,8 @@ class CohorteController extends Controller
      * Store a newly created resource in storage.
      *
      * El codigo_postgrado NO se toma del formulario: se deriva de la mención
-     * elegida (nunca confiar en el dato del cliente). Número de cohorte único
-     * dentro de la misma mención.
+     * elegida (nunca confiar en el dato del cliente). Tampoco el número de
+     * cohorte: se autoincrementa con el máximo existente en la mención.
      */
     public function store(Request $request)
     {
@@ -78,13 +78,16 @@ class CohorteController extends Controller
             'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
             'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
-            'nro_de_cohorte' => [
-                'required', 'integer', 'min:1',
-                Rule::unique('cohorte', 'nro_de_cohorte')->where('codigo_mencion', $request->codigo_mencion),
-            ],
+            // Defensa: el número real se recalcula más abajo, nunca se toma del cliente.
+            'nro_de_cohorte' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $mencion = Mencion::findOrFail($datos['codigo_mencion']);
+
+        // Número de cohorte siguiente DENTRO de la mención (contador por mención):
+        // la primera cohorte de la mención es la 1, la siguiente la 2, y así sucesivamente.
+        $siguiente = (int) Cohorte::where('codigo_mencion', $mencion->id_mencion)
+            ->max('nro_de_cohorte') + 1;
 
         $cohorte = new Cohorte;
         $cohorte->codigo_cohorte = $datos['codigo_cohorte'];
@@ -92,7 +95,7 @@ class CohorteController extends Controller
         $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
         $cohorte->fecha_inicio = $datos['fecha_inicio'];
         $cohorte->fecha_fin = $datos['fecha_fin'];
-        $cohorte->nro_de_cohorte = $datos['nro_de_cohorte'];
+        $cohorte->nro_de_cohorte = $siguiente;
         $cohorte->save();
 
         return redirect()

@@ -76,13 +76,8 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="nro_de_cohorte" class="form-label">Número de Cohorte</label>
-                        <input type="number" id="nro_de_cohorte" name="nro_de_cohorte" class="form-input" placeholder="Ej: 1" min="1" value="{{ old('nro_de_cohorte') }}" required>
-                        @error('nro_de_cohorte')
-                            <p class="form-error-message">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    {{-- Sin «Número de Cohorte»: el número lo asigna el
+                         controlador al guardar (autoincrementa por mención). --}}
 
                     <div class="form-actions" style="justify-content: center;">
                         <button type="submit" class="submit-button">Registrar Cohorte</button>
