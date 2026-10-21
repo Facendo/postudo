@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CoordinadorPostgrado;
 use App\Models\Postgrado;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -12,7 +14,7 @@ class CoordinadorPostgradoController extends Controller
 {
     /**
      * Listado de coordinadores de postgrado y su postgrado asignado.
-     * (Edición y borrado quedan pendientes: ver MEMORY.)
+     * (La edición queda pendiente: ver MEMORY.)
      */
     public function index()
     {
@@ -71,11 +73,51 @@ class CoordinadorPostgradoController extends Controller
     }
 
     /**
+     * Elimina un coordinador de postgrado (solo coordinador general).
+     *
+     * Sus postgrados quedan «Sin coordinador»: la asignación se limpia sola
+     * por la FK con cascade de asignacion_coordinador_postgrado, nunca a mano.
+     * Si la persona ya creó cuenta y su rol es exactamente 'coordinador_postgrado',
+     * también se borra su usuario y sus sesiones activas: renunció, sale del
+     * sistema y deberá registrarse de nuevo si algún día vuelve a ser nombrado.
+     */
+    public function destroy(CoordinadorPostgrado $coordinador)
+    {
+        $postgradosLiberados = $coordinador->postgrados()->count();
+
+        // La fila del pivote cae en cascada al borrar la fila del coordinador.
+        $coordinador->delete();
+
+        // La cuenta de usuario solo se elimina si su rol era EXCLUSIVAMENTE
+        // coordinador de postgrado (si su cédula también está en otra tabla de
+        // rol, su usuario se conserva con ese otro rol y no se toca nada).
+        $usuario = User::where('cedula', $coordinador->cedula)->first();
+
+        if ($usuario !== null && $usuario->rol === 'coordinador_postgrado') {
+            // SESSION_DRIVER=database: cerrar también sus sesiones abiertas.
+            DB::table('sessions')->where('user_id', $usuario->id)->delete();
+            $usuario->delete();
+        }
+
+        $mensaje = $postgradosLiberados > 0
+            ? "Coordinador eliminado. {$postgradosLiberados} postgrado(s) quedaron sin coordinador."
+            : 'Coordinador de postgrado eliminado.';
+
+        return redirect()
+            ->route('coordinador.coordinador_postgrado.index')
+            ->with('success', $mensaje);
+    }
+
+    /**
      * Panel propio del rol coordinador_postgrado: sus postgrados y cohortes
      * están en las gestiones existentes, filtradas por el controlador.
+     * Si no tiene postgrados (p. ej. se le borraron todos), el panel avisa.
      */
     public function panel()
     {
-        return view('coordinador_postgrado.index');
+        // '?->' defensivo: la fila puede faltar si el coordinador fue eliminado.
+        $postgradosAsignados = Auth::user()->coordinadorPostgrado?->postgrados()->count() ?? 0;
+
+        return view('coordinador_postgrado.index', compact('postgradosAsignados'));
     }
 }

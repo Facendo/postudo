@@ -31,7 +31,10 @@ trait FiltrablePorCoordinador
             return null;
         }
 
-        return $user->coordinadorPostgrado->postgrados->pluck('id_postgrado');
+        // '?->' defensivo: la fila desaparece si el coordinador fue eliminado
+        // (o si se borró a mano); con ella ausente no ve ningún postgrado
+        // (colección vacía = 0 = 1) en vez de fallar con HTTP 500.
+        return $user->coordinadorPostgrado?->postgrados->pluck('id_postgrado') ?? collect();
     }
 
     /**

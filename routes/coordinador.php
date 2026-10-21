@@ -44,10 +44,11 @@ Route::middleware(['auth', 'role:coordinador_general'])->group(function () {
 
     // Coordinadores de Postgrado: el coordinador general los crea y les
     // asigna sus postgrados (1 coordinador por postgrado; unique en la pivote).
-    // El CRUD disponible hoy es crear + listado: editar y borrar quedan pendientes.
+    // El CRUD disponible hoy es crear + listado + eliminar: editar queda pendiente.
     Route::get('/coordinador/coordinadores_postgrado', [CoordinadorPostgradoController::class, 'index'])->name('coordinador.coordinador_postgrado.index'); // Lista de coordinadores de postgrado
     Route::get('/coordinador/coordinadores_postgrado/create', [CoordinadorPostgradoController::class, 'create'])->name('coordinador.coordinador_postgrado.create'); // Formulario de registro
     Route::post('/coordinador/coordinadores_postgrado', [CoordinadorPostgradoController::class, 'store'])->name('coordinador.coordinador_postgrado.store'); // Guardar coordinador con sus postgrados
+    Route::delete('/coordinador/coordinadores_postgrado/{coordinador}', [CoordinadorPostgradoController::class, 'destroy'])->name('coordinador.coordinador_postgrado.destroy'); // Eliminar coordinador (sus postgrados quedan sin coordinador)
 });
 
 // Panel del coordinador de postgrado: solo ve SUS postgrados asignados

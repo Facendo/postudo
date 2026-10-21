@@ -61,6 +61,8 @@
                             {{ $postgrado->nombre }} ({{ $postgrado->id_postgrado }})
                             @if ($asignado)
                                 — ya asignado a {{ $asignado->nombre }} {{ $asignado->apellido }}
+                            @else
+                                — Sin coordinador (disponible)
                             @endif
                         </label>
                     @empty

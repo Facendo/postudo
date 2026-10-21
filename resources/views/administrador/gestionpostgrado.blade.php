@@ -134,7 +134,13 @@
                         El colspan se ajusta al número de columnas de la tabla.
                     --}}
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">No hay postgrados registrados.</td>
+                        <td colspan="6" style="text-align: center; padding: 20px;">
+                            {{-- Mensaje según rol: para el coordinador de postgrado una
+                                 tabla vacía casi siempre significa "sin asignación" --}}
+                            {{ Auth::user()->rol === 'coordinador_postgrado'
+                                ? 'No tienes postgrados asignados actualmente.'
+                                : 'No hay postgrados registrados.' }}
+                        </td>
                     </tr>
                 @endforelse
             </tbody>

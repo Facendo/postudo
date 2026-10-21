@@ -50,7 +50,13 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 20px;">No hay cohortes registradas. Crea una desde «Nueva Cohorte».</td>
+                        <td colspan="7" style="text-align: center; padding: 20px;">
+                            {{-- Mensaje según rol: al coordinador de postgrado sin
+                                 asignación no se le invita a crear lo que no puede --}}
+                            {{ Auth::user()->rol === 'coordinador_postgrado'
+                                ? 'No tienes cohortes asignadas actualmente.'
+                                : 'No hay cohortes registradas. Crea una desde «Nueva Cohorte».' }}
+                        </td>
                     </tr>
                 @endforelse
             </tbody>
