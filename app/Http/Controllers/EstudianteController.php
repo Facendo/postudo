@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Cohorte;
 use App\Models\Estudiante;
-use App\Models\Materias;
 use App\Models\Mencion;
 use App\Models\Pagos;
 use App\Models\Postgrado;
-use App\Models\Seccion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,22 +36,6 @@ class EstudianteController extends Controller
         $menciones = Mencion::with('postgrado')->get();
 
         return view('administrador.registroestudiante', compact('user', 'areas', 'postgrados', 'menciones'));
-    }
-
-    public function mostrarhorarioacademico()
-    {
-        $user = Auth::user();
-        $horario = $user->horario; // Asumiendo que el modelo Estudiante tiene una relación con Horario
-
-        return view('estudiante.horarioacademico', compact('horario'));
-    }
-
-    public function mostrarhistorialacademico()
-    {
-        $user = Auth::user();
-        $historial = $user->historial; // Asumiendo que el modelo Estudiante tiene una relación con Historial
-
-        return view('estudiante.historialacademico', compact('historial'));
     }
 
     /**
@@ -200,8 +182,6 @@ class EstudianteController extends Controller
                 });
             })
             ->get();
-        $materias = Materias::whereIn('codigo_cohorte', $cohortes->pluck('codigo_cohorte'))->get();
-        $secciones = Seccion::whereIn('codigo_materia', $materias->pluck('codigo_materia'))->get();
 
         // Se requiere un pago de inscripción que no esté pendiente.
         $pagos = Pagos::where('cedula', $user->cedula)->get();
@@ -213,7 +193,7 @@ class EstudianteController extends Controller
             return redirect()->route('estudiante.index')->with('error', 'No se ha procesado el pago de inscripción.');
         }
 
-        return view('estudiante.inscripcion', compact('user', 'postgrados', 'cohortes', 'materias', 'secciones'));
+        return view('estudiante.inscripcion', compact('user', 'postgrados', 'cohortes'));
     }
 
     public function update(Request $request, Estudiante $estudiante)

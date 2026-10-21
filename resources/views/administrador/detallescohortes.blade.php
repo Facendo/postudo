@@ -1,68 +1,38 @@
-<x-layout title='PostUDO || Postgrados'>
-    <div class="page-content" style="width: 90%; max-width: 1200px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
+<x-layout title='PostUDO || Cohorte'>
+    <div class="page-content" style="width: 90%; max-width: 900px; margin: 40px auto; display: flex; flex-direction: column; align-items: center;">
         {{-- Título de la sección --}}
         <div class="content_texto_bienvenida">
-            <label>Listado de materias Asignadas a {{ $cohorte->nro_de_cohorte }}° cohorte</label>
+            <label>Detalles de la {{ $cohorte->nro_de_cohorte }}° cohorte</label>
         </div>
 
-        {{-- Botón para crear un nuevo postgrado --}}
-        <div class="action-buttons-container">
-            {{-- Se asume que la ruta para crear un postgrado es 'administrador.gestion_postgrado.create' --}}
-            <a href="{{ route('administrador.gestionmaterias.create', $cohorte->codigo_cohorte) }}" class="button_body">
-                <i class="fa-solid fa-plus icon-left"></i> Crear Nueva Materia
-            </a>
-        </div>
-        {{-- Tabla para mostrar los postgrados --}}
+        {{-- Datos de la cohorte --}}
         <table>
             <thead>
                 <tr>
-                    <th>Codigo Materia</th>
-                    <th>Nombre</th>
-                    <th>Prelacion</th>
-                    <th>Ver Secciones </th>
-                    <th>Acciones</th>
+                    <th>Código</th>
+                    <th>Nro. de Cohorte</th>
+                    <th>Postgrado</th>
+                    <th>Mención</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
                 </tr>
             </thead>
             <tbody>
-                {{--
-                    Bucle @forelse para iterar sobre la colección de $postgrados.
-                    Muestra una fila por cada postgrado.
-                --}}
-                @forelse ($materias as $materia)
-                    <tr>
-                        <td>{{ $materia->codigo_materia }}</td>
-                        <td>{{ $materia->nombre }}</td>
-                        <td>{{ $materia->prelacion }}</td>
-                        <td>{{-- Enlace a la vista de secciones asignadas --}}
-                            <a href="{{ route('administrador.gestionmaterias.showdetalles', $materia->codigo_materia) }}" class="btn-table-action" title="Ver Secciones">
-                                <i class="fas fa-eye"></i>
-                            </a></td>
-
-                        {{-- Columna de acciones con botones para Editar y Eliminar --}}
-                        <td class="table-actions">
-                            {{-- Botón de Editar --}}
-                            {{-- Se asume que la ruta para editar es 'administrador.gestion_postgrado.edit' --}}
-                            <a href="{{ route('administrador.gestionmaterias.edit', $materia->codigo_materia) }}" class="btn-table-action" title="Editar">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-
-                            {{-- Botón de Eliminar (usando un formulario para solicitudes DELETE) --}}
-                            {{-- Se asume que la ruta para eliminar es 'administrador.gestion_postgrado.destroy' --}}
-                            <form action="{{ route('administrador.gestionmaterias.destroy', $materia->codigo_materia) }}" method="POST" class="inline-form">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-table-action" title="Eliminar">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 20px;">No hay materias registradas.</td>
-                    </tr>
-                @endforelse
+                <tr>
+                    <td>{{ $cohorte->codigo_cohorte }}</td>
+                    <td>{{ $cohorte->nro_de_cohorte }}</td>
+                    <td>{{ $cohorte->postgrado?->nombre ?? '—' }}</td>
+                    <td>{{ $cohorte->mencion?->nombre ?? '—' }}</td>
+                    <td>{{ $cohorte->fecha_inicio }}</td>
+                    <td>{{ $cohorte->fecha_fin }}</td>
+                </tr>
             </tbody>
         </table>
+
+        <div class="action-buttons-container">
+            <a href="{{ route('administrador.gestioncohorte') }}" class="button_body secondary-button">
+                <i class="fa-solid fa-arrow-left icon-left"></i> Volver a Cohortes
+            </a>
+        </div>
     </div>
 </x-layout>

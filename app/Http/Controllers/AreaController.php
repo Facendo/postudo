@@ -50,21 +50,10 @@ class AreaController extends Controller
             ->whereIn('codigo_postgrado', $idsPostgrados)
             ->pluck('codigo_cohorte');
 
-        $idsMaterias = DB::table('materia')
-            ->whereIn('codigo_cohorte', $idsCohortes)
-            ->pluck('codigo_materia');
-
-        $idsSecciones = DB::table('seccion')
-            ->whereIn('codigo_materia', $idsMaterias)
-            ->pluck('nro_seccion');
-
         return response()->json([
             'postgrados' => $idsPostgrados->count(),
             'menciones' => DB::table('mencion')->whereIn('id_postgrado', $idsPostgrados)->count(),
             'cohortes' => $idsCohortes->count(),
-            'materias' => $idsMaterias->count(),
-            'secciones' => $idsSecciones->count(),
-            'listados' => DB::table('listado')->whereIn('nro_seccion', $idsSecciones)->count(),
         ]);
     }
 

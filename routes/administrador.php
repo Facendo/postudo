@@ -4,10 +4,7 @@ use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\CoordinadorGeneralController;
 use App\Http\Controllers\EgresoController;
-use App\Http\Controllers\MateriasController;
 use App\Http\Controllers\PostgradoController;
-use App\Http\Controllers\ProfesorController;
-use App\Http\Controllers\SeccionController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas del panel de administrador (requieren autenticación y rol de 'administrador')
@@ -31,33 +28,12 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     // se trasladó al panel del coordinador general (ver routes/coordinador.php).
     // El panel del administrador se enfoca en pagos, asuntos y finanzas.
 
-    // Gestión de Profesores
-    Route::get('/administrador/gestion_profesor', [ProfesorController::class, 'index'])->name('administrador.gestion_profesor'); // Lista de profesores
-    Route::get('/administrador/gestion_profesor/create', [ProfesorController::class, 'create'])->name('administrador.gestion_profesor.create'); // Formulario de registro de profesor
-    Route::post('/administrador/gestion_profesor', [ProfesorController::class, 'store'])->name('administrador.gestion_profesor.store'); // Guardar nuevo profesor
-    Route::get('/administrador/gestion_profesor/{profesor}/edit', [ProfesorController::class, 'edit'])->name('administrador.gestion_profesor.edit'); // Formulario de edición de profesor
-    Route::put('/administrador/gestion_profesor/{profesor}', [ProfesorController::class, 'update'])->name('administrador.gestion_profesor.update'); // Actualizar profesor
-    Route::delete('/administrador/gestion_profesor/{profesor}', [ProfesorController::class, 'destroy'])->name('administrador.gestion_profesor.destroy'); // Eliminar profesor
+    // NOTA (2026-10-21): se eliminaron por completo la gestión de profesores,
+    // materias y secciones (y el rol profesor): el árbol académico se quedó
+    // en Área -> Postgrado -> Mención -> Cohorte.
 
     // NOTA (2026-10-16): la gestión de postgrados y cohortes se trasladó al
     // grupo de doble rol del final de este archivo (administrador|coordinador_general).
-
-    // Gestión de Materias
-    Route::get('/administrador/gestionmaterias', [MateriasController::class, 'index'])->name('administrador.gestionmaterias'); // Lista de materias
-    Route::get('/administrador/gestionmaterias/{id}/create', [MateriasController::class, 'create'])->name('administrador.gestionmaterias.create'); // Formulario de registro de materia
-    Route::post('/administrador/gestionmaterias', [MateriasController::class, 'store'])->name('administrador.gestionmaterias.store'); // Guardar nueva materia
-    Route::get('/administrador/gestionmaterias/{id}/edit', [MateriasController::class, 'edit'])->name('administrador.gestionmaterias.edit'); // Formulario de edición de materia
-    Route::put('/administrador/gestionmaterias/{id}', [MateriasController::class, 'update'])->name('administrador.gestionmaterias.update'); // Actualizar materia
-    Route::delete('/administrador/gestionmaterias/{id}', [MateriasController::class, 'destroy'])->name('administrador.gestionmaterias.destroy'); // Eliminar materia
-    Route::get('/administrador/gestionmaterias/{id}/detalles', [MateriasController::class, 'showdetalles'])->name('administrador.gestionmaterias.showdetalles'); // Ver detalles de materia
-
-    // Gestión de Secciones
-    Route::get('/administrador/gestionseccion', [SeccionController::class, 'index'])->name('administrador.gestionseccion'); // Lista de secciones
-    Route::get('/administrador/gestionseccion/{id}/create', [SeccionController::class, 'create'])->name('administrador.gestionseccion.create'); // Formulario de registro de sección
-    Route::post('/administrador/gestionseccion', [SeccionController::class, 'store'])->name('administrador.gestionseccion.store'); // Guardar nueva sección
-    Route::get('/administrador/gestionseccion/{id}/edit', [SeccionController::class, 'edit'])->name('administrador.gestionseccion.edit'); // Formulario de edición de sección
-    Route::put('/administrador/gestionseccion/{id}', [SeccionController::class, 'update'])->name('administrador.gestionseccion.update'); // Actualizar sección
-    Route::delete('/administrador/gestionseccion/{id}', [SeccionController::class, 'destroy'])->name('administrador.gestionseccion.destroy'); // Eliminar sección
 });
 
 // Gestión de Postgrados y Cohortes: accesible también para el coordinador

@@ -31,8 +31,6 @@ class AuthenticatedSessionController extends Controller
 
         if ($user->rol == 'estudiante') {
             return redirect()->intended(route('estudiante.index', absolute: false));
-        } elseif ($user->rol === 'profesor') {
-            return redirect(route('profesor.index', absolute: false));
         } elseif ($user->rol === 'administrador') {
             return redirect(route('administrador.index', absolute: false));
         } elseif ($user->rol === 'coordinador_general') {

@@ -178,20 +178,9 @@ class PostgradoController extends Controller
             ->where('codigo_postgrado', $id)
             ->pluck('codigo_cohorte');
 
-        $idsMaterias = DB::table('materia')
-            ->whereIn('codigo_cohorte', $idsCohortes)
-            ->pluck('codigo_materia');
-
-        $idsSecciones = DB::table('seccion')
-            ->whereIn('codigo_materia', $idsMaterias)
-            ->pluck('nro_seccion');
-
         return response()->json([
             'menciones' => $idsMenciones->count(),
             'cohortes' => $idsCohortes->count(),
-            'materias' => $idsMaterias->count(),
-            'secciones' => $idsSecciones->count(),
-            'listados' => DB::table('listado')->whereIn('nro_seccion', $idsSecciones)->count(),
             'estudiantes_desasignados' => DB::table('estudiantes')->whereIn('codigo_mencion', $idsMenciones)->count(),
         ]);
     }

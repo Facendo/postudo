@@ -24,11 +24,6 @@ class Cohorte extends Model
         'nro_de_cohorte',
     ];
 
-    public function Materias()
-    {
-        return $this->hasMany(Materias::class, 'codigo_cohorte', 'codigo_cohorte');
-    }
-
     /**
      * La mención a la que pertenece la cohorte (creación anclada a menciones).
      * Nullable: si se borra la mención, la cohorte queda sin ella (set null).

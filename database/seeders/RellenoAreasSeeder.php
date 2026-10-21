@@ -6,12 +6,8 @@ use App\Models\Area;
 use App\Models\Asunto;
 use App\Models\Cohorte;
 use App\Models\Estudiante;
-use App\Models\Evaluacion;
-use App\Models\Materias;
 use App\Models\Mencion;
 use App\Models\Postgrado;
-use App\Models\Profesor;
-use App\Models\Seccion;
 use Illuminate\Database\Seeder;
 
 class RellenoAreasSeeder extends Seeder
@@ -143,15 +139,6 @@ class RellenoAreasSeeder extends Seeder
             'nombre' => 'Psicología Clínica',
         ]);
 
-        Profesor::create([
-            'cedula' => '30731444',
-            'nombre' => 'Jose',
-            'apellido' => 'Cova',
-            'telefono' => '1234567890',
-            'correo' => 'gmail@gmail.com',
-            'edad' => 40,
-        ]);
-
         Cohorte::create([
             'codigo_cohorte' => 'COHORTE-INF-2024-1',
             'codigo_postgrado' => 'POST-INF-2024',
@@ -174,121 +161,6 @@ class RellenoAreasSeeder extends Seeder
             'nro_de_cohorte' => 3,
         ]);
 
-        Materias::create([
-            'codigo_materia' => 101,
-            'codigo_cohorte' => 'COHORTE-INF-2024-1',
-            'nombre' => 'Programación Avanzada',
-            'prelacion' => null,
-        ]);
-        Materias::create([
-            'codigo_materia' => 102,
-            'codigo_cohorte' => 'COHORTE-INF-2024-1',
-            'nombre' => 'Estructuras de Datos Avanzadas',
-            'prelacion' => null,
-        ]);
-        Materias::create([
-            'codigo_materia' => 103,
-            'codigo_cohorte' => 'COHORTE-INF-2024-2',
-            'nombre' => 'Bases de Datos Avanzadas',
-            'prelacion' => 101,
-        ]);
-        Materias::create([
-            'codigo_materia' => 104,
-            'codigo_cohorte' => 'COHORTE-INF-2024-2',
-            'nombre' => 'Desarrollo Web Avanzado',
-            'prelacion' => 102,
-        ]);
-        Materias::create([
-            'codigo_materia' => 105,
-            'codigo_cohorte' => 'COHORTE-INF-2024-3',
-            'nombre' => 'Arquitectura de Software',
-            'prelacion' => 103,
-        ]);
-
-        Seccion::create([
-            'nro_seccion' => 1,
-            'codigo_materia' => 101,
-            'hora_inicio' => '2024-01-15 08:00:00',
-            'hora_fin' => '2024-01-15 10:00:00',
-            'cedula_docente' => '12345678',
-            'aula' => 'A101',
-            'cupo_maximo' => 30,
-            'cupo_actual' => 0,
-        ]);
-        Seccion::create([
-            'nro_seccion' => 2,
-            'codigo_materia' => 101,
-            'hora_inicio' => '2024-01-18 08:00:00',
-            'hora_fin' => '2024-01-18 10:00:00',
-            'cedula_docente' => '12345678',
-            'aula' => 'A104',
-            'cupo_maximo' => 30,
-            'cupo_actual' => 0,
-        ]);
-        Seccion::create([
-            'nro_seccion' => 3,
-            'codigo_materia' => 102,
-            'hora_inicio' => '2024-01-20 08:00:00',
-            'hora_fin' => '2024-01-20 10:00:00',
-            'cedula_docente' => '12345678',
-            'aula' => 'A102',
-            'cupo_maximo' => 30,
-            'cupo_actual' => 0,
-        ]);
-        Seccion::create([
-            'nro_seccion' => 4,
-            'codigo_materia' => 103,
-            'hora_inicio' => '2024-06-01 08:00:00',
-            'hora_fin' => '2024-06-01 10:00:00',
-            'cedula_docente' => '87654321',
-            'aula' => 'B101',
-            'cupo_maximo' => 30,
-            'cupo_actual' => 0,
-        ]);
-        Seccion::create([
-            'nro_seccion' => 5,
-            'codigo_materia' => 104,
-            'hora_inicio' => '2024-06-02 08:00:00',
-            'hora_fin' => '2024-06-02 10:00:00',
-            'cedula_docente' => '87654321',
-            'aula' => 'B102',
-            'cupo_maximo' => 30,
-            'cupo_actual' => 0,
-        ]);
-        Seccion::create([
-            'nro_seccion' => 6,
-            'codigo_materia' => 105,
-            'hora_inicio' => '2024-11-01 08:00:00',
-            'hora_fin' => '2024-11-01 10:00:00',
-            'cedula_docente' => '12345678',
-            'aula' => 'C101',
-            'cupo_maximo' => 30,
-            'cupo_actual' => 0,
-        ]);
-        Profesor::create([
-            'cedula' => '35415135',
-            'nombre' => 'Ana',
-            'apellido' => 'Gómez',
-            'telefono' => '9876543210',
-            'correo' => 'ana.gomez@example.com',
-            'edad' => 35,
-        ]);
-        Profesor::create([
-            'cedula' => '35131315',
-            'nombre' => 'Carlos',
-            'apellido' => 'Pérez',
-            'telefono' => '5555555555',
-            'correo' => 'carlos.perez@example.com',
-            'edad' => 40,
-        ]);
-        Profesor::create([
-            'cedula' => '87654321',
-            'nombre' => 'María',
-            'apellido' => 'López',
-            'telefono' => '4444444444',
-            'correo' => 'maria.lopez@example.com',
-            'edad' => 38,
-        ]);
         Estudiante::create([
             'cedula' => '123456789',
             'nombre' => 'Juan',
@@ -315,115 +187,6 @@ class RellenoAreasSeeder extends Seeder
             'especialidad' => 'Desarrollo Web',
             'correo' => 'pedro.ramirez@example.com',
             'edad' => 23,
-        ]);
-
-        Evaluacion::create([
-            'codigo_materia' => 101,
-            'codigo_seccion' => 1,
-            'titulo' => 'Examen Parcial 1',
-            'porcentaje' => 30,
-            'metodologia' => 'Examen escrito',
-            'fecha' => '2024-02-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 101,
-            'codigo_seccion' => 2,
-            'titulo' => 'Examen Parcial 2',
-            'porcentaje' => 30,
-            'metodologia' => 'Examen escrito',
-            'fecha' => '2024-02-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 101,
-            'codigo_seccion' => 1,
-            'titulo' => 'Proyecto Final',
-            'porcentaje' => 70,
-            'metodologia' => 'Proyecto práctico',
-            'fecha' => '2024-03-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 101,
-            'codigo_seccion' => 2,
-            'titulo' => 'Proyecto Final',
-            'porcentaje' => 70,
-            'metodologia' => 'Proyecto práctico',
-            'fecha' => '2024-03-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 102,
-            'codigo_seccion' => 3,
-            'titulo' => 'Examen Parcial 1',
-            'porcentaje' => 30,
-            'metodologia' => 'Examen escrito',
-            'fecha' => '2024-02-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 102,
-            'codigo_seccion' => 3,
-            'titulo' => 'Proyecto Final',
-            'porcentaje' => 70,
-            'metodologia' => 'Proyecto práctico',
-            'fecha' => '2024-03-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 103,
-            'codigo_seccion' => 4,
-            'titulo' => 'Examen Parcial 1',
-            'porcentaje' => 30,
-            'metodologia' => 'Examen escrito',
-            'fecha' => '2024-02-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 103,
-            'codigo_seccion' => 4,
-            'titulo' => 'Proyecto Final',
-            'porcentaje' => 70,
-            'metodologia' => 'Proyecto práctico',
-            'fecha' => '2024-03-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 104,
-            'codigo_seccion' => 5,
-            'titulo' => 'Examen Parcial 1',
-            'porcentaje' => 30,
-            'metodologia' => 'Examen escrito',
-            'fecha' => '2024-02-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 104,
-            'codigo_seccion' => 5,
-            'titulo' => 'Proyecto Final',
-            'porcentaje' => 70,
-            'metodologia' => 'Proyecto práctico',
-            'fecha' => '2024-03-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 105,
-            'codigo_seccion' => 6,
-            'titulo' => 'Examen Parcial 1',
-            'porcentaje' => 30,
-            'metodologia' => 'Examen escrito',
-            'fecha' => '2024-02-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
-        ]);
-        Evaluacion::create([
-            'codigo_materia' => 105,
-            'codigo_seccion' => 6,
-            'titulo' => 'Proyecto Final',
-            'porcentaje' => 70,
-            'metodologia' => 'Proyecto práctico',
-            'fecha' => '2024-03-15',
-            'nota' => null, // Asegúrate de que este campo sea nullable si es necesario
         ]);
 
         Asunto::create([

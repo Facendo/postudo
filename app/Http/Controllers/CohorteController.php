@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Cohorte;
-use App\Models\Materias;
 use App\Models\Mencion;
 use App\Models\Postgrado;
 use Illuminate\Http\Request;
@@ -117,9 +116,9 @@ class CohorteController extends Controller
                 ->with('error', 'Esta cohorte no pertenece a tus postgrados.');
         }
 
-        $materias = Materias::where('codigo_cohorte', $cohorte->codigo_cohorte)->get(); // Obtener materias asociadas a la cohorte
+        $cohorte->load('mencion', 'postgrado');
 
-        return view('administrador.detallescohortes', compact('cohorte', 'materias'));
+        return view('administrador.detallescohortes', compact('cohorte'));
     }
 
     /**

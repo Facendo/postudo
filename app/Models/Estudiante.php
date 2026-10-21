@@ -39,9 +39,4 @@ class Estudiante extends Model
     {
         return $this->belongsTo(Mencion::class, 'codigo_mencion', 'id_mencion');
     }
-
-    public function seccion()
-    {
-        return $this->belongsTo(Seccion::class, 'id_seccion', 'id_seccion');
-    }
 }

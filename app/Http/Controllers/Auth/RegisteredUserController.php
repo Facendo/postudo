@@ -7,7 +7,6 @@ use App\Models\Administrador;
 use App\Models\CoordinadorGeneral;
 use App\Models\CoordinadorPostgrado;
 use App\Models\Estudiante;
-use App\Models\Profesor;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -65,16 +64,6 @@ class RegisteredUserController extends Controller
                     'rol' => $rol,
                     'foto_perfil' => $foto_perfil,
                 ]);
-            } elseif (Profesor::where('cedula', $request->cedula)->exists()) {
-                $rol = 'profesor';
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'cedula' => $request->cedula,
-                    'rol' => $rol,
-                    'foto_perfil' => $foto_perfil,
-                ]);
             } elseif (Administrador::where('cedula', $request->cedula)->exists()) {
                 $rol = 'administrador';
                 $user = User::create([
@@ -114,8 +103,6 @@ class RegisteredUserController extends Controller
             Auth::login($user);
             if ($rol === 'estudiante') {
                 return redirect(route('estudiante.index', absolute: false));
-            } elseif ($rol === 'profesor') {
-                return redirect(route('profesor.index', absolute: false));
             } elseif ($rol === 'administrador') {
                 return redirect(route('administrador.index', absolute: false));
             } elseif ($rol === 'coordinador_general') {

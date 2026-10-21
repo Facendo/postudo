@@ -30,15 +30,16 @@ PostUDO: monolito Laravel 12 (PHP ^8.2, basado en Breeze) para gestión de posgr
 
 ## Rutas y autenticación
 
-- `bootstrap/app.php` solo registra `routes/web.php`; ese archivo hace `require` de los archivos por rol: `auth`, `estudiante`, `pago`, `profesor`, `administrador`, `postgrado`, `asunto`, `coordinador`. **Un archivo de rutas nuevo no hace nada hasta que se requiera desde `web.php`.**
-- Alias de middleware `role` → `App\Http\Middleware\CheckRole`, lee `users.rol`, acepta `role:a|b`. Cadenas de rol: `estudiante`, `profesor`, `administrador`, `coordinador_general`, `coordinador_postgrado` (no existe `coordinador` suelto).
-- Convención para rutas de panel: `->middleware('auth', 'role:<rol>')`. `routes/profesor.php` no lo usa en absoluto hoy (esas rutas son públicas) — no copies ese patrón.
+- `bootstrap/app.php` solo registra `routes/web.php`; ese archivo hace `require` de los archivos por rol: `auth`, `estudiante`, `pago`, `administrador`, `postgrado`, `asunto`, `coordinador`. **Un archivo de rutas nuevo no hace nada hasta que se requiera desde `web.php`.**
+- Alias de middleware `role` → `App\Http\Middleware\CheckRole`, lee `users.rol`, acepta `role:a|b`. Cadenas de rol: `estudiante`, `administrador`, `coordinador_general`, `coordinador_postgrado` (no existe `coordinador` suelto; el rol `profesor` se eliminó el 2026-10-21).
+- Convención para rutas de panel: `->middleware('auth', 'role:<rol>')`.
 - El login y el registro (`AuthenticatedSessionController`, `RegisteredUserController`) redirigen según el rol; no hay ruta `dashboard` a la que caer.
 - `CheckRole` tiene un `return` inalcanzable después de la redirección — no "corrijas" el flujo de control ahí sin revisar quién lo llama.
 
 ## Particularidades del dominio
 
-- Las filas de `users` solo se crean en el registro, que deduce el `rol` buscando la `cedula` en las tablas `estudiante`/`profesor`/`administrador`/`coordinador_general`. Esas tablas no tienen columna de rol; el rol vive únicamente en `users.rol`.
+- Las filas de `users` solo se crean en el registro, que deduce el `rol` buscando la `cedula` en las tablas `estudiante`/`administrador`/`coordinador_general`/`coordinador_postgrado`. Esas tablas no tienen columna de rol; el rol vive únicamente en `users.rol`.
+- **El bloque materias/secciones/profesores/evaluaciones se eliminó por completo (2026-10-21):** tablas `materia`, `seccion`, `profesor`, `evaluacion` y `listado` dropeadas (migración `2026_10_21_120001`), modelos/controllers/vistas/rutas borrados y rol `profesor` eliminado (registro y login ya no lo deducen ni redirigen). El árbol académico queda en **Área → Postgrado → Mención → Cohorte**. No reintroducir referencias a esas tablas.
 - La configuración en tiempo real son archivos JSON en el disco por defecto, no filas en BD: `tasa_cambio.json` (tasa de cambio) + `tasa_cambio_historial.json` (historial), manejados por `App\Services\TasaCambioService` — sincronización automática con el BCV vía `https://bcv.today/api/v1/rate.json` (comando `tasa:actualizar-bcv` + fallback al cargar el panel; historial claveado por día calendario = `date` de la API); `google_sheet_config.json` (URL del CSV publicado de Google Sheet) en `PagoController::verificarPagos`. Están en `storage/app/private/`.
 - Gestión de postgrados y cohortes: rutas con doble rol `role:administrador|coordinador_general` en `routes/administrador.php`. `PostgradoController::create()` admite `?area=CODIGO` para preseleccionar el área (botón «Nuevo Postgrado» de la fila desplegada en `/coordinador/areas`); tras guardar, el coordinador vuelve a Áreas y el administrador a su listado (la ruta de Áreas es solo-coordinador).
 - **Las cohortes cuelgan de una mención** (`cohorte.codigo_mencion`, nullable con `set null`): la mención es obligatoria al crear/editar y `nro_de_cohorte` es único por mención. `codigo_postgrado` se conserva como espejo **derivado de la mención al guardar** en `CohorteController` — nunca confiar en `codigo_postgrado` ni `codigo_mencion` que llegue del cliente. Eliminar una mención con cohortes está **bloqueado** en `MencionController::destroy` (los estudiantes siguen con `set null`).

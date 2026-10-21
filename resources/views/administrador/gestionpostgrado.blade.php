@@ -309,9 +309,6 @@
                         const partes = [];
                         if (impacto.menciones) partes.push(`${impacto.menciones} mención(es)`);
                         if (impacto.cohortes) partes.push(`${impacto.cohortes} cohorte(s)`);
-                        if (impacto.materias) partes.push(`${impacto.materias} materia(s)`);
-                        if (impacto.secciones) partes.push(`${impacto.secciones} sección(es)`);
-                        if (impacto.listados) partes.push(`${impacto.listados} inscripción(es) en listados`);
 
                         if (partes.length) {
                             mensaje += '\n\nSe eliminará en cascada:\n- ' + partes.join('\n- ');
