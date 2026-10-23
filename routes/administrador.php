@@ -5,6 +5,7 @@ use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\CoordinadorGeneralController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\PostgradoController;
+use App\Http\Controllers\PreinscripcionController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas del panel de administrador (requieren autenticación y rol de 'administrador')
@@ -64,4 +65,15 @@ Route::middleware(['auth', 'role:administrador|coordinador_general|coordinador_p
     Route::get('/administrador/gestioncohorte/{id}/detalles', [CohorteController::class, 'showdetalles'])->name('administrador.gestioncohorte.showdetalles'); // Ver detalles de cohorte
     Route::put('/administrador/gestioncohorte/{id}', [CohorteController::class, 'update'])->name('administrador.gestioncohorte.update'); // Actualizar cohorte
     Route::delete('/administrador/gestioncohorte/{id}', [CohorteController::class, 'destroy'])->name('administrador.gestioncohorte.destroy'); // Eliminar cohorte
+});
+
+// Gestión de preinscripciones (2026-10-21): las revisan y aprueban el
+// administrador y el coordinador general. Aprobar solo sella la
+// preinscripción (habilitará al aspirante para la planilla de inscripción);
+// NO crea usuarios ni filas en 'estudiantes'.
+Route::middleware(['auth', 'role:administrador|coordinador_general'])->group(function () {
+    Route::get('/administrador/preinscripciones', [PreinscripcionController::class, 'index'])->name('administrador.preinscripciones.index'); // Listado de preinscripciones
+    Route::get('/administrador/preinscripciones/{preinscripcion}/descarga', [PreinscripcionController::class, 'descarga'])->name('administrador.preinscripciones.descarga'); // Regenerar y descargar el .docx
+    Route::post('/administrador/preinscripciones/{preinscripcion}/aprobar', [PreinscripcionController::class, 'aprobar'])->name('administrador.preinscripciones.aprobar'); // Aprobar preinscripción
+    Route::post('/administrador/preinscripciones/{preinscripcion}/rechazar', [PreinscripcionController::class, 'rechazar'])->name('administrador.preinscripciones.rechazar'); // Rechazar preinscripción
 });

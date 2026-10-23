@@ -14,12 +14,14 @@
                 @if (Auth::user()->rol == 'administrador')
 
                     <a href="{{ route('administrador.index') }}" class="button_barra">Inicio</a>
+                    <a href="{{ route('administrador.preinscripciones.index') }}" class="button_barra">Preinscripciones</a>
 
                 @endif
 
                 @if (Auth::user()->rol == 'coordinador_general')
 
                     <a href="{{ route('coordinador.index') }}" class="button_barra">Inicio</a>
+                    <a href="{{ route('administrador.preinscripciones.index') }}" class="button_barra">Preinscripciones</a>
 
                 @endif
 

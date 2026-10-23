@@ -376,6 +376,101 @@
             }
         }
 
+        /* Menú lateral de enlaces de la portada (preinscripción, postgrados...) */
+        .menu-lateral {
+            max-width: 460px;
+            margin: 45px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .menu-lateral-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 22px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        a.menu-lateral-item:hover {
+            border-color: var(--accent);
+            background: rgba(247, 148, 29, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-lateral-item i {
+            color: var(--accent);
+            width: 22px;
+            text-align: center;
+        }
+
+        .menu-lateral-item.menu-texto {
+            cursor: default;
+            color: var(--text-muted);
+        }
+
+        /* Modal «Información» (contenido a definir: aranceles, fechas, etc.) */
+        .modal-info-fondo {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 6, 20, 0.75);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-info-caja {
+            background: var(--bg-grad-1);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            padding: 35px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+        }
+
+        .modal-info-caja h3 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .modal-info-caja p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .modal-info-cerrar {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-info-cerrar:hover {
+            border-color: var(--accent);
+            background: rgba(247, 148, 29, 0.12);
+        }
+
 
 
 
@@ -508,7 +603,30 @@
             <div class="hero-content">
                 <h1>Coordinación de Estudios de Postgrado</h1>
 
+                {{-- Enlaces de servicios públicos de la portada --}}
+                <nav class="menu-lateral" aria-label="Servicios de postgrado">
+                    <a href="{{ route('preinscripcion.create') }}" class="menu-lateral-item">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>Preinscripción</span>
+                    </a>
 
+                    <a href="{{ route('postgrado.index') }}" class="menu-lateral-item">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Ver Postgrados</span>
+                    </a>
+
+                    {{-- Contacto como texto (sin enlace), a pedido de la coordinación --}}
+                    <div class="menu-lateral-item menu-texto">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Contacto: postgradoca.udo.anzoategui@gmail.com</span>
+                    </div>
+
+                    <button type="button" class="menu-lateral-item" id="btnModalInfo"
+                        style="cursor: pointer; font-family: inherit; width: 100%;">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Información</span>
+                    </button>
+                </nav>
             </div>
         </section>
 
@@ -519,6 +637,31 @@
         <p>&copy; 2026 PostUDO - Todos los derechos reservados.</p>
     </div>
 
+    {{-- Modal «Información»: el contenido (aranceles, fechas de admisión, etc.) --}}
+    {{-- se definirá más adelante; por ahora es solo un marcador vacío. --}}
+    <div class="modal-info-fondo" id="modalInfo">
+        <div class="modal-info-caja">
+            <h3><i class="fa-solid fa-circle-info" style="color: var(--accent);"></i> Información</h3>
+            <p>Contenido próximamente.</p>
+            <button type="button" class="modal-info-cerrar" id="btnCerrarModalInfo">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Apertura y cierre del modal «Información» (contenido pendiente).
+        const modalInfo = document.getElementById('modalInfo');
+        document.getElementById('btnModalInfo').addEventListener('click', function () {
+            modalInfo.style.display = 'flex';
+        });
+        document.getElementById('btnCerrarModalInfo').addEventListener('click', function () {
+            modalInfo.style.display = 'none';
+        });
+        modalInfo.addEventListener('click', function (evento) {
+            if (evento.target === modalInfo) {
+                modalInfo.style.display = 'none';
+            }
+        });
+    </script>
 
 </body>
 
