@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\ArancelesController;
 use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\CoordinadorGeneralController;
 use App\Http\Controllers\EgresoController;
@@ -24,6 +25,11 @@ Route::middleware(['auth', 'role:administrador'])->group(function () {
     // Gestión de Coordinador General
     Route::get('/administrador/registro_coordinador', [CoordinadorGeneralController::class, 'create'])->name('administrador.coordinador.create');
     Route::post('/administrador/registro_coordinador', [CoordinadorGeneralController::class, 'store'])->name('administrador.coordinador.store');
+
+    // Aranceles: el administrador actualiza el texto de la normativa
+    // que muestra el modal de la portada (texto crudo en aranceles.json).
+    Route::get('/administrador/aranceles', [ArancelesController::class, 'edit'])->name('administrador.aranceles.edit');
+    Route::post('/administrador/aranceles', [ArancelesController::class, 'update'])->name('administrador.aranceles.update');
 
     // NOTA (2026-10-14): la gestión de estudiantes y la creación de áreas
     // se trasladó al panel del coordinador general (ver routes/coordinador.php).

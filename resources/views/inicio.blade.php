@@ -599,6 +599,14 @@
             white-space: nowrap;
         }
 
+        /* Párrafo suelto dentro de un grupo (texto del comunicado) */
+        .modal-info-nota {
+            margin: 6px 0 10px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
         .modal-info-pie {
             padding: 15px 30px 22px;
             border-top: 1px solid var(--glass-border);
@@ -808,8 +816,13 @@
         <p>&copy; 2026 PostUDO - Todos los derechos reservados.</p>
     </div>
 
-    {{-- Modal «Aranceles»: contenido fijo (vigente desde el 11 de abril de 2025). --}}
-    {{-- Para actualizar los montos, editar solo el texto de este bloque. --}}
+    {{-- Modal «Aranceles»: contenido dinámico. Lo actualiza el administrador --}}
+    {{-- desde /administrador/aranceles (texto crudo en aranceles.json); el     --}}
+    {{-- parseo a este formato visual lo hace ArancelesService al renderizar.   --}}
+    @php
+        $servicioAranceles = app(\App\Services\ArancelesService::class);
+        $aranceles = $servicioAranceles->parsear($servicioAranceles->obtenerTexto());
+    @endphp
     <div class="modal-info-fondo" id="modalInfo">
         <div class="modal-info-caja">
             <div class="modal-info-cabecera">
@@ -817,102 +830,46 @@
             </div>
 
             <div class="modal-info-cuerpo">
-                <p class="modal-info-intro">
-                    Buenos días, maestrantes. Les comunicamos que a partir del
-                    <strong>11 de abril de 2025</strong>, los montos de los aranceles a pagar en el
-                    Programa de Postgrados de Ciencias Administrativas de la Universidad de Oriente,
-                    Núcleo Anzoátegui, serán los siguientes:
-                </p>
+                {{-- Introducción: los párrafos previos al primer grupo --}}
+                @foreach ($aranceles['intro'] as $parrafo)
+                    <p class="modal-info-intro">{{ $parrafo }}</p>
+                @endforeach
 
-                <div class="modal-info-aviso">
-                    <i class="fa-solid fa-money-bill-transfer"></i>
-                    <span>Los aranceles se pagarán a la tasa de cambio del Banco Central de Venezuela
-                        (BCV) del día en que se haga la transacción.</span>
-                </div>
+                {{-- Aviso destacado de la tasa de cambio (si aparece en el texto) --}}
+                @if ($aranceles['aviso'])
+                    <div class="modal-info-aviso">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span>{{ $aranceles['aviso'] }}</span>
+                    </div>
+                @endif
 
-                <h4 class="modal-info-grupo"><i class="fa-solid fa-user-plus"></i> Nuevos ingresos</h4>
-                <ul class="modal-info-lista">
-                    <li class="modal-info-fila">
-                        <span>Preinscripción y revisión de documentos</span>
-                        <span class="modal-info-precio">$ 10,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Arancel básico de inscripción en programas modulares</span>
-                        <span class="modal-info-precio">$ 15,00</span>
-                    </li>
-                </ul>
+                {{-- Grupos: título (con icono por palabras clave) + filas concepto/precio --}}
+                @foreach ($aranceles['grupos'] as $grupo)
+                    @if ($grupo['titulo'] !== '')
+                        <h4 class="modal-info-grupo">
+                            <i class="fa-solid {{ $servicioAranceles->iconoDeGrupo($grupo['titulo']) }}"></i>
+                            {{ $grupo['titulo'] }}
+                        </h4>
+                    @endif
 
-                <h4 class="modal-info-grupo"><i class="fa-solid fa-book-open-reader"></i> Escolaridad</h4>
-                <ul class="modal-info-lista">
-                    <li class="modal-info-fila">
-                        <span>Matrícula para asignaturas</span>
-                        <span class="modal-info-precio">$ 30,00</span>
-                    </li>
-                </ul>
+                    {{-- Párrafos sueltos dentro del grupo (si los hubiera) --}}
+                    @foreach ($grupo['notas'] as $nota)
+                        <p class="modal-info-nota">{{ $nota }}</p>
+                    @endforeach
 
-                <h4 class="modal-info-grupo"><i class="fa-solid fa-hourglass-half"></i> Permanencia</h4>
-                <ul class="modal-info-lista">
-                    <li class="modal-info-fila">
-                        <span>Aranceles de permanencia</span>
-                        <span class="modal-info-precio">$ 15,00</span>
-                    </li>
-                </ul>
-
-                <h4 class="modal-info-grupo"><i class="fa-solid fa-file-pen"></i> Trabajo de grado</h4>
-                <ul class="modal-info-lista">
-                    <li class="modal-info-fila">
-                        <span>Registro y evaluación del proyecto de investigación</span>
-                        <span class="modal-info-precio">$ 15,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Inscripción del trabajo de grado</span>
-                        <span class="modal-info-precio">$ 10,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Defensa del trabajo de grado</span>
-                        <span class="modal-info-precio">$ 80,00</span>
-                    </li>
-                </ul>
-
-                <h4 class="modal-info-grupo"><i class="fa-solid fa-graduation-cap"></i> Acto de grado</h4>
-                <ul class="modal-info-lista">
-                    <li class="modal-info-fila">
-                        <span>Elaboración de expediente para grado</span>
-                        <span class="modal-info-precio">$ 10,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Solicitud de solvencias administrativas</span>
-                        <span class="modal-info-precio">$ 5,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Constancias de estudios</span>
-                        <span class="modal-info-precio">$ 5,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Constancias de notas no certificadas</span>
-                        <span class="modal-info-precio">$ 5,00</span>
-                    </li>
-                </ul>
-
-                <h4 class="modal-info-grupo"><i class="fa-solid fa-list-check"></i> Otros aranceles de escolaridad</h4>
-                <ul class="modal-info-lista">
-                    <li class="modal-info-fila">
-                        <span>Materia de nivelación</span>
-                        <span class="modal-info-precio">desde $ 30,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Examen de suficiencia o especial</span>
-                        <span class="modal-info-precio">$ 30,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Examen de suficiencia de un idioma extranjero</span>
-                        <span class="modal-info-precio">$ 20,00</span>
-                    </li>
-                    <li class="modal-info-fila">
-                        <span>Trámite de curso dirigido</span>
-                        <span class="modal-info-precio">$ 10,00</span>
-                    </li>
-                </ul>
+                    @if (count($grupo['items']))
+                        <ul class="modal-info-lista">
+                            @foreach ($grupo['items'] as $item)
+                                <li class="modal-info-fila">
+                                    <span>{{ $item['concepto'] }}</span>
+                                    @if ($item['precio'] !== '')
+                                        <span class="modal-info-precio">{{ $item['precio'] }}</span>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                @endforeach
             </div>
 
             <div class="modal-info-pie">
@@ -922,7 +879,8 @@
     </div>
 
     <script>
-        // Apertura y cierre del modal «Aranceles» (contenido fijo en la vista).
+        // Apertura y cierre del modal «Aranceles» (el contenido lo pinta
+        // el servidor desde aranceles.json; esto solo maneja el display).
         const modalInfo = document.getElementById('modalInfo');
         document.getElementById('btnModalInfo').addEventListener('click', function () {
             modalInfo.style.display = 'flex';

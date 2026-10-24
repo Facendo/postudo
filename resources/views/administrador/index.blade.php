@@ -35,6 +35,10 @@
                 <i class="fa-solid fa-user-tie"></i>
                 <span>Registrar Coordinador</span>
             </a>
+            <a href="{{ route('administrador.aranceles.edit') }}" class="admin-card">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+                <span>Aranceles</span>
+            </a>
         </div>
     </div>
 
