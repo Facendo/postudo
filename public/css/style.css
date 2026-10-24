@@ -1116,162 +1116,6 @@ table td:last-child {
     font-family: 'Outfit', sans-serif;
 }
 
-/* --- New styles for the Areas/Careers/Specialties View --- */
-.info-section {
-    background: rgba(255, 255, 255, 0.1);
-    ;
-    border-radius: 15px;
-    /* Softer corners */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    /* Stronger, softer shadow */
-    padding: 35px;
-    /* More padding */
-    margin-top: 40px;
-    /* More space */
-    width: 90%;
-    max-width: 1000px;
-    /* Wider container */
-    display: none;
-    animation: fadeIn 0.6s ease-out forwards;
-    /* Slightly longer animation */
-    border: 1px solid var(--black);
-    /* Subtle border */
-}
-
-.info-section.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-        /* More pronounced slide */
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.info-section h3 {
-    font-family: 'Montserrat';
-    color: var(--white);
-    /* Secondary blue for section headings */
-    font-size: 2em;
-    /* Larger heading */
-    margin-bottom: 25px;
-    /* More space */
-    text-align: center;
-    font-weight: var(--font-bold);
-}
-
-.info-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-}
-
-.info-list li {
-    background-color: var(--black);
-    /* Lighter background for list items */
-    border: 1px solid var(--black);
-    /* Subtle border */
-    border-radius: 10px;
-    /* Softer corners */
-    margin-bottom: 15px;
-    /* More space between items */
-    padding: 15px 20px;
-    /* More padding */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.05em;
-    /* Slightly larger font */
-    color: var(--white);
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    text-align: left;
-    /* Align text left within list item */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    /* Subtle shadow */
-}
-
-.info-list li:hover {
-    background-color: #eef5fc;
-    /* Lighter blue on hover */
-    transform: translateX(8px);
-    /* More pronounced slide */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.info-list-nested {
-    list-style: none;
-    padding-left: 30px;
-    /* More indentation */
-    margin-top: 15px;
-    /* More space */
-    text-align: left;
-    border-left: 4px solid var(--secondary-blue);
-    /* Stronger border for nested lists */
-    padding-top: 5px;
-}
-
-.info-list-nested li {
-    background-color: #e6f7ff;
-    /* Lighter blue for nested items */
-    border: 1px solid #1b1b1b;
-    /* Stronger border */
-    margin-top: 10px;
-    /* More space */
-    padding: 12px 18px;
-    /* More padding */
-    font-size: 1em;
-    color: #003366;
-    /* Darker blue text */
-    border-radius: 8px;
-    /* Softer corners */
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-}
-
-.info-list-nested li:hover {
-    background-color: #d9efff;
-    transform: translateX(5px);
-}
-
-/* Styles for clickable links within info lists */
-.area-link,
-.area-return-link,
-.carrera-link,
-.especialidad-return-link {
-    cursor: pointer;
-    color: var(--accent-orange);
-    /* Use orange for clickable links */
-    text-decoration: none;
-    font-weight: var(--font-semibold);
-    display: block;
-    /* Ensures the whole block is clickable */
-    padding: 5px 0;
-}
-
-.area-link:hover,
-.area-return-link:hover,
-.carrera-link:hover,
-.especialidad-return-link:hover {
-    text-decoration: underline;
-    color: #c26a00;
-    /* Naranja legible sobre fondo claro */
-}
-
-/* If you want the titles of area/carrera/especialidad to be more prominent */
-.area-return-link,
-.carrera-link,
-.especialidad-return-link {
-    font-size: 1.1em;
-    /* Make them slightly larger */
-    margin-bottom: 5px;
-    /* Add some spacing */
-}
-
 /* Dashboard Grid */
 .dashboard-grid {
     display: grid;
@@ -1587,10 +1431,6 @@ table td:last-child {
         padding: 15px 30px;
         font-size: 1em;
     }
-
-    .info-section h3 {
-        font-size: 1.8em;
-    }
 }
 
 @media screen and (max-width: 768px) {
@@ -1674,20 +1514,6 @@ table td:last-child {
     .submit-button {
         padding: 10px 20px;
         font-size: 1em;
-    }
-
-    .info-section {
-        padding: 25px;
-    }
-
-    .info-section h3 {
-        font-size: 1.6em;
-    }
-
-    .info-list li,
-    .info-list-nested li {
-        padding: 10px 15px;
-        font-size: 0.95em;
     }
 
     .data-card {
@@ -1779,15 +1605,6 @@ table td:last-child {
     display: none !important;
 }
 
-/* Para mostrar/ocultar secciones */
-.info-section {
-    display: none;
-}
-
-.info-section.active {
-    display: block;
-}
-
 /* Para el botón activo */
 .btn-table-action {
     padding: 10px 15px;
@@ -1801,35 +1618,6 @@ table td:last-child {
 .btn-table-action:hover {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-}
-
-
-/* Estilos para los enlaces clicables (áreas, carreras y especialidades) */
-.area-link,
-.area-return-link,
-.carrera-link,
-.especialidad-return-link {
-    cursor: pointer;
-    color: #003da5;
-    /* Enlace en azul UDO */
-    text-decoration: none;
-}
-
-.area-link:hover,
-.area-return-link:hover,
-.carrera-link:hover,
-.especialidad-return-link:hover {
-    text-decoration: underline;
-}
-
-/* Si quieres que los títulos de área/carrera/especialidad sean más prominentes */
-.area-return-link,
-.carrera-link,
-.especialidad-return-link {
-    font-weight: bold;
-    display: block;
-    /* Para que ocupen más espacio y sean más fáciles de cliquear */
-    padding: 5px 0;
 }
 
 
@@ -1863,5 +1651,203 @@ table td:last-child {
 
     100% {
         background-position: 0% 50%;
+    }
+}
+
+/* ============================================================
+   Catálogo público de postgrados (/postgrado, vista postgrado/index)
+   Acordeón Área -> Postgrados -> Menciones, todas abiertas por defecto.
+   Paleta UDO y fuentes del sistema (Outfit/Inter). Reemplaza a las
+   clases antiguas .info-section/.info-list/.area-link, que se borraron
+   por rotas: usaban var(--black) (variable inexistente), fuentes no
+   cargadas (Montserrat/Open Sans) y un bloque duplicado que pintaba
+   los enlaces de azul #003da5 sobre fondo azul marino.
+   ============================================================ */
+.catalogo-entrada {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05em;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+}
+
+.catalogo {
+    width: 90%;
+    max-width: 1000px;
+    margin: 35px auto 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.catalogo-area {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.catalogo-area-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--white);
+    transition: background-color 0.25s ease;
+}
+
+/* Oculta la flecha nativa de <summary> (Chrome/Safari y Firefox) */
+.catalogo-area-cabecera::-webkit-details-marker {
+    display: none;
+}
+
+.catalogo-area-cabecera::marker {
+    content: '';
+}
+
+.catalogo-area-cabecera:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.catalogo-area[open] > .catalogo-area-cabecera {
+    background: rgba(247, 148, 29, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.catalogo-icono {
+    color: var(--accent-orange);
+    width: 26px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.catalogo-area-cabecera .catalogo-icono {
+    font-size: 1.1em;
+}
+
+.catalogo-area-nombre {
+    min-width: 0;
+}
+
+.catalogo-flecha {
+    margin-left: auto;
+    color: var(--accent-orange);
+    font-size: 0.85em;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.catalogo-area[open] .catalogo-flecha {
+    transform: rotate(180deg);
+}
+
+.catalogo-contador {
+    flex-shrink: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72em;
+    font-weight: 500;
+    color: var(--udo-naranja-suave);
+    background: rgba(247, 148, 29, 0.15);
+    border: 1px solid rgba(247, 148, 29, 0.35);
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.catalogo-area-cuerpo {
+    padding: 18px 22px 22px;
+}
+
+.catalogo-postgrados {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.catalogo-postgrado {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--accent-orange);
+    border-radius: 10px;
+    padding: 14px 18px;
+}
+
+.catalogo-postgrado-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.05em;
+    color: var(--white);
+}
+
+.catalogo-postgrado-cabecera .catalogo-contador {
+    margin-left: auto;
+}
+
+.catalogo-menciones {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 2px 0 2px 14px;
+    border-left: 2px solid rgba(247, 148, 29, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.catalogo-menciones li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95em;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.catalogo-menciones li i {
+    color: var(--accent-orange);
+    font-size: 0.8em;
+}
+
+.catalogo-vacio {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 4px 2px;
+}
+
+.catalogo-vacio-global {
+    text-align: center;
+    font-size: 1.05em;
+    padding: 20px 0;
+}
+
+@media (max-width: 640px) {
+    .catalogo-area-cabecera {
+        flex-wrap: wrap;
+        font-size: 1.05em;
+        gap: 10px;
+    }
+
+    .catalogo-postgrado-cabecera {
+        flex-wrap: wrap;
+    }
+
+    .catalogo-postgrado-cabecera .catalogo-contador {
+        margin-left: 0;
     }
 }

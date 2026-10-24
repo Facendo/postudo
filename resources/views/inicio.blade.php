@@ -32,6 +32,12 @@
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+            /* Espacio reservado al menú lateral fijo (ancho aprox. del menú + margen).
+               El hero usa este valor por IZQUIERDA y DERECHA → el título queda
+               centrado al 100% en el viewport. Si el menú crece (texto más largo),
+               sube este valor para que el título no lo pise. */
+            --lateral-ancho: 480px;
         }
 
         * {
@@ -268,7 +274,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 6vw, 5rem);
+            font-size: clamp(3rem, 5vw, 5rem);
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 25px;
@@ -377,13 +383,58 @@
         }
 
         /* Menú lateral de enlaces de la portada (preinscripción, postgrados...) */
+        /* Sidebar fijo al borde izquierdo de la ventana; en pantallas <= 1439px vuelve al flujo */
         .menu-lateral {
-            max-width: 460px;
-            margin: 45px auto 0;
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: max-content;
+            max-width: calc(100vw - 60px);
             display: flex;
             flex-direction: column;
             gap: 14px;
             text-align: left;
+            z-index: 100;
+            animation: fadeUpLateral 1s ease-out forwards;
+        }
+
+        /* Misma entrada que fadeUp pero conservando el centrado vertical (translateY(-50%)) */
+        @keyframes fadeUpLateral {
+            from {
+                transform: translateY(calc(-50% + 40px));
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(-50%);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 1439px) {
+            /* Sin sidebar: el menú queda debajo del título, como al inicio */
+            .hero {
+                flex-direction: column;
+            }
+
+            .menu-lateral {
+                position: static;
+                width: 100%;
+                max-width: 460px;
+                margin: 40px auto 0;
+                transform: none;
+                animation: fadeUp 1s ease-out forwards;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            /* Centrado real del título: mismo espacio a izquierda y derecha,
+               reservando el del menú fijo → el h1 cae en el centro del viewport */
+            .hero {
+                padding-left: var(--lateral-ancho);
+                padding-right: var(--lateral-ancho);
+            }
         }
 
         .menu-lateral-item {
@@ -399,6 +450,7 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 18px;
+            overflow-wrap: anywhere;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -602,32 +654,34 @@
         <section class="hero">
             <div class="hero-content">
                 <h1>Coordinación de Estudios de Postgrado</h1>
-
-                {{-- Enlaces de servicios públicos de la portada --}}
-                <nav class="menu-lateral" aria-label="Servicios de postgrado">
-                    <a href="{{ route('preinscripcion.create') }}" class="menu-lateral-item">
-                        <i class="fa-solid fa-file-pen"></i>
-                        <span>Preinscripción</span>
-                    </a>
-
-                    <a href="{{ route('postgrado.index') }}" class="menu-lateral-item">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                        <span>Ver Postgrados</span>
-                    </a>
-
-                    {{-- Contacto como texto (sin enlace), a pedido de la coordinación --}}
-                    <div class="menu-lateral-item menu-texto">
-                        <i class="fa-solid fa-envelope"></i>
-                        <span>Contacto: postgradoca.udo.anzoategui@gmail.com</span>
-                    </div>
-
-                    <button type="button" class="menu-lateral-item" id="btnModalInfo"
-                        style="cursor: pointer; font-family: inherit; width: 100%;">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span>Información</span>
-                    </button>
-                </nav>
             </div>
+
+            {{-- Enlaces de servicios públicos de la portada (sidebar fijo a la izquierda). --}}
+            {{-- Va fuera de .hero-content: ese div conserva un transform tras la animación --}}
+            {{-- fadeUp y rompería el anclaje position: fixed del menú a la ventana. --}}
+            <nav class="menu-lateral" aria-label="Servicios de postgrado">
+                <a href="{{ route('preinscripcion.create') }}" class="menu-lateral-item">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <span>Preinscripción</span>
+                </a>
+
+                <a href="{{ route('postgrado.index') }}" class="menu-lateral-item">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Ver Postgrados</span>
+                </a>
+
+                {{-- Contacto como texto (sin enlace), a pedido de la coordinación --}}
+                <div class="menu-lateral-item menu-texto">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Contacto:<br>postgradoca.udo.anzoategui@gmail.com</span>
+                </div>
+
+                <button type="button" class="menu-lateral-item" id="btnModalInfo"
+                    style="cursor: pointer; font-family: inherit; width: 100%;">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Información</span>
+                </button>
+            </nav>
         </section>
 
 
