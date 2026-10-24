@@ -30,16 +30,13 @@
 
                 <div class="form-actions" style="justify-content: center; gap: 14px;">
                     <button type="submit" class="submit-button">Guardar aranceles</button>
-                    <a href="{{ route('inicio') }}" target="_blank" class="enlace-portada">
-                        Ver en la portada
-                    </a>
+                    
                 </div>
             </form>
 
             @if ($metadatos['actualizado_en'])
                 <p class="meta-actualizacion">
-                    Última actualización: {{ $metadatos['actualizado_en'] }}
-                    por {{ $metadatos['actualizado_por'] }}.
+                    Última actualización: {{ $metadatos['actualizado_en'] }}.
                 </p>
             @else
                 <p class="meta-actualizacion">

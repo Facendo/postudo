@@ -14,14 +14,12 @@
                 @if (Auth::user()->rol == 'administrador')
 
                     <a href="{{ route('administrador.index') }}" class="button_barra">Inicio</a>
-                    <a href="{{ route('administrador.preinscripciones.index') }}" class="button_barra">Preinscripciones</a>
 
                 @endif
 
                 @if (Auth::user()->rol == 'coordinador_general')
 
                     <a href="{{ route('coordinador.index') }}" class="button_barra">Inicio</a>
-                    <a href="{{ route('administrador.preinscripciones.index') }}" class="button_barra">Preinscripciones</a>
 
                 @endif
 
@@ -41,7 +39,11 @@
         @endauth
     @guest
         <a href="{{ url('/') }}" class="button_barra">Inicio</a>
-        <a href="{{route('login')}}" class="button_barra">Iniciar sesion</a>
+        {{-- En la planilla de preinscripción y en el catálogo público de
+             postgrados no se ofrece iniciar sesión; el resto público sí. --}}
+        @if (! request()->routeIs('preinscripcion.*', 'postgrado.index'))
+            <a href="{{route('login')}}" class="button_barra">Iniciar sesion</a>
+        @endif
     @endguest
 
 

@@ -23,9 +23,9 @@
                 <i class="fa-solid fa-layer-group"></i>
                 <span>Áreas</span>
             </a>
-            <a href="#" class="admin-card">
-                <i class="fa-solid fa-chalkboard-teacher"></i>
-                <span>Profesores</span>
+            <a href="{{ route('administrador.preinscripciones.index') }}" class="admin-card">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <span>Preinscripciones</span>
             </a>
             <a href="{{ route('administrador.gestion_postgrado') }}" class="admin-card">
                 <i class="fa-solid fa-book-open"></i>
