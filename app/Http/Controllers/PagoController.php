@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asunto;
 use App\Models\Pagos;
+use App\Models\Postgrado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -33,11 +34,59 @@ class PagoController extends Controller
         return view('estudiante.registropago', compact('user', 'asuntos'));
     }
 
-    public function controlpagos()
+    /**
+     * Listado único de pagos del administrador, con filtros por GET que
+     * afectan a la tabla: estado (todos/pendiente/verificado — «verificado»
+     * es lo que el módulo registra como Actualizado), postgrado (cadena
+     * pago → estudiante → mención → postgrado) y semana (el día elegido
+     * define el rango lunes→domingo sobre fecha_pago).
+     */
+    public function controlpagos(Request $request)
     {
-        $pagos = Pagos::with('estudiante')->get();
+        $estado = $request->query('estado');
+        if (! in_array($estado, ['pendiente', 'verificado'], true)) {
+            $estado = 'todos';
+        }
 
-        return view('asuntos.controldepagos', compact('pagos'));
+        $postgrado = $request->query('postgrado');
+        $semana = $request->query('semana');
+
+        $query = Pagos::with('estudiante.mencion.postgrado');
+
+        if ($estado === 'pendiente') {
+            $query->where('estado', 'Pendiente');
+        } elseif ($estado === 'verificado') {
+            $query->where('estado', 'Actualizado');
+        }
+
+        // Postgrado: pago → estudiante → mención → postgrado.
+        if ($postgrado) {
+            $query->whereHas('estudiante.mencion.postgrado', function ($q) use ($postgrado) {
+                $q->where('id_postgrado', $postgrado);
+            });
+        }
+
+        // Semana: el día elegido cubre de lunes a domingo (fecha_pago).
+        $rangoSemana = null;
+        if ($semana) {
+            try {
+                $inicio = \Carbon\Carbon::parse($semana)->startOfWeek();
+                $fin = $inicio->copy()->endOfWeek();
+                $query->whereBetween('fecha_pago', [$inicio->format('Y-m-d'), $fin->format('Y-m-d')]);
+                $rangoSemana = $inicio->format('d/m/Y').' al '.$fin->format('d/m/Y');
+            } catch (\Throwable $e) {
+                $semana = null; // fecha ilegible: se ignora ese filtro
+            }
+        }
+
+        return view('asuntos.controldepagos', [
+            'pagos' => $query->get(),
+            'estado' => $estado,
+            'postgrado' => $postgrado,
+            'semana' => $semana,
+            'rangoSemana' => $rangoSemana,
+            'postgrados' => Postgrado::orderBy('nombre')->get(),
+        ]);
     }
 
     public function pagosActualizados()
