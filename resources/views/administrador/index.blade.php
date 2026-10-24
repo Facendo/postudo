@@ -13,7 +13,7 @@
         <div class="admin-grid">
             <a href="{{ route('asuntos.index') }}" class="admin-card">
                 <i class="fa-solid fa-file-alt"></i>
-                <span>Asuntos</span>
+                <span>Aranceles</span>
             </a>
             <a href="{{ route('pago.controlpagos') }}" class="admin-card">
                 <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -37,7 +37,7 @@
             </a>
             <a href="{{ route('administrador.aranceles.edit') }}" class="admin-card">
                 <i class="fa-solid fa-money-bill-trend-up"></i>
-                <span>Aranceles</span>
+                <span>Gaceta de Aranceles</span>
             </a>
         </div>
     </div>

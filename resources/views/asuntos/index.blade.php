@@ -38,7 +38,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th style="text-align:center;">Valor (USD)</th>
@@ -51,7 +50,6 @@
             <tbody>
                 @forelse ($asuntos as $asunto)
                     <tr>
-                        <td>{{ $asunto->id }}</td>
                         <td>{{ $asunto->nombre }}</td>
                         <td>{{ $asunto->descripcion }}</td>
 
@@ -95,7 +93,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ $tasaValor ? 6 : 5 }}" style="text-align: center; padding: 20px;">
+                        <td colspan="{{ $tasaValor ? 5 : 4 }}" style="text-align: center; padding: 20px;">
                             No hay asuntos registrados.
                         </td>
                     </tr>

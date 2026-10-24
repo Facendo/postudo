@@ -248,10 +248,21 @@
             color: #ffffff;
         }
 
+        /* Pestaña activa: texto blanco y color según el tipo de movimiento
+           (verde = ingresos, rojo = egresos; mismos tonos de las tablas). */
         .finanzas-tab--activo {
-            background: linear-gradient(135deg, #f7941d, #ff9f2e);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(247, 148, 29, 0.35);
+            font-weight: 600;
+        }
+
+        .finanzas-tab--activo[data-tab="ingresos"] {
+            background: linear-gradient(135deg, #1f9d55, #2ecc71);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.35);
+        }
+
+        .finanzas-tab--activo[data-tab="egresos"] {
+            background: linear-gradient(135deg, #d64545, #ff6b6b);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.35);
         }
 
         /* ===== Paneles de tablas ===== */
@@ -300,7 +311,7 @@
                 tab.addEventListener('click', function () {
                     // Actualizar pestaña activa
                     tabs.forEach(t => t.classList.remove('finanzas-tab--activo'));
-                    tab.classList.add('finanzas-tab');
+                    tab.classList.add('finanzas-tab--activo');
 
                     // Mostrar el panel correspondiente
                     Object.values(panels).forEach(p => p.classList.remove('finanzas-panel--activo'));
