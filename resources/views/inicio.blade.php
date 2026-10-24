@@ -454,7 +454,8 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        a.menu-lateral-item:hover {
+        a.menu-lateral-item:hover,
+        button.menu-lateral-item:hover {
             border-color: var(--accent);
             background: rgba(247, 148, 29, 0.1);
             transform: translateY(-2px);
@@ -471,7 +472,7 @@
             color: var(--text-muted);
         }
 
-        /* Modal «Información» (contenido a definir: aranceles, fechas, etc.) */
+        /* Modal «Aranceles» de la portada (contenido fijo: vigente desde el 11 de abril de 2025) */
         .modal-info-fondo {
             position: fixed;
             inset: 0;
@@ -488,16 +489,35 @@
             background: var(--bg-grad-1);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            max-width: 520px;
+            max-width: 640px;
             width: 100%;
-            padding: 35px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
             box-shadow: var(--glass-shadow);
+            text-align: left;
+        }
+
+        .modal-info-cabecera {
+            padding: 25px 30px 18px;
+            border-bottom: 1px solid var(--glass-border);
             text-align: center;
+            flex-shrink: 0;
         }
 
         .modal-info-caja h3 {
             color: #fff;
-            margin-bottom: 15px;
+            margin-bottom: 0;
+        }
+
+        /* Cuerpo con scroll propio: el modal nunca se sale de la pantalla */
+        .modal-info-cuerpo {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 22px 30px;
+            text-align: left;
         }
 
         .modal-info-caja p {
@@ -506,10 +526,107 @@
             margin-bottom: 25px;
         }
 
+        .modal-info-intro {
+            margin-bottom: 18px;
+        }
+
+        .modal-info-intro strong {
+            color: var(--text-main);
+        }
+
+        /* Aviso destacado: se paga a la tasa BCV del día */
+        .modal-info-aviso {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.35);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 22px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .modal-info-aviso i {
+            color: var(--accent);
+            margin-top: 3px;
+        }
+
+        .modal-info-grupo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 20px 0 8px;
+        }
+
+        .modal-info-grupo i {
+            color: var(--accent);
+        }
+
+        .modal-info-lista {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-info-fila {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .modal-info-fila:last-child {
+            border-bottom: none;
+        }
+
+        .modal-info-precio {
+            color: var(--accent);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .modal-info-pie {
+            padding: 15px 30px 22px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .modal-info-cabecera,
+            .modal-info-cuerpo,
+            .modal-info-pie {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            /* En móvil el precio baja debajo del concepto */
+            .modal-info-fila {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
+        }
+
         .modal-info-cerrar {
             background: transparent;
             border: 1px solid var(--glass-border);
             color: #fff;
+            font-family: 'Outfit', sans-serif;
             padding: 10px 30px;
             border-radius: 30px;
             font-weight: 600;
@@ -679,7 +796,7 @@
                 <button type="button" class="menu-lateral-item" id="btnModalInfo"
                     style="cursor: pointer; font-family: inherit; width: 100%;">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>Información</span>
+                    <span>Aranceles</span>
                 </button>
             </nav>
         </section>
@@ -691,18 +808,121 @@
         <p>&copy; 2026 PostUDO - Todos los derechos reservados.</p>
     </div>
 
-    {{-- Modal «Información»: el contenido (aranceles, fechas de admisión, etc.) --}}
-    {{-- se definirá más adelante; por ahora es solo un marcador vacío. --}}
+    {{-- Modal «Aranceles»: contenido fijo (vigente desde el 11 de abril de 2025). --}}
+    {{-- Para actualizar los montos, editar solo el texto de este bloque. --}}
     <div class="modal-info-fondo" id="modalInfo">
         <div class="modal-info-caja">
-            <h3><i class="fa-solid fa-circle-info" style="color: var(--accent);"></i> Información</h3>
-            <p>Contenido próximamente.</p>
-            <button type="button" class="modal-info-cerrar" id="btnCerrarModalInfo">Cerrar</button>
+            <div class="modal-info-cabecera">
+                <h3><i class="fa-solid fa-circle-info" style="color: var(--accent);"></i> Aranceles de Postgrado</h3>
+            </div>
+
+            <div class="modal-info-cuerpo">
+                <p class="modal-info-intro">
+                    Buenos días, maestrantes. Les comunicamos que a partir del
+                    <strong>11 de abril de 2025</strong>, los montos de los aranceles a pagar en el
+                    Programa de Postgrados de Ciencias Administrativas de la Universidad de Oriente,
+                    Núcleo Anzoátegui, serán los siguientes:
+                </p>
+
+                <div class="modal-info-aviso">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>Los aranceles se pagarán a la tasa de cambio del Banco Central de Venezuela
+                        (BCV) del día en que se haga la transacción.</span>
+                </div>
+
+                <h4 class="modal-info-grupo"><i class="fa-solid fa-user-plus"></i> Nuevos ingresos</h4>
+                <ul class="modal-info-lista">
+                    <li class="modal-info-fila">
+                        <span>Preinscripción y revisión de documentos</span>
+                        <span class="modal-info-precio">$ 10,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Arancel básico de inscripción en programas modulares</span>
+                        <span class="modal-info-precio">$ 15,00</span>
+                    </li>
+                </ul>
+
+                <h4 class="modal-info-grupo"><i class="fa-solid fa-book-open-reader"></i> Escolaridad</h4>
+                <ul class="modal-info-lista">
+                    <li class="modal-info-fila">
+                        <span>Matrícula para asignaturas</span>
+                        <span class="modal-info-precio">$ 30,00</span>
+                    </li>
+                </ul>
+
+                <h4 class="modal-info-grupo"><i class="fa-solid fa-hourglass-half"></i> Permanencia</h4>
+                <ul class="modal-info-lista">
+                    <li class="modal-info-fila">
+                        <span>Aranceles de permanencia</span>
+                        <span class="modal-info-precio">$ 15,00</span>
+                    </li>
+                </ul>
+
+                <h4 class="modal-info-grupo"><i class="fa-solid fa-file-pen"></i> Trabajo de grado</h4>
+                <ul class="modal-info-lista">
+                    <li class="modal-info-fila">
+                        <span>Registro y evaluación del proyecto de investigación</span>
+                        <span class="modal-info-precio">$ 15,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Inscripción del trabajo de grado</span>
+                        <span class="modal-info-precio">$ 10,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Defensa del trabajo de grado</span>
+                        <span class="modal-info-precio">$ 80,00</span>
+                    </li>
+                </ul>
+
+                <h4 class="modal-info-grupo"><i class="fa-solid fa-graduation-cap"></i> Acto de grado</h4>
+                <ul class="modal-info-lista">
+                    <li class="modal-info-fila">
+                        <span>Elaboración de expediente para grado</span>
+                        <span class="modal-info-precio">$ 10,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Solicitud de solvencias administrativas</span>
+                        <span class="modal-info-precio">$ 5,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Constancias de estudios</span>
+                        <span class="modal-info-precio">$ 5,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Constancias de notas no certificadas</span>
+                        <span class="modal-info-precio">$ 5,00</span>
+                    </li>
+                </ul>
+
+                <h4 class="modal-info-grupo"><i class="fa-solid fa-list-check"></i> Otros aranceles de escolaridad</h4>
+                <ul class="modal-info-lista">
+                    <li class="modal-info-fila">
+                        <span>Materia de nivelación</span>
+                        <span class="modal-info-precio">desde $ 30,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Examen de suficiencia o especial</span>
+                        <span class="modal-info-precio">$ 30,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Examen de suficiencia de un idioma extranjero</span>
+                        <span class="modal-info-precio">$ 20,00</span>
+                    </li>
+                    <li class="modal-info-fila">
+                        <span>Trámite de curso dirigido</span>
+                        <span class="modal-info-precio">$ 10,00</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="modal-info-pie">
+                <button type="button" class="modal-info-cerrar" id="btnCerrarModalInfo">Cerrar</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Apertura y cierre del modal «Información» (contenido pendiente).
+        // Apertura y cierre del modal «Aranceles» (contenido fijo en la vista).
         const modalInfo = document.getElementById('modalInfo');
         document.getElementById('btnModalInfo').addEventListener('click', function () {
             modalInfo.style.display = 'flex';
