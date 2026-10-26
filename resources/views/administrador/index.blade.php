@@ -31,6 +31,10 @@
                 <i class="fa-solid fa-money-bill-trend-up"></i>
                 <span>Gaceta de Aranceles</span>
             </a>
+            <a href="{{ route('notificacion.comunicar') }}" class="admin-card">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Comunicados</span>
+            </a>
         </div>
     </div>
 

@@ -20,3 +20,4 @@ require __DIR__.'/postgrado.php';
 require __DIR__.'/asunto.php';
 require __DIR__.'/coordinador.php';
 require __DIR__.'/preinscripcion.php';
+require __DIR__.'/notificacion.php';

@@ -12,9 +12,7 @@ use Illuminate\Http\Request;
  */
 class ArancelesController extends Controller
 {
-    public function __construct(private readonly ArancelesService $aranceles)
-    {
-    }
+    public function __construct(private readonly ArancelesService $aranceles) {}
 
     /**
      * Formulario con el texto vigente (o el por defecto) para editar.

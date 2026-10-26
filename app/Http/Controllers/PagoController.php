@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Asunto;
 use App\Models\Pagos;
 use App\Models\Postgrado;
+use App\Services\NotificacionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -162,6 +163,9 @@ class PagoController extends Controller
         $pago->estado = 'Pendiente';
 
         $pago->save();
+
+        // Notificación: al coordinador de SU postgrado y a los administradores.
+        app(NotificacionService::class)->pagoRegistrado($pago, $user);
 
         return redirect()->route('pago.index')->with('success', 'Pago registrado exitosamente');
     }
@@ -364,6 +368,9 @@ class PagoController extends Controller
 
                 $pago->estado = 'Actualizado';
                 $pago->save();
+
+                // Aviso de vuelta al estudiante que registró el pago.
+                app(NotificacionService::class)->pagoVerificado($pago, Auth::user());
                 $count++;
             }
         }
@@ -407,6 +414,9 @@ class PagoController extends Controller
         $asuntoestudiante->save();
         $pago->estado = 'Actualizado';
         $pago->save();
+
+        // Aviso de vuelta al estudiante que registró el pago.
+        app(NotificacionService::class)->pagoVerificado($pago, Auth::user());
 
         return redirect()->route('pago.controlpagos')->with('success', 'Estado de pago actualizado exitosamente');
     }

@@ -35,6 +35,10 @@
                 <i class="fa-solid fa-user-tie"></i>
                 <span>Coordinadores de Postgrado</span>
             </a>
+            <a href="{{ route('notificacion.comunicar') }}" class="admin-card">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Comunicados</span>
+            </a>
         </div>
     </div>
 

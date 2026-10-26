@@ -58,4 +58,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(CoordinadorPostgrado::class, 'cedula', 'cedula');
     }
+
+    /**
+     * Notificaciones in-app recibidas (tabla `notificacion`).
+     */
+    public function notificaciones()
+    {
+        return $this->hasMany(Notificacion::class, 'user_id', 'id');
+    }
 }

@@ -1851,3 +1851,245 @@ table td:last-child {
         margin-left: 0;
     }
 }
+/* ============================================================
+   Notificaciones in-app (campanita en panel_nav + /notificaciones)
+   Paleta UDO: badge naranja, texto blanco sobre la barra oscura.
+   ============================================================ */
+.campanita-notificaciones {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 18px;
+    text-decoration: none;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.campanita-notificaciones:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.campanita-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #f7941d, #d97306);
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 19px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(247, 148, 29, 0.5);
+}
+
+/* Sin notificaciones: solo el punto tenue, sin número */
+.campanita-badge--vacio {
+    display: none;
+}
+
+/* --- Bandeja (/notificaciones) --- */
+.notificaciones-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.notificaciones-acciones-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.notificaciones-contador {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.notificaciones-contador--nuevas {
+    background: rgba(247, 148, 29, 0.1);
+    border-color: rgba(247, 148, 29, 0.35);
+    color: #ffffff;
+}
+
+.notificaciones-contador--nuevas i {
+    color: #f7941d;
+}
+
+/* Fila con notificación sin leer */
+tr.notificacion-fila--nueva {
+    background: rgba(247, 148, 29, 0.08);
+}
+
+.notificacion-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.notificacion-punto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #f7941d;
+    box-shadow: 0 0 8px rgba(247, 148, 29, 0.7);
+    flex-shrink: 0;
+}
+
+.notificacion-mensaje {
+    margin-top: 4px;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.7);
+    overflow-wrap: anywhere;
+}
+
+.notificacion-tipo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-family: 'Outfit', sans-serif;
+    background: rgba(0, 61, 165, 0.25);
+    border: 1px solid rgba(0, 86, 179, 0.45);
+    color: #cfe1f7;
+    white-space: nowrap;
+}
+
+.notificacion-tipo--comunicado {
+    background: rgba(247, 148, 29, 0.12);
+    border-color: rgba(247, 148, 29, 0.35);
+    color: #ffd9b8;
+}
+
+.notificacion-tipo--estado {
+    background: rgba(40, 167, 69, 0.15);
+    border-color: rgba(40, 167, 69, 0.5);
+    color: #9fe6b4;
+}
+
+.notificacion-estado {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+}
+
+.notificacion-estado--nueva {
+    color: #f7941d;
+    font-weight: 600;
+}
+
+/* Paginación propia de la bandeja (sin Tailwind en este pipeline) */
+.notificaciones-paginacion {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 22px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.pagina-boton {
+    padding: 8px 18px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+}
+
+.pagina-boton:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.pagina-boton--inactivo {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.pagina-actual {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Formulario de comunicados (/notificaciones/comunicar) --- */
+.comunicado-form {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 26px 28px;
+    box-sizing: border-box;
+}
+
+.comunicado-info {
+    margin: 0 0 22px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: rgba(0, 61, 165, 0.2);
+    border: 1px solid rgba(0, 86, 179, 0.45);
+    color: #cfe1f7;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.comunicado-info i {
+    color: #f7941d;
+    margin-right: 6px;
+}
+
+.comunicado-info strong {
+    color: #ffffff;
+}
+
+.comunicado-total {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 640px) {
+    .notificaciones-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .notificaciones-acciones-toolbar {
+        justify-content: center;
+    }
+
+    .comunicado-form {
+        padding: 20px 16px;
+    }
+}
