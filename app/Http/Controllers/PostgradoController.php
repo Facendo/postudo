@@ -69,7 +69,7 @@ class PostgradoController extends Controller
         $request->validate([
             'Id_postgrado' => 'required|string|max:255|unique:postgrado,id_postgrado',
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:1000',
+            // Sin 'descripcion': el texto ya no se pide (se quitó la columna).
             // Sin 'duracion' ni 'nro_de_cohortes': la duración ya no se pide y
             // el número de cohortes se cuenta de las cohortes reales creadas.
             'codigo_area' => 'required|string|exists:area,codigo',
@@ -79,7 +79,6 @@ class PostgradoController extends Controller
         $postgrado->id_postgrado = $request->Id_postgrado;
         $postgrado->codigo_area = $request->codigo_area;
         $postgrado->nombre = $request->nombre;
-        $postgrado->descripcion = $request->descripcion;
         $postgrado->save();
 
         // El coordinador vuelve a la vista de Áreas (su punto de partida);
@@ -144,13 +143,12 @@ class PostgradoController extends Controller
 
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:1000',
+            // 'descripcion' ya no se edita: el campo y la columna desaparecieron.
             // 'duracion' ya no se edita: el campo desapareció de la interfaz.
             'codigo_area' => 'required|string|exists:area,codigo',
         ]);
 
         $postgrado->nombre = $request->nombre;
-        $postgrado->descripcion = $request->descripcion;
         $postgrado->codigo_area = $request->codigo_area;
         $postgrado->save();
 

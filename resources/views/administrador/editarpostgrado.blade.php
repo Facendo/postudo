@@ -24,16 +24,7 @@
                     @enderror
                 </div>
 
-                <!-- Campo para descripcion -->
-                <div class="form-group">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" class="form-input" placeholder="Breve descripción del postgrado..." rows="4" required>{{ old('descripcion', $postgrado->descripcion) }}</textarea>
-                    @error('descripcion')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Sin «Duración»: el campo desapareció del alta y del listado --}}
+                {{-- Sin «Descripción» ni «Duración»: los campos desaparecieron del alta y del listado --}}
                 <div class="form-group">
                     <label for="codigo_area" class="form-label">Área</label>
                     <select id="codigo_area" name="codigo_area" class="form-select" required>

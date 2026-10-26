@@ -28,13 +28,7 @@
                     <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Ej: Maestría en Ciencias de la Computación" required>
                 </div>
 
-                <!-- Campo para descripcion -->
-                <div class="form-group">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" class="form-input" placeholder="Breve descripción del postgrado..." rows="4" required></textarea>
-                </div>
-
-                {{-- Sin «Duración» ni «Número de Cohortes»: la duración ya no
+                {{-- Sin «Descripción», «Duración» ni «Número de Cohortes»: la duración ya no
                      interesa y el total de cohortes se cuenta de las cohortes
                      reales creadas (no se declara al crear el postgrado). --}}
                 <!-- Campo para el área al que pertenece el postgrado -->

@@ -102,7 +102,6 @@ class RellenoAreasSeeder extends Seeder
         Postgrado::create([
             'id_postgrado' => 'POST-INF-2024',
             'nombre' => 'Maestría en Ingeniería de Software',
-            'descripcion' => 'Programa de posgrado enfocado en el desarrollo avanzado de software.',
             'duracion' => 24,
             'codigo_area' => 2, // Área Ingeniería
             'nro_cohortes' => 3,
@@ -110,7 +109,6 @@ class RellenoAreasSeeder extends Seeder
         Postgrado::create([
             'id_postgrado' => 'POST-ADM-2024',
             'nombre' => 'Maestría en Administración de Empresas',
-            'descripcion' => 'Programa de posgrado enfocado en la gestión empresarial.',
             'duracion' => 18,
             'codigo_area' => 1, // Área Administración
             'nro_cohortes' => 2,
@@ -118,7 +116,6 @@ class RellenoAreasSeeder extends Seeder
         Postgrado::create([
             'id_postgrado' => 'POST-PSI-2024',
             'nombre' => 'Maestría en Psicología',
-            'descripcion' => 'Programa de posgrado enfocado en la formación avanzada en psicología.',
             'duracion' => 24,
             'codigo_area' => 3, // Área Ciencias Sociales
             'nro_cohortes' => 3,

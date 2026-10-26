@@ -21,13 +21,12 @@ class Postgrado extends Model
 
     /**
      * Los atributos que se pueden asignar en masa.
-     * Se elimina 'codigo_pensum'.
+     * Se elimina 'codigo_pensum' y 'descripcion' (columna retirada 2026-10-26).
      */
     protected $fillable = [
         'id_postgrado',
         'codigo_area',
         'nombre',
-        'descripcion',
         'duracion',
         'nro_cohortes',
     ];

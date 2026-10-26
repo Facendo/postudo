@@ -28,7 +28,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Descripción</th>
                     <th>Área</th>
                     <th>Detalles</th>
                     <th>Acciones</th>
@@ -48,7 +47,6 @@
                             <i class="fa-solid fa-chevron-right flecha-fila" aria-hidden="true"></i>
                             {{ $postgrado->nombre }}
                         </td>
-                        <td>{{ $postgrado->descripcion }}</td>
                         <td>{{ $postgrado->area->nombre ?? 'Sin área' }}</td>
                         <td class="table-actions">
                             {{-- Enlace a la vista de detalles del postgrado --}}
@@ -84,7 +82,7 @@
 
                     {{-- Menciones del postgrado: fila oculta que se despliega con el clic --}}
                     <tr class="fila-menciones hidden" data-postgrado="{{ $postgrado->id_postgrado }}">
-                        <td colspan="6">
+                        <td colspan="5">
                             <div class="caja-menciones">
                                 <div class="caja-menciones-header">
                                     <h4 class="caja-menciones-titulo">
@@ -134,7 +132,7 @@
                         El colspan se ajusta al número de columnas de la tabla.
                     --}}
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">
+                        <td colspan="5" style="text-align: center; padding: 20px;">
                             {{-- Mensaje según rol: para el coordinador de postgrado una
                                  tabla vacía casi siempre significa "sin asignación" --}}
                             {{ Auth::user()->rol === 'coordinador_postgrado'

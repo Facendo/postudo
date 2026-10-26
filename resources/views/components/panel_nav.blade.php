@@ -6,27 +6,34 @@
 
     <div class="menu_barra_nueva">
         @auth
-                @if (Auth::user()->rol == 'estudiante')
-                    <a href="{{ route('estudiante.index') }}" class="button_barra">Inicio</a>
+                {{-- El botón «Inicio» no aparece en el índice propio del panel
+                     (ya estás en él); vuelve en cualquier otra página interna
+                     del perfil. --}}
+                @php
+                    $esIndiceDelPanel = request()->routeIs(
+                        'estudiante.index',
+                        'administrador.index',
+                        'coordinador.index',
+                        'coordinador_postgrado.index'
+                    );
+                @endphp
 
-                @endif
+                @if (! $esIndiceDelPanel)
+                    @if (Auth::user()->rol == 'estudiante')
+                        <a href="{{ route('estudiante.index') }}" class="button_barra">Inicio</a>
+                    @endif
 
-                @if (Auth::user()->rol == 'administrador')
+                    @if (Auth::user()->rol == 'administrador')
+                        <a href="{{ route('administrador.index') }}" class="button_barra">Inicio</a>
+                    @endif
 
-                    <a href="{{ route('administrador.index') }}" class="button_barra">Inicio</a>
+                    @if (Auth::user()->rol == 'coordinador_general')
+                        <a href="{{ route('coordinador.index') }}" class="button_barra">Inicio</a>
+                    @endif
 
-                @endif
-
-                @if (Auth::user()->rol == 'coordinador_general')
-
-                    <a href="{{ route('coordinador.index') }}" class="button_barra">Inicio</a>
-
-                @endif
-
-                @if (Auth::user()->rol == 'coordinador_postgrado')
-
-                    <a href="{{ route('coordinador_postgrado.index') }}" class="button_barra">Inicio</a>
-
+                    @if (Auth::user()->rol == 'coordinador_postgrado')
+                        <a href="{{ route('coordinador_postgrado.index') }}" class="button_barra">Inicio</a>
+                    @endif
                 @endif
 
                 {{-- Campanita de notificaciones: visible en los 4 roles.
