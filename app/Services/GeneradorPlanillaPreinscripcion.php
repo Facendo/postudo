@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Postgrado;
 use App\Models\Preinscripcion;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -97,9 +98,9 @@ class GeneradorPlanillaPreinscripcion
     {
         $mencion = $p->mencion;
         $postgrado = $mencion?->postgrado;
-        $menciones = $postgrado
-            ? $postgrado->menciones->sortBy('id_mencion')->pluck('nombre')->implode(' / ')
-            : '';
+        $titulos = $postgrado
+            ? $this->titulosEncabezado($postgrado)
+            : ['menciones' => '', 'anio' => date('Y'), 'menciones_extra' => ''];
 
         $casillas = ['cas_gg' => '', 'cas_fin' => '', 'cas_rrhh' => ''];
 
@@ -124,8 +125,9 @@ class GeneradorPlanillaPreinscripcion
             'voucher_nro' => (string) ($p->voucher_nro ?? ''),
             'voucher_fecha' => $this->fechaPlanilla($p->voucher_fecha),
             'voucher_banco' => (string) ($p->voucher_banco ?? ''),
-            'menciones' => $menciones,
-            'anio' => date('Y'),
+            'menciones' => $titulos['menciones'],
+            'anio' => $titulos['anio'],
+            'menciones_extra' => $titulos['menciones_extra'],
             'cas_bcn' => $p->sede === 'Barcelona' ? 'X' : '',
             'cas_can' => $p->sede === 'Cantaura' ? 'X' : '',
         ] + $casillas;
@@ -275,6 +277,44 @@ class GeneradorPlanillaPreinscripcion
         }
 
         return null;
+    }
+
+    /**
+     * Valores de texto del encabezado: la lista de menciones (mayúsculas,
+     * ordenadas como las columnas de la matriz del .doc, separadas por coma
+     * — el .doc no usa barras), el año y las menciones que sobran
+     * (${'menciones_extra'}, colocado en la plantilla ANTES de la etiqueta
+     * del año). Si hay 3 o más menciones, la línea «MENCIÓN …» se alarga
+     * hasta la caja FOTO y tapa su primera letra: solo se quedan las 2
+     * primeras y el resto va a la izquierda del año. Con 0-2 menciones no
+     * cambia nada (menciones_extra vacío = línea del año intacta).
+     */
+    private function titulosEncabezado(Postgrado $postgrado): array
+    {
+        $columnas = array_keys(self::COLUMNAS_MENCION);
+
+        $lista = $postgrado->menciones
+            ->sortBy('id_mencion')
+            ->sortBy(function ($mencion) use ($columnas) {
+                $columna = $this->columnaDeMencion($mencion->nombre);
+
+                return $columna === null
+                    ? count($columnas)
+                    : (int) array_search($columna, $columnas);
+            })
+            ->pluck('nombre')
+            ->map(fn ($nombre) => mb_strtoupper($nombre));
+
+        $excede = $lista->count() > 2;
+
+        // El resto (si va a la línea del año) termina con 3 espacios, que
+        // sumados al espacio inicial de la etiqueta del año dejan un hueco
+        // de 4 entre las menciones y el «AÑO …».
+        return [
+            'menciones' => ($excede ? $lista->take(2) : $lista)->implode(', '),
+            'anio' => date('Y'),
+            'menciones_extra' => $excede ? $lista->skip(2)->implode(', ').'   ' : '',
+        ];
     }
 
     /**
