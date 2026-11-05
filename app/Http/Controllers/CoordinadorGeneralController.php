@@ -4,12 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\CoordinadorGeneral;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Estudiante;
-use App\Models\Profesor;
-use App\Models\Especialidades;
-use App\Models\Postgrado;
-use App\Models\Cohorte;
 
 class CoordinadorGeneralController extends Controller
 {
@@ -41,7 +35,7 @@ class CoordinadorGeneralController extends Controller
             'correo' => 'required|email|unique:coordinador_general,correo',
         ]);
 
-        $coordinador = new CoordinadorGeneral();
+        $coordinador = new CoordinadorGeneral;
         $coordinador->cedula = $request->cedula;
         $coordinador->nombre = $request->nombre;
         $coordinador->apellido = $request->apellido;

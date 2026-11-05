@@ -13,7 +13,7 @@
         <div class="admin-grid">
             <a href="{{ route('asuntos.index') }}" class="admin-card">
                 <i class="fa-solid fa-file-alt"></i>
-                <span>Asuntos</span>
+                <span>Aranceles</span>
             </a>
             <a href="{{ route('pago.controlpagos') }}" class="admin-card">
                 <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -23,17 +23,17 @@
                 <i class="fa-solid fa-scale-balanced"></i>
                 <span>Ingresos y Egresos</span>
             </a>
-            <a href="{{ route('pago.actualizados') }}" class="admin-card">
-                <i class="fa-solid fa-circle-check"></i>
-                <span>Pagos Actualizados</span>
-            </a>
-            <a href="{{ route('pago.pendientes') }}" class="admin-card">
-                <i class="fa-solid fa-clock"></i>
-                <span>Pagos Pendientes</span>
-            </a>
             <a href="{{ route('administrador.coordinador.create') }}" class="admin-card">
                 <i class="fa-solid fa-user-tie"></i>
                 <span>Registrar Coordinador</span>
+            </a>
+            <a href="{{ route('administrador.aranceles.edit') }}" class="admin-card">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+                <span>Gaceta de Aranceles</span>
+            </a>
+            <a href="{{ route('notificacion.comunicar') }}" class="admin-card">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Comunicados</span>
             </a>
         </div>
     </div>
@@ -94,10 +94,10 @@
             bottom: 30px;
             right: 30px;
             width: 280px;
-            background: rgba(15, 5, 5, 0.75);
+            background: rgba(0, 10, 32, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 20px;
             padding: 20px 22px;
             z-index: 999;
@@ -128,8 +128,8 @@
 
         .tasa-icon {
             font-size: 1.4rem;
-            color: #ff4d4d;
-            background: rgba(255, 77, 77, 0.12);
+            color: #f7941d;
+            background: rgba(247, 148, 29, 0.12);
             width: 38px;
             height: 38px;
             border-radius: 10px;
@@ -212,8 +212,8 @@
         }
 
         .tasa-input-group:focus-within {
-            border-color: rgba(255, 77, 77, 0.5);
-            box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.12);
+            border-color: rgba(247, 148, 29, 0.5);
+            box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.12);
         }
 
         .tasa-prefix,
@@ -255,7 +255,7 @@
             align-items: center;
             justify-content: center;
             gap: 7px;
-            background: linear-gradient(135deg, #cc0000, #ff4d4d);
+            background: linear-gradient(135deg, #003da5, #001a4d);
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -265,13 +265,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 61, 165, 0.3);
             letter-spacing: 0.2px;
         }
 
         .tasa-btn-guardar:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(204, 0, 0, 0.45);
+            box-shadow: 0 8px 20px rgba(0, 61, 165, 0.45);
         }
 
         .tasa-btn-guardar:active {

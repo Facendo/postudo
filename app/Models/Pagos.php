@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pagos extends Model
 {
     use HasFactory;
-    protected $table= 'pago';
+
+    protected $table = 'pago';
+
     protected $fillable = [
         'id',
         'nombre',
@@ -23,10 +24,13 @@ class Pagos extends Model
         'fecha_pago',
         'estado',
     ];
-    protected $primaryKey = 'id';  
+
+    protected $primaryKey = 'id';
+
     protected $keyType = 'int';
 
-    public function estudiante(){
-        return $this->belongsTo(Estudiante::class,'cedula','cedula');
+    public function estudiante()
+    {
+        return $this->belongsTo(Estudiante::class, 'cedula', 'cedula');
     }
 }

@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class AsuntoController extends Controller
 {
-    public function __construct(private TasaCambioService $tasaService)
-    {
-    }
+    public function __construct(private TasaCambioService $tasaService) {}
 
     /**
      * Display a listing of the resource.
@@ -21,6 +19,7 @@ class AsuntoController extends Controller
         $this->tasaService->asegurarTasaAlDia();
 
         $asuntos = Asunto::all();
+
         return view('asuntos.index', compact('asuntos'));
     }
 
@@ -34,6 +33,7 @@ class AsuntoController extends Controller
 
         // Solo mostrar los asuntos base, no los que tienen una cédula de estudiante asignada ("ya pagados")
         $asuntos = Asunto::whereNull('cedula_estudiante')->get();
+
         return view('estudiante.precios_asuntos', compact('asuntos'));
     }
 
@@ -50,7 +50,7 @@ class AsuntoController extends Controller
      */
     public function store(Request $request)
     {
-        $asunto = new Asunto();
+        $asunto = new Asunto;
         $asunto->nombre = $request->input('nombre');
         $asunto->descripcion = $request->input('descripcion');
         $asunto->valor_usd = $request->input('valor_usd', 0);
@@ -75,6 +75,7 @@ class AsuntoController extends Controller
     public function edit(int $id)
     {
         $asunto = Asunto::find($id);
+
         return view('asuntos.edit', compact('asunto'));
     }
 

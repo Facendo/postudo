@@ -57,6 +57,7 @@ class TasaCambioService
      * se conserva la última tasa buena registrada.
      *
      * @return array Datos de la tasa guardada {valor, fecha, hora, fuente, fecha_iso}
+     *
      * @throws \Exception Cuando la API falla o responde datos inválidos.
      */
     public function actualizarDesdeBcv(): array
@@ -134,11 +135,11 @@ class TasaCambioService
     private function guardar(float $valor, string $fechaIso, string $fuente): array
     {
         $data = [
-            'valor'          => $valor,
-            'fecha'          => Carbon::createFromFormat('Y-m-d', $fechaIso)->format('d/m/Y'),
-            'hora'           => now()->format('H:i'),
-            'fuente'         => $fuente,
-            'fecha_iso'      => $fechaIso,
+            'valor' => $valor,
+            'fecha' => Carbon::createFromFormat('Y-m-d', $fechaIso)->format('d/m/Y'),
+            'hora' => now()->format('H:i'),
+            'fuente' => $fuente,
+            'fecha_iso' => $fechaIso,
             'actualizada_en' => now()->toDateTimeString(),
         ];
 

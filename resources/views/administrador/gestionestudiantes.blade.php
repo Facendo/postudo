@@ -16,8 +16,8 @@
                         <th>Cédula</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Carrera</th>
-                        <th>Especialidad</th>
+                        <th>Postgrado</th>
+                        <th>Mención</th>
                         <th>Correo</th>
                         <th>Edad</th>
                         <th>Acciones</th>
@@ -126,10 +126,10 @@
         }
 
         .btn-glass-acento:hover {
-            background: rgba(255, 77, 77, 0.15);
-            border-color: rgba(255, 77, 77, 0.5);
+            background: rgba(247, 148, 29, 0.15);
+            border-color: rgba(247, 148, 29, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(204, 0, 0, 0.25);
+            box-shadow: 0 6px 18px rgba(247, 148, 29, 0.25);
         }
 
         /* ===== TABLA GLASS ===== */

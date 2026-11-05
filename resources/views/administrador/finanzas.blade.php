@@ -144,7 +144,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(15, 5, 5, 0.6);
+            background: rgba(0, 10, 32, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 18px 20px;
@@ -222,7 +222,7 @@
         .finanzas-tabs {
             display: flex;
             gap: 8px;
-            background: rgba(15, 5, 5, 0.6);
+            background: rgba(0, 10, 32, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 5px;
@@ -248,10 +248,21 @@
             color: #ffffff;
         }
 
+        /* Pestaña activa: texto blanco y color según el tipo de movimiento
+           (verde = ingresos, rojo = egresos; mismos tonos de las tablas). */
         .finanzas-tab--activo {
-            background: linear-gradient(135deg, #cc0000, #ff4d4d);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(204, 0, 0, 0.35);
+            font-weight: 600;
+        }
+
+        .finanzas-tab--activo[data-tab="ingresos"] {
+            background: linear-gradient(135deg, #1f9d55, #2ecc71);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.35);
+        }
+
+        .finanzas-tab--activo[data-tab="egresos"] {
+            background: linear-gradient(135deg, #d64545, #ff6b6b);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.35);
         }
 
         /* ===== Paneles de tablas ===== */
@@ -278,8 +289,8 @@
 
         .badge-motivo {
             display: inline-block;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 50px;
             padding: 3px 12px;
             font-family: 'Outfit', sans-serif;
@@ -300,7 +311,7 @@
                 tab.addEventListener('click', function () {
                     // Actualizar pestaña activa
                     tabs.forEach(t => t.classList.remove('finanzas-tab--activo'));
-                    tab.classList.add('finanzas-tab');
+                    tab.classList.add('finanzas-tab--activo');
 
                     // Mostrar el panel correspondiente
                     Object.values(panels).forEach(p => p.classList.remove('finanzas-panel--activo'));

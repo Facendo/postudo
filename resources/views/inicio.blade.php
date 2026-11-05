@@ -13,16 +13,31 @@
     <title>PostUDO || Inicio</title>
     <style>
         :root {
-            --bg-dark: #0a0303;
-            --bg-grad-1: #1a0404;
-            --bg-grad-2: #4a0808;
-            --accent: #ff4d4d;
-            --accent-hover: #ff1a1a;
-            --text-main: #f0f0f0;
-            --text-muted: #a0a0a0;
+            /* --- Paleta de prueba UDO (2026-10-20): blanco + naranja + azul ---
+               Solo afecta a esta página de inicio; el resto de la app usa public/css/style.css */
+            --udo-blanco: #ffffff;
+            --udo-azul: #003da5;
+            --udo-azul-marino: #001233;
+            --udo-naranja: #f7941d;
+            --udo-naranja-suave: #ffd9b8;
+
+            --bg-dark: #001233;
+            --bg-grad-1: #001a4d;
+            --bg-grad-2: #003da5;
+            --accent: #f7941d;
+            --accent-hover: #ff9f2e;
+            --accent-soft: #ffd9b8;
+            --text-main: #f2f5f9;
+            --text-muted: #9fb3d1;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+            /* Espacio reservado al menú lateral fijo (ancho aprox. del menú + margen).
+               El hero usa este valor por IZQUIERDA y DERECHA → el título queda
+               centrado al 100% en el viewport. Si el menú crece (texto más largo),
+               sube este valor para que el título no lo pise. */
+            --lateral-ancho: 480px;
         }
 
         * {
@@ -64,7 +79,7 @@
             left: -10%;
             width: 500px;
             height: 500px;
-            background: #ff0000;
+            background: #2563eb;
         }
 
         .light-2 {
@@ -72,7 +87,7 @@
             right: -10%;
             width: 600px;
             height: 600px;
-            background: #7a0000;
+            background: #0a3d91;
             animation-delay: -5s;
         }
 
@@ -129,7 +144,7 @@
         .logo {
             width: 45px;
             height: auto;
-            filter: drop-shadow(0 0 10px rgba(255, 77, 77, 0.4));
+            filter: drop-shadow(0 0 10px rgba(247, 148, 29, 0.45));
             transition: transform 0.3s ease;
         }
 
@@ -141,7 +156,7 @@
             font-size: 26px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            background: linear-gradient(to right, #fff, #ffb3b3);
+            background: linear-gradient(to right, #fff, var(--accent-soft));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -173,7 +188,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent), #cc0000);
+            background: linear-gradient(135deg, var(--accent), #d97306);
             color: #fff;
             padding: 12px 28px;
             border-radius: 30px;
@@ -182,7 +197,7 @@
             font-size: 15px;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+            box-shadow: 0 4px 15px rgba(247, 148, 29, 0.35);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
@@ -204,7 +219,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 77, 77, 0.5);
+            box-shadow: 0 6px 20px rgba(247, 148, 29, 0.5);
         }
 
         .btn-primary:hover::before {
@@ -225,7 +240,7 @@
 
         .btn-outline:hover {
             border-color: var(--accent);
-            background: rgba(255, 77, 77, 0.1);
+            background: rgba(247, 148, 29, 0.12);
         }
 
         /* Hero Section */
@@ -253,17 +268,17 @@
             border-radius: 20px;
             font-size: 13px;
             font-weight: 500;
-            color: #ffb3b3;
+            color: var(--accent-soft);
             margin-bottom: 25px;
             backdrop-filter: blur(10px);
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 6vw, 5rem);
+            font-size: clamp(3rem, 5vw, 5rem);
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 25px;
-            background: linear-gradient(to right, #fff, #ffb3b3, #ff4d4d);
+            background: linear-gradient(to right, #fff, var(--accent-soft), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -288,7 +303,7 @@
 
         /* Footer */
         footer {
-            background: rgba(10, 3, 3, 0.9);
+            background: rgba(0, 10, 32, 0.92);
             border-top: 1px solid var(--glass-border);
             padding: 40px 20px;
             text-align: center;
@@ -367,6 +382,272 @@
             }
         }
 
+        /* Menú lateral de enlaces de la portada (preinscripción, postgrados...) */
+        /* Sidebar fijo al borde izquierdo de la ventana; en pantallas <= 1439px vuelve al flujo */
+        .menu-lateral {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: max-content;
+            max-width: calc(100vw - 60px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: left;
+            z-index: 100;
+            animation: fadeUpLateral 1s ease-out forwards;
+        }
+
+        /* Misma entrada que fadeUp pero conservando el centrado vertical (translateY(-50%)) */
+        @keyframes fadeUpLateral {
+            from {
+                transform: translateY(calc(-50% + 40px));
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(-50%);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 1439px) {
+            /* Sin sidebar: el menú queda debajo del título, como al inicio */
+            .hero {
+                flex-direction: column;
+            }
+
+            .menu-lateral {
+                position: static;
+                width: 100%;
+                max-width: 460px;
+                margin: 40px auto 0;
+                transform: none;
+                animation: fadeUp 1s ease-out forwards;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            /* Centrado real del título: mismo espacio a izquierda y derecha,
+               reservando el del menú fijo → el h1 cae en el centro del viewport */
+            .hero {
+                padding-left: var(--lateral-ancho);
+                padding-right: var(--lateral-ancho);
+            }
+        }
+
+        .menu-lateral-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 22px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            overflow-wrap: anywhere;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        a.menu-lateral-item:hover,
+        button.menu-lateral-item:hover {
+            border-color: var(--accent);
+            background: rgba(247, 148, 29, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-lateral-item i {
+            color: var(--accent);
+            width: 22px;
+            text-align: center;
+        }
+
+        .menu-lateral-item.menu-texto {
+            cursor: default;
+            color: var(--text-muted);
+        }
+
+        /* Modal «Aranceles» de la portada (contenido fijo: vigente desde el 11 de abril de 2025) */
+        .modal-info-fondo {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 6, 20, 0.75);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-info-caja {
+            background: var(--bg-grad-1);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            box-shadow: var(--glass-shadow);
+            text-align: left;
+        }
+
+        .modal-info-cabecera {
+            padding: 25px 30px 18px;
+            border-bottom: 1px solid var(--glass-border);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .modal-info-caja h3 {
+            color: #fff;
+            margin-bottom: 0;
+        }
+
+        /* Cuerpo con scroll propio: el modal nunca se sale de la pantalla */
+        .modal-info-cuerpo {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 22px 30px;
+            text-align: left;
+        }
+
+        .modal-info-caja p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .modal-info-intro {
+            margin-bottom: 18px;
+        }
+
+        .modal-info-intro strong {
+            color: var(--text-main);
+        }
+
+        /* Aviso destacado: se paga a la tasa BCV del día */
+        .modal-info-aviso {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.35);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 22px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .modal-info-aviso i {
+            color: var(--accent);
+            margin-top: 3px;
+        }
+
+        .modal-info-grupo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 20px 0 8px;
+        }
+
+        .modal-info-grupo i {
+            color: var(--accent);
+        }
+
+        .modal-info-lista {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-info-fila {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .modal-info-fila:last-child {
+            border-bottom: none;
+        }
+
+        .modal-info-precio {
+            color: var(--accent);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Párrafo suelto dentro de un grupo (texto del comunicado) */
+        .modal-info-nota {
+            margin: 6px 0 10px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .modal-info-pie {
+            padding: 15px 30px 22px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .modal-info-cabecera,
+            .modal-info-cuerpo,
+            .modal-info-pie {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            /* En móvil el precio baja debajo del concepto */
+            .modal-info-fila {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
+        }
+
+        .modal-info-cerrar {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-info-cerrar:hover {
+            border-color: var(--accent);
+            background: rgba(247, 148, 29, 0.12);
+        }
+
 
 
 
@@ -388,7 +669,7 @@
     width: 450px;
     height: 450px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(220, 38, 38, 0.6) 0%, rgba(153, 27, 27, 0.2) 50%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.6) 0%, rgba(10, 47, 120, 0.25) 50%, rgba(0, 0, 0, 0) 70%);
     filter: blur(80px); /* Crea el efecto difuminado suave */
     opacity: 0.8;
 }
@@ -498,9 +779,34 @@
         <section class="hero">
             <div class="hero-content">
                 <h1>Coordinación de Estudios de Postgrado</h1>
-
-
             </div>
+
+            {{-- Enlaces de servicios públicos de la portada (sidebar fijo a la izquierda). --}}
+            {{-- Va fuera de .hero-content: ese div conserva un transform tras la animación --}}
+            {{-- fadeUp y rompería el anclaje position: fixed del menú a la ventana. --}}
+            <nav class="menu-lateral" aria-label="Servicios de postgrado">
+                <a href="{{ route('preinscripcion.create') }}" class="menu-lateral-item">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <span>Preinscripción</span>
+                </a>
+
+                <a href="{{ route('postgrado.index') }}" class="menu-lateral-item">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Ver Postgrados</span>
+                </a>
+
+                {{-- Contacto como texto (sin enlace), a pedido de la coordinación --}}
+                <div class="menu-lateral-item menu-texto">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Contacto:<br>postgradoca.udo.anzoategui@gmail.com</span>
+                </div>
+
+                <button type="button" class="menu-lateral-item" id="btnModalInfo"
+                    style="cursor: pointer; font-family: inherit; width: 100%;">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Aranceles</span>
+                </button>
+            </nav>
         </section>
 
 
@@ -510,6 +816,84 @@
         <p>&copy; 2026 PostUDO - Todos los derechos reservados.</p>
     </div>
 
+    {{-- Modal «Aranceles»: contenido dinámico. Lo actualiza el administrador --}}
+    {{-- desde /administrador/aranceles (texto crudo en aranceles.json); el     --}}
+    {{-- parseo a este formato visual lo hace ArancelesService al renderizar.   --}}
+    @php
+        $servicioAranceles = app(\App\Services\ArancelesService::class);
+        $aranceles = $servicioAranceles->parsear($servicioAranceles->obtenerTexto());
+    @endphp
+    <div class="modal-info-fondo" id="modalInfo">
+        <div class="modal-info-caja">
+            <div class="modal-info-cabecera">
+                <h3><i class="fa-solid fa-circle-info" style="color: var(--accent);"></i> Aranceles de Postgrado</h3>
+            </div>
+
+            <div class="modal-info-cuerpo">
+                {{-- Introducción: los párrafos previos al primer grupo --}}
+                @foreach ($aranceles['intro'] as $parrafo)
+                    <p class="modal-info-intro">{{ $parrafo }}</p>
+                @endforeach
+
+                {{-- Aviso destacado de la tasa de cambio (si aparece en el texto) --}}
+                @if ($aranceles['aviso'])
+                    <div class="modal-info-aviso">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span>{{ $aranceles['aviso'] }}</span>
+                    </div>
+                @endif
+
+                {{-- Grupos: título (con icono por palabras clave) + filas concepto/precio --}}
+                @foreach ($aranceles['grupos'] as $grupo)
+                    @if ($grupo['titulo'] !== '')
+                        <h4 class="modal-info-grupo">
+                            <i class="fa-solid {{ $servicioAranceles->iconoDeGrupo($grupo['titulo']) }}"></i>
+                            {{ $grupo['titulo'] }}
+                        </h4>
+                    @endif
+
+                    {{-- Párrafos sueltos dentro del grupo (si los hubiera) --}}
+                    @foreach ($grupo['notas'] as $nota)
+                        <p class="modal-info-nota">{{ $nota }}</p>
+                    @endforeach
+
+                    @if (count($grupo['items']))
+                        <ul class="modal-info-lista">
+                            @foreach ($grupo['items'] as $item)
+                                <li class="modal-info-fila">
+                                    <span>{{ $item['concepto'] }}</span>
+                                    @if ($item['precio'] !== '')
+                                        <span class="modal-info-precio">{{ $item['precio'] }}</span>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="modal-info-pie">
+                <button type="button" class="modal-info-cerrar" id="btnCerrarModalInfo">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Apertura y cierre del modal «Aranceles» (el contenido lo pinta
+        // el servidor desde aranceles.json; esto solo maneja el display).
+        const modalInfo = document.getElementById('modalInfo');
+        document.getElementById('btnModalInfo').addEventListener('click', function () {
+            modalInfo.style.display = 'flex';
+        });
+        document.getElementById('btnCerrarModalInfo').addEventListener('click', function () {
+            modalInfo.style.display = 'none';
+        });
+        modalInfo.addEventListener('click', function (evento) {
+            if (evento.target === modalInfo) {
+                modalInfo.style.display = 'none';
+            }
+        });
+    </script>
 
 </body>
 

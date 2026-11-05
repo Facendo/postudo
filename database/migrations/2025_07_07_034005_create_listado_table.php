@@ -21,7 +21,7 @@ return new class extends Migration
                 ->references('nro_seccion')
                 ->on('seccion')
                 ->onDelete('cascade');
-                
+
             $table->foreign('cedula')
                 ->references('cedula')
                 ->on('estudiantes')
