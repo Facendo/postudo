@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('area', function (Blueprint $table) {
-            $table->string("codigo")->primary();
-            $table->string("nombre");
-            $table->string("descripcion")->nullable();
+            $table->string('codigo')->primary();
+            $table->string('nombre');
+            $table->string('descripcion')->nullable();
         });
     }
 

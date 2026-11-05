@@ -24,36 +24,18 @@
                     @enderror
                 </div>
 
-                <!-- Campo para descripcion -->
+                {{-- Sin «Descripción» ni «Duración»: los campos desaparecieron del alta y del listado --}}
                 <div class="form-group">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" class="form-input" placeholder="Breve descripción del postgrado..." rows="4" required>{{ old('descripcion', $postgrado->descripcion) }}</textarea>
-                    @error('descripcion')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Campo para duracion -->
-                <div class="form-group">
-                    <label for="duracion" class="form-label">Duración</label>
-                    <input type="text" id="duracion" name="duracion" class="form-input" placeholder="Ej: 2 años / 4 semestres" value="{{ old('duracion', $postgrado->duracion) }}" required>
-                    @error('duracion')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Campo para codigo_especialidad -->
-                <div class="form-group">
-                    <label for="codigo_especialidad" class="form-label">Especialidad</label>
-                    <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
-                        @foreach($especialidades as $especialidad)
-                            <option value="{{ $especialidad->codigo_especialidad }}" 
-                                {{ old('codigo_especialidad', $postgrado->codigo_especialidad) == $especialidad->codigo_especialidad ? 'selected' : '' }}>
-                                {{ $especialidad->nombre }}
+                    <label for="codigo_area" class="form-label">Área</label>
+                    <select id="codigo_area" name="codigo_area" class="form-select" required>
+                        @foreach($areas as $area)
+                            <option value="{{ $area->codigo }}"
+                                {{ old('codigo_area', $postgrado->codigo_area) == $area->codigo ? 'selected' : '' }}>
+                                {{ $area->nombre }}
                             </option>
                         @endforeach
                     </select>
-                    @error('codigo_especialidad')
+                    @error('codigo_area')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

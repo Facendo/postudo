@@ -7,15 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Area extends Model
 {
     protected $table = 'area';
+
     protected $primaryKey = 'codigo';
+
     public $timestamps = false;
+
     protected $fillable = [
         'codigo',
         'nombre',
         'descripcion',
     ];
-    public function carreras()
+
+    /**
+     * Postgrados que dependen de esta área (Área -> Postgrado -> Mención).
+     */
+    public function postgrados()
     {
-        return $this->hasMany(Carrera::class, 'codigo_Area', 'codigo');
+        return $this->hasMany(Postgrado::class, 'codigo_area', 'codigo');
     }
 }

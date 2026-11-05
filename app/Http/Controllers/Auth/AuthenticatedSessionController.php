@@ -27,16 +27,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        $user=Auth::user();
-        
-        if($user->rol == "estudiante"){
+        $user = Auth::user();
+
+        if ($user->rol == 'estudiante') {
             return redirect()->intended(route('estudiante.index', absolute: false));
-        } elseif ($user->rol === 'profesor') {
-            return redirect(route('profesor.index', absolute: false));
         } elseif ($user->rol === 'administrador') {
             return redirect(route('administrador.index', absolute: false));
         } elseif ($user->rol === 'coordinador_general') {
             return redirect(route('coordinador.index', absolute: false));
+        } elseif ($user->rol === 'coordinador_postgrado') {
+            return redirect(route('coordinador_postgrado.index', absolute: false));
         } else {
             // Si el rol no es reconocido, redirigir a una página de error o inicio
             return redirect(route('inicio', absolute: false))->withErrors(['rol' => 'Rol no reconocido.']);

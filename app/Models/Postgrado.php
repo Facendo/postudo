@@ -10,39 +10,41 @@ class Postgrado extends Model
     use HasFactory;
 
     protected $table = 'postgrado';
+
     protected $primaryKey = 'id_postgrado';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     public $timestamps = false;
 
     /**
      * Los atributos que se pueden asignar en masa.
-     * Se elimina 'codigo_pensum'.
+     * Se elimina 'codigo_pensum' y 'descripcion' (columna retirada 2026-10-26).
      */
     protected $fillable = [
         'id_postgrado',
-        'codigo_especialidad',
+        'codigo_area',
         'nombre',
-        'descripcion',
         'duracion',
+        'nro_cohortes',
     ];
 
     /**
-     * Define la relación con el modelo Especialidad (Uno a Muchos Inversa).
+     * Área al que pertenece el postgrado (Área -> Postgrado -> Mención).
      */
-    public function especialidad()
+    public function area()
     {
-        return $this->belongsTo(Especialidades::class, 'codigo_especialidad', 'codigo_especialidad');
+        return $this->belongsTo(Area::class, 'codigo_area', 'codigo');
     }
 
     /**
-     * Define la relación Muchos a Muchos con el modelo Area.
+     * Menciones que dependen de este postgrado.
      */
-    public function areas()
+    public function menciones()
     {
-        // Se asume una tabla pivote llamada 'area_postgrado'
-        // con las columnas 'postgrado_id' y 'area_id'.
-        return $this->belongsToMany(Area::class, 'area_postgrado', 'postgrado_id', 'area_id');
+        return $this->hasMany(Mencion::class, 'id_postgrado', 'id_postgrado');
     }
 
     /**
@@ -50,6 +52,20 @@ class Postgrado extends Model
      */
     public function cohortes()
     {
-        return $this->hasMany(Cohorte::class, 'Id_postgrado', 'Id_postgrado');
+        return $this->hasMany(Cohorte::class, 'codigo_postgrado', 'id_postgrado');
+    }
+
+    /**
+     * Coordinador de postgrado asignado (pivote con 'unique': UN coordinador
+     * por postgrado, como máximo uno aquí).
+     */
+    public function coordinadores()
+    {
+        return $this->belongsToMany(
+            CoordinadorPostgrado::class,
+            'asignacion_coordinador_postgrado',
+            'codigo_postgrado',
+            'cedula'
+        )->withTimestamps();
     }
 }

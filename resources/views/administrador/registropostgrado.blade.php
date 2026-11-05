@@ -3,6 +3,17 @@
         <div class="registration-form">
             <h2 class="registration-form-title">Registro de Postgrado</h2>
 
+            @if ($errors->any())
+                <div class="form-group" style="border: 1px solid #e05757; background: rgba(224, 87, 87, 0.15); border-radius: 8px; padding: 12px 16px;">
+                    <strong>Revisa los siguientes campos:</strong>
+                    <ul style="margin: 8px 0 0 18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('administrador.gestion_postgrado.store') }}" method="POST">
                 @csrf
                 <!-- Campo para Id_postgrado -->
@@ -17,38 +28,21 @@
                     <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Ej: Maestría en Ciencias de la Computación" required>
                 </div>
 
-                <!-- Campo para descripcion -->
+                {{-- Sin «Descripción», «Duración» ni «Número de Cohortes»: la duración ya no
+                     interesa y el total de cohortes se cuenta de las cohortes
+                     reales creadas (no se declara al crear el postgrado). --}}
+                <!-- Campo para el área al que pertenece el postgrado -->
                 <div class="form-group">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" class="form-input" placeholder="Breve descripción del postgrado..." rows="4" required></textarea>
-                </div>
-
-                <!-- Campo para duracion -->
-                <div class="form-group">
-                    <label for="duracion" class="form-label">Duración</label>
-                    <input type="text" id="duracion" name="duracion" class="form-input" placeholder="Ej: 2 años / 4 semestres" required>
-                </div>
-
-                <!-- Campo para el numero de cohortes -->
-                <div class="form-group">
-                    <label for="nro_de_cohortes" class="form-label">Número de Cohortes</label>
-                    <input type="number" id="nro_de_cohortes" name="nro_de_cohortes" class="form-input" placeholder="Ej: 3" required>
-                </div>
-                @error('nro_de_cohortes')
-                    <span class="error-message">{{ $message }}</span>
-                @enderror
-                <!-- Campo para codigo_especialidad (similar al de estudiante pero para postgrados) -->
-                <div class="form-group">
-                <label for="codigo_especialidad" class="form-label">Especialidad</label>
-                <select id="codigo_especialidad" name="codigo_especialidad" class="form-select" required>
-                    <option value="">Selecciona una especialidad</option>
-                    @foreach($especialidades as $especialidad)
-                        <option value="{{ $especialidad->codigo_especialidad }}">
-                            {{ $especialidad->nombre }}
+                <label for="codigo_area" class="form-label">Área</label>
+                <select id="codigo_area" name="codigo_area" class="form-select" required>
+                    <option value="">Selecciona un área</option>
+                    @foreach($areas as $area)
+                        <option value="{{ $area->codigo }}" {{ old('codigo_area', $areaPreseleccionada ?? '') == $area->codigo ? 'selected' : '' }}>
+                            {{ $area->nombre }}
                         </option>
                     @endforeach
                 </select>
-                @error('codigo_especialidad')
+                @error('codigo_area')
                     <span class="error-message">{{ $message }}</span>
                 @enderror
             </div>

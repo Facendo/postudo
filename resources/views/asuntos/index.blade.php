@@ -38,7 +38,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th style="text-align:center;">Valor (USD)</th>
@@ -51,7 +50,6 @@
             <tbody>
                 @forelse ($asuntos as $asunto)
                     <tr>
-                        <td>{{ $asunto->id }}</td>
                         <td>{{ $asunto->nombre }}</td>
                         <td>{{ $asunto->descripcion }}</td>
 
@@ -95,7 +93,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ $tasaValor ? 6 : 5 }}" style="text-align: center; padding: 20px;">
+                        <td colspan="{{ $tasaValor ? 5 : 4 }}" style="text-align: center; padding: 20px;">
                             No hay asuntos registrados.
                         </td>
                     </tr>
@@ -117,8 +115,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.25);
+            background: rgba(247, 148, 29, 0.1);
+            border: 1px solid rgba(247, 148, 29, 0.25);
             border-radius: 50px;
             padding: 8px 20px;
             margin-bottom: 20px;
@@ -128,7 +126,7 @@
         }
 
         .tasa-badge i {
-            color: #ff4d4d;
+            color: #f7941d;
         }
 
         .tasa-badge strong {

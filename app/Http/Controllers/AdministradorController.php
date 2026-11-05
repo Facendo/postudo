@@ -3,25 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administrador;
+use App\Models\Area;
 use App\Services\TasaCambioService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Carrera;
-use App\Models\Area;
-use App\Models\Especialidades;
-use App\Models\Estudiante;
-use App\Models\Profesor;
-use App\Models\Cohorte;
-use App\Models\Materias;
-
-
 
 class AdministradorController extends Controller
 {
-    public function __construct(private TasaCambioService $tasaService)
-    {
-    }
+    public function __construct(private TasaCambioService $tasaService) {}
 
     /**
      * Display a listing of the resource.
@@ -32,6 +21,7 @@ class AdministradorController extends Controller
         $this->tasaService->asegurarTasaAlDia();
 
         $tasaData = $this->tasaService->obtenerTasaActual();
+
         return view('administrador.index', ['tasaCambio' => $tasaData]);
     }
 
@@ -48,7 +38,7 @@ class AdministradorController extends Controller
 
         return response()->json([
             'success' => true,
-            'tasa'    => $data,
+            'tasa' => $data,
         ]);
     }
 
@@ -68,24 +58,16 @@ class AdministradorController extends Controller
 
         return response()->json([
             'success' => true,
-            'tasa'    => $data,
+            'tasa' => $data,
         ]);
-    }
-    
-    public function registroEstudiante()
-    {
-        return view('administrador.registroestudiante',compact('carreras', 'especialidades'));
     }
 
     public function creacionArea()
     {
-        $areas= Area::all();
-        $especialidades = Especialidades::all();
-        $carreras = Carrera::all();
-        return view('administrador.creacionace', [
-            'area' => $areas,
-            'carrera' => $carreras,
-            'especialidad' => $especialidades,
+        // El árbol académico quedó en Área -> Postgrado -> Mención, así que
+        // esta página solo gestiona áreas (con sus postgrados como detalle).
+        return view('administrador.gestionareas', [
+            'area' => Area::with('postgrados.menciones')->orderBy('nombre')->get(),
         ]);
     }
 

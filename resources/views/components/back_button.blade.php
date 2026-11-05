@@ -3,7 +3,7 @@
     /* Base styles */
     padding: 16px 35px; /* Slightly more padding for a larger touch target */
     color: #ffffff;
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); /* Blue gradient for a modern feel */
+    background: linear-gradient(135deg, #003da5 0%, #0056b3 100%); /* Blue gradient for a modern feel */
     border: none;
     border-radius: 50px; /* Fully rounded, pill shape */
     font-family: 'Montserrat', sans-serif; /* Changed to Montserrat for consistency with headings, or keep Inter if preferred for body text */
@@ -44,13 +44,13 @@
 }
 
 .button_body:hover {
-    background: linear-gradient(135deg, #0056b3 0%, #003d80 100%); /* Darker blue on hover */
+    background: linear-gradient(135deg, #0056b3 0%, #001a4d 100%); /* Darker blue on hover */
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35); /* Even more pronounced shadow */
     transform: translateY(-5px); /* More lift on hover */
 }
 
 .button_body:active {
-    background: #003d80; /* Solid darker blue on click */
+    background: #001a4d; /* Solid darker blue on click */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reduced shadow for pressed state */
     transform: translateY(0); /* Sinks back down */
     transition: all 0.1s ease; /* Quicker transition for active state */

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('codigo_area')
-                    ->references('codigo')
-                    ->on('area')
-                    ->onDelete('cascade');
+                ->references('codigo')
+                ->on('area')
+                ->onDelete('cascade');
 
         });
 

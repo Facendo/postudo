@@ -11,7 +11,7 @@
         </div>
 
         <div class="admin-grid">
-            <a href="{{ route('administrador.prueba_especialidades') }}" class="admin-card">
+            <a href="{{ route('administrador.estudiantes_por_postgrado') }}" class="admin-card">
                 <i class="fa-solid fa-users"></i>
                 <span>Estudiantes</span>
             </a>
@@ -19,21 +19,25 @@
                 <i class="fa-solid fa-user-plus"></i>
                 <span>Registrar Estudiante</span>
             </a>
-            <a href="{{ route('administrador.especialidades.index') }}" class="admin-card">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>Especialidades</span>
-            </a>
             <a href="{{ route('administrador.creacion.index') }}" class="admin-card">
                 <i class="fa-solid fa-layer-group"></i>
-                <span>Áreas y Carreras</span>
+                <span>Áreas</span>
             </a>
-            <a href="#" class="admin-card">
-                <i class="fa-solid fa-chalkboard-teacher"></i>
-                <span>Profesores</span>
+            <a href="{{ route('administrador.preinscripciones.index') }}" class="admin-card">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <span>Preinscripciones</span>
             </a>
-            <a href="#" class="admin-card">
+            <a href="{{ route('administrador.gestion_postgrado') }}" class="admin-card">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Postgrados</span>
+            </a>
+            <a href="{{ route('coordinador.coordinador_postgrado.index') }}" class="admin-card">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Coordinadores de Postgrado</span>
+            </a>
+            <a href="{{ route('notificacion.comunicar') }}" class="admin-card">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Comunicados</span>
             </a>
         </div>
     </div>
