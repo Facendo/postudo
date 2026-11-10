@@ -6,9 +6,11 @@ use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Cohorte;
 use App\Models\Mencion;
 use App\Models\Postgrado;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 
 class CohorteController extends Controller
 {
@@ -69,6 +71,8 @@ class CohorteController extends Controller
      * El codigo_postgrado NO se toma del formulario: se deriva de la mención
      * elegida (nunca confiar en el dato del cliente). Tampoco el número de
      * cohorte: se autoincrementa con el máximo existente en la mención.
+     * La fecha de fin tampoco viene del cliente: duración fija de 4 años
+     * calculada en el servidor a partir de fecha_inicio.
      */
     public function store(Request $request)
     {
@@ -76,7 +80,6 @@ class CohorteController extends Controller
             'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')],
             'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
-            'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
             // Defensa: el número real se recalcula más abajo, nunca se toma del cliente.
             'nro_de_cohorte' => ['nullable', 'integer', 'min:1'],
         ]);
@@ -93,7 +96,7 @@ class CohorteController extends Controller
         $cohorte->codigo_mencion = $mencion->id_mencion;
         $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
         $cohorte->fecha_inicio = $datos['fecha_inicio'];
-        $cohorte->fecha_fin = $datos['fecha_fin'];
+        $cohorte->fecha_fin = Carbon::parse($datos['fecha_inicio'])->addYears(4); // duración fija
         $cohorte->nro_de_cohorte = $siguiente;
         $cohorte->save();
 
@@ -147,6 +150,9 @@ class CohorteController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * Igual que al crear: la fecha de fin no viene del cliente, se recalcula
+     * con duración fija de 4 años a partir de fecha_inicio.
      */
     public function update(Request $request, string $id)
     {
@@ -162,7 +168,6 @@ class CohorteController extends Controller
             'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')->ignore($cohorte->codigo_cohorte)],
             'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
-            'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
             'nro_de_cohorte' => [
                 'required', 'integer', 'min:1',
                 Rule::unique('cohorte', 'nro_de_cohorte')
@@ -177,7 +182,7 @@ class CohorteController extends Controller
         $cohorte->codigo_mencion = $mencion->id_mencion;
         $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
         $cohorte->fecha_inicio = $datos['fecha_inicio'];
-        $cohorte->fecha_fin = $datos['fecha_fin'];
+        $cohorte->fecha_fin = Carbon::parse($datos['fecha_inicio'])->addYears(4); // duración fija
         $cohorte->nro_de_cohorte = $datos['nro_de_cohorte'];
         $cohorte->save();
 
@@ -208,8 +213,11 @@ class CohorteController extends Controller
     /**
      * La mención del formulario debe existir Y pertenecer a un postgrado que
      * el usuario pueda gestionar (sin filtro para admin y coordinador general).
+     *
+     * Nota: el retorno es Exists (lo que devuelve Rule::exists), NO la clase
+     * Rule (fábrica estática) — con `: Rule` explotaba en TypeError al validar.
      */
-    private function reglaMencionPropia(): Rule
+    private function reglaMencionPropia(): Exists
     {
         $permitidos = $this->idsPostgradosPermitidos(Auth::user());
 

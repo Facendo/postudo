@@ -68,12 +68,11 @@
                         @enderror
                     </div>
 
+                    {{-- Duración fija: la fecha de fin se calcula (fecha_inicio + 4 años)
+                         y NO se envía al servidor; el controlador la recalcucla igual. --}}
                     <div class="form-group">
                         <label for="fecha_fin" class="form-label">Fecha de Fin</label>
-                        <input type="date" id="fecha_fin" name="fecha_fin" class="form-input" value="{{ old('fecha_fin') }}" required>
-                        @error('fecha_fin')
-                            <p class="form-error-message">{{ $message }}</p>
-                        @enderror
+                        <input type="date" id="fecha_fin" class="form-input" value="" readonly tabindex="-1" style="background-color: rgba(255,255,255,0.15); cursor: not-allowed;">
                     </div>
 
                     {{-- Sin «Número de Cohorte»: el número lo asigna el
@@ -83,6 +82,39 @@
                         <button type="submit" class="submit-button">Registrar Cohorte</button>
                     </div>
                 </form>
+
+                <script>
+                    // Preview de la duración fija: fecha_fin = fecha_inicio + 4 años.
+                    (function () {
+                        var inicio = document.getElementById('fecha_inicio');
+                        var fin = document.getElementById('fecha_fin');
+
+                        function calcular() {
+                            // Solo calcula con fecha bien formada (evita valores
+                            // old() inválidos tipo "NaN-undefined-undefined").
+                            if (!/^\d{4}-\d{2}-\d{2}$/.test(inicio.value)) {
+                                fin.value = '';
+                                return;
+                            }
+
+                            var partes = inicio.value.split('-');
+                            var anio = parseInt(partes[0], 10) + 4;
+                            var mes = partes[1];
+                            var dia = partes[2];
+
+                            // 29 de febrero en año no bisiesto → 28 de febrero.
+                            var bisiesto = (anio % 4 === 0 && anio % 100 !== 0) || anio % 400 === 0;
+                            if (mes === '02' && dia === '29' && !bisiesto) {
+                                dia = '28';
+                            }
+
+                            fin.value = anio + '-' + mes + '-' + dia;
+                        }
+
+                        inicio.addEventListener('change', calcular);
+                        calcular(); // valor inicial (old() o precargado)
+                    })();
+                </script>
             @endif
         </div>
     </section>
