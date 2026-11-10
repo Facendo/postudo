@@ -35,8 +35,11 @@ class CoordinadorPostgradoController extends Controller
     }
 
     /**
-     * Guarda al coordinador y le asigna sus postgrados. NO crea el usuario:
+     * Guarda al coordinador y le asigna su postgrado. NO crea el usuario:
      * la persona se registra después y el rol se deduce por la cédula.
+     *
+     * Relación 1:1 (decisión 2026-11-10): exactamente UN postgrado por
+     * coordinador — el formulario usa radio buttons.
      */
     public function store(Request $request)
     {
@@ -48,7 +51,7 @@ class CoordinadorPostgradoController extends Controller
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
             'correo' => ['required', 'email', 'unique:coordinador_postgrado,correo'],
-            'postgrados' => ['required', 'array', 'min:1'],
+            'postgrados' => ['required', 'array', 'size:1'],
             'postgrados.*' => [
                 'string',
                 'max:255',
@@ -56,6 +59,9 @@ class CoordinadorPostgradoController extends Controller
                 // Un postgrado solo puede tener UN coordinador asignado.
                 Rule::notIn($ocupados),
             ],
+        ], [
+            'postgrados.required' => 'Selecciona el postgrado que coordinará.',
+            'postgrados.size' => 'Cada coordinador debe tener exactamente UN postgrado.',
         ]);
 
         $coordinador = new CoordinadorPostgrado;

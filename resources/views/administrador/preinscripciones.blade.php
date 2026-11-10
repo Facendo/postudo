@@ -53,8 +53,12 @@
         </div>
 
         <div style="margin: 10px 0 25px; color: #9fb3d1; font-size: 0.92rem; text-align: center;">
-            Aprobar una preinscripción habilita al aspirante para su inscripción; la planilla .docx
-            puede regenerarse y descargarse en cualquier momento.
+            @if (Auth::user()->rol === 'coordinador_postgrado')
+                Preinscripciones del postgrado asignado. Aprobar una preinscripción
+                habilita al aspirante para su inscripción.
+            @else
+                Aprobar una preinscripción habilita al aspirante para su inscripción.
+            @endif
         </div>
 
         <div class="contenedor-tabla">
@@ -128,7 +132,14 @@
                     @empty
                         <tr>
                             <td colspan="8" style="text-align: center; padding: 30px;">
-                                Todavía no hay preinscripciones registradas.
+                                @if ($sinPostgradosAsignados)
+                                    No tienes postgrados asignados: contacta con el coordinador general
+                                    para que te asigne uno o actualice tu cuenta.
+                                @elseif (Auth::user()->rol === 'coordinador_postgrado')
+                                    Todavía no hay preinscripciones registradas para tus postgrados.
+                                @else
+                                    Todavía no hay preinscripciones registradas.
+                                @endif
                             </td>
                         </tr>
                     @endforelse

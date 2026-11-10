@@ -45,16 +45,16 @@
                     @enderror
                 </div>
 
-                {{-- Postgrados: UN coordinador por postgrado, así que los ya
-                     asignados salen deshabilitados. Mínimo 1 obligatorio. --}}
+                {{-- Postgrado: relación 1:1 — exactamente UN postgrado por
+                     coordinador (radio). Los ya asignados salen deshabilitados. --}}
                 <div class="form-group">
-                    <label class="form-label">Postgrados a asignar (mínimo 1)</label>
+                    <label class="form-label">Postgrado a asignar (exactamente 1)</label>
 
                     @forelse ($postgrados as $postgrado)
                         @php $asignado = $postgrado->coordinadores->first(); @endphp
                         <label class="form-label"
                             style="display: block; margin-bottom: 8px; color: {{ $asignado ? 'rgba(255,255,255,0.6)' : 'white' }}; cursor: {{ $asignado ? 'not-allowed' : 'pointer' }};">
-                            <input type="checkbox" name="postgrados[]" value="{{ $postgrado->id_postgrado }}"
+                            <input type="radio" name="postgrados[]" value="{{ $postgrado->id_postgrado }}"
                                 style="margin-right: 8px;"
                                 {{ in_array($postgrado->id_postgrado, old('postgrados') ?? []) ? 'checked' : '' }}
                                 {{ $asignado ? 'disabled' : '' }}>

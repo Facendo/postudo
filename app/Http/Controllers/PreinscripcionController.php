@@ -2,23 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Mencion;
 use App\Models\Postgrado;
 use App\Models\Preinscripcion;
 use App\Services\GeneradorPlanillaPreinscripcion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Preinscripción de estudiantes: formulario público que replica la planilla
  * .doc de la coordinación y devuelve el .docx relleno al enviarlo; el panel
- * (administrador y coordinador general) lista, aprueba, rechaza y permite
- * regenerar la planilla.
+ * (administrador, coordinador general y coordinador de postgrado) lista,
+ * aprueba, rechaza y permite regenerar la planilla.
+ *
+ * El coordinador de postgrado solo ve (y puede actuar sobre) las
+ * preinscripciones de SUS postgrados asignados — trait FiltrablePorCoordinador.
  *
  * Aprobar NO crea usuarios ni filas en 'estudiantes': solo sella la
  * preinscripción, que servirá para validar la futura inscripción.
  */
 class PreinscripcionController extends Controller
 {
+    use FiltrablePorCoordinador;
+
     public function __construct(private GeneradorPlanillaPreinscripcion $generador) {}
 
     /**
@@ -99,14 +106,29 @@ class PreinscripcionController extends Controller
 
     /**
      * Listado de preinscripciones (panel de administrador/coordinador).
+     *
+     * El coordinador de postgrado solo ve las de SUS postgrados asignados
+     * (null = sin filtro para administrador y coordinador general). Las
+     * preinscripciones sin mención no pertenecen a ningún postgrado: solo
+     * las ven admin y coordinador general.
      */
     public function index()
     {
+        $permitidos = $this->idsPostgradosPermitidos(Auth::user());
+
         $preinscripciones = Preinscripcion::with('mencion.postgrado')
+            ->when($permitidos, fn ($query) => $query->whereHas(
+                'mencion',
+                fn ($mencion) => $mencion->whereIn('id_postgrado', $permitidos)
+            ))
             ->orderByDesc('created_at')
             ->get();
 
-        return view('administrador.preinscripciones', compact('preinscripciones'));
+        return view('administrador.preinscripciones', [
+            'preinscripciones' => $preinscripciones,
+            // Para el aviso de estado vacío: coordinador sin postgrados vs. sin preinscripciones.
+            'sinPostgradosAsignados' => $permitidos !== null && $permitidos->isEmpty(),
+        ]);
     }
 
     /**
@@ -114,6 +136,12 @@ class PreinscripcionController extends Controller
      */
     public function aprobar(Preinscripcion $preinscripcion)
     {
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $preinscripcion->mencion?->id_postgrado)) {
+            return redirect()
+                ->route('administrador.preinscripciones.index')
+                ->with('error', 'Esta preinscripción no pertenece a tus postgrados.');
+        }
+
         $preinscripcion->update(['estado' => 'aprobada']);
 
         return redirect()
@@ -126,6 +154,12 @@ class PreinscripcionController extends Controller
      */
     public function rechazar(Preinscripcion $preinscripcion)
     {
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $preinscripcion->mencion?->id_postgrado)) {
+            return redirect()
+                ->route('administrador.preinscripciones.index')
+                ->with('error', 'Esta preinscripción no pertenece a tus postgrados.');
+        }
+
         $preinscripcion->update(['estado' => 'rechazada']);
 
         return redirect()
@@ -138,6 +172,12 @@ class PreinscripcionController extends Controller
      */
     public function descarga(Preinscripcion $preinscripcion)
     {
+        if (! $this->puedeGestionarPostgrado(Auth::user(), $preinscripcion->mencion?->id_postgrado)) {
+            return redirect()
+                ->route('administrador.preinscripciones.index')
+                ->with('error', 'Esta preinscripción no pertenece a tus postgrados.');
+        }
+
         return $this->descargarPlanilla($preinscripcion);
     }
 

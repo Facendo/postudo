@@ -31,7 +31,7 @@
                         <td>{{ $coordinador->apellido }}</td>
                         <td>{{ $coordinador->correo }}</td>
                         <td>
-                            {{-- Un postgrado solo tiene UN coordinador; uno puede tener varios --}}
+                            {{-- Relación 1:1 (2026-11-10): exactamente UN postgrado por coordinador --}}
                             @forelse ($coordinador->postgrados as $postgrado)
                                 {{ $postgrado->nombre }} ({{ $postgrado->id_postgrado }}){{ $loop->last ? '' : ', ' }}
                             @empty

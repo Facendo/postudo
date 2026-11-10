@@ -77,7 +77,10 @@ Route::middleware(['auth', 'role:administrador|coordinador_general|coordinador_p
 // administrador y el coordinador general. Aprobar solo sella la
 // preinscripción (habilitará al aspirante para la planilla de inscripción);
 // NO crea usuarios ni filas en 'estudiantes'.
-Route::middleware(['auth', 'role:administrador|coordinador_general'])->group(function () {
+// 2026-11-10: entra también el coordinador de postgrado, pero solo ve (y
+// puede actuar sobre) las preinscripciones de SUS postgrados asignados
+// (filtro y bloqueos en PreinscripcionController vía FiltrablePorCoordinador).
+Route::middleware(['auth', 'role:administrador|coordinador_general|coordinador_postgrado'])->group(function () {
     Route::get('/administrador/preinscripciones', [PreinscripcionController::class, 'index'])->name('administrador.preinscripciones.index'); // Listado de preinscripciones
     Route::get('/administrador/preinscripciones/{preinscripcion}/descarga', [PreinscripcionController::class, 'descarga'])->name('administrador.preinscripciones.descarga'); // Regenerar y descargar el .docx
     Route::post('/administrador/preinscripciones/{preinscripcion}/aprobar', [PreinscripcionController::class, 'aprobar'])->name('administrador.preinscripciones.aprobar'); // Aprobar preinscripción

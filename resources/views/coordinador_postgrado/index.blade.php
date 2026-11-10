@@ -28,6 +28,10 @@
                 <i class="fa-solid fa-layer-group"></i>
                 <span>Cohortes</span>
             </a>
+            <a href="{{ route('administrador.preinscripciones.index') }}" class="admin-card">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <span>Preinscripciones</span>
+            </a>
         </div>
     </div>
 
