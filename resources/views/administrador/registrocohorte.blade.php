@@ -78,6 +78,47 @@
                     {{-- Sin «Número de Cohorte»: el número lo asigna el
                          controlador al guardar (autoincrementa por mención). --}}
 
+                    {{-- Ventana de preinscripción (obligatoria): mientras hoy
+                         esté dentro del periodo, el postgrado aparece en la
+                         portada con su botón de preinscripción. --}}
+                    <div class="form-group">
+                        <label for="preinscripcion_desde" class="form-label">Preinscripción: desde</label>
+                        <input type="date" id="preinscripcion_desde" name="preinscripcion_desde" class="form-input" value="{{ old('preinscripcion_desde') }}" required>
+                        @error('preinscripcion_desde')
+                            <p class="form-error-message">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preinscripcion_hasta" class="form-label">Preinscripción: hasta</label>
+                        <input type="date" id="preinscripcion_hasta" name="preinscripcion_hasta" class="form-input" value="{{ old('preinscripcion_hasta') }}" required>
+                        @error('preinscripcion_hasta')
+                            <p class="form-error-message">{{ $message }}</p>
+                        @enderror
+                        <small style="color: var(--texto); opacity: 0.75;">
+                            Mientras hoy esté dentro de este periodo, el postgrado mostrará su botón de preinscripción en la portada.
+                        </small>
+                    </div>
+
+                    {{-- Ventana de inscripción (opcional): se registra desde ya
+                         pero aún no se usa — la inscripción del estudiante
+                         queda como está hasta la fase 2. --}}
+                    <div class="form-group">
+                        <label for="inscripcion_desde" class="form-label">Inscripción: desde (opcional)</label>
+                        <input type="date" id="inscripcion_desde" name="inscripcion_desde" class="form-input" value="{{ old('inscripcion_desde') }}">
+                        @error('inscripcion_desde')
+                            <p class="form-error-message">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inscripcion_hasta" class="form-label">Inscripción: hasta (opcional)</label>
+                        <input type="date" id="inscripcion_hasta" name="inscripcion_hasta" class="form-input" value="{{ old('inscripcion_hasta') }}">
+                        @error('inscripcion_hasta')
+                            <p class="form-error-message">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="form-actions" style="justify-content: center;">
                         <button type="submit" class="submit-button">Registrar Cohorte</button>
                     </div>

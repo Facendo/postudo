@@ -24,12 +24,15 @@ class CoordinadorPostgradoController extends Controller
     }
 
     /**
-     * Formulario de creación (solo coordinador general). Los postgrados ya
-     * asignados salen deshabilitados: un postgrado solo tiene UN coordinador.
+     * Formulario de creación (solo coordinador general). Solo lista los
+     * postgrados SIN coordinador: los ocupados ya no aparecen en la lista
+     * (store() además los rechaza con Rule::notIn).
      */
     public function create()
     {
-        $postgrados = Postgrado::with('coordinadores')->orderBy('nombre')->get();
+        $postgrados = Postgrado::whereDoesntHave('coordinadores')
+            ->orderBy('nombre')
+            ->get();
 
         return view('coordinador.registrocoordinadorpostgrado', compact('postgrados'));
     }

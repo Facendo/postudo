@@ -46,28 +46,24 @@
                 </div>
 
                 {{-- Postgrado: relación 1:1 — exactamente UN postgrado por
-                     coordinador (radio). Los ya asignados salen deshabilitados. --}}
+                     coordinador (radio). Solo aparecen los que NO tienen
+                     coordinador: los ocupados quedan fuera de la lista
+                     (y store() los rechaza igual con notIn). --}}
                 <div class="form-group">
                     <label class="form-label">Postgrado a asignar (exactamente 1)</label>
 
                     @forelse ($postgrados as $postgrado)
-                        @php $asignado = $postgrado->coordinadores->first(); @endphp
                         <label class="form-label"
-                            style="display: block; margin-bottom: 8px; color: {{ $asignado ? 'rgba(255,255,255,0.6)' : 'white' }}; cursor: {{ $asignado ? 'not-allowed' : 'pointer' }};">
+                            style="display: block; margin-bottom: 8px; color: var(--texto); cursor: pointer;">
                             <input type="radio" name="postgrados[]" value="{{ $postgrado->id_postgrado }}"
                                 style="margin-right: 8px;"
-                                {{ in_array($postgrado->id_postgrado, old('postgrados') ?? []) ? 'checked' : '' }}
-                                {{ $asignado ? 'disabled' : '' }}>
+                                {{ in_array($postgrado->id_postgrado, old('postgrados') ?? []) ? 'checked' : '' }}>
                             {{ $postgrado->nombre }} ({{ $postgrado->id_postgrado }})
-                            @if ($asignado)
-                                — ya asignado a {{ $asignado->nombre }} {{ $asignado->apellido }}
-                            @else
-                                — Sin coordinador (disponible)
-                            @endif
                         </label>
                     @empty
                         <p class="form-error-message">
-                            No hay postgrados registrados: crea primero un postgrado desde la gestión de postgrados.
+                            No hay postgrados disponibles: todos ya tienen coordinador asignado
+                            (o aún no se ha creado ninguno).
                         </p>
                     @endforelse
 
@@ -79,9 +75,10 @@
                     @enderror
                 </div>
 
-                {{-- Botón de envío del formulario --}}
+                {{-- Botón de envío del formulario (inerte si no queda ningún
+                     postgrado libre para asignar) --}}
                 <div class="form-actions" style="justify-content: center;">
-                    <button type="submit" class="submit-button">Registrar Coordinador</button>
+                    <button type="submit" class="submit-button" {{ $postgrados->isEmpty() ? 'disabled' : '' }}>Registrar Coordinador</button>
                 </div>
 
             </form>

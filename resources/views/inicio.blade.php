@@ -386,7 +386,9 @@
         }
 
         /* Menú lateral de enlaces de la portada (preinscripción, postgrados...) */
-        /* Sidebar fijo al borde izquierdo de la ventana; en pantallas <= 1439px vuelve al flujo */
+        /* Dos bloques fijos: las preinscripciones a la izquierda y el resto de
+           servicios (Ver Postgrados, Contacto, Aranceles) a la derecha; en
+           pantallas <= 1439px ambos vuelven al flujo bajo el título. */
         .menu-lateral {
             position: fixed;
             left: 30px;
@@ -400,6 +402,15 @@
             text-align: left;
             z-index: 100;
             animation: fadeUpLateral 1s ease-out forwards;
+        }
+
+        /* Segundo bloque anclado al borde derecho (mismas reglas que el
+           izquierdo; al compartir la clase base conserva estilo, animación y
+           la vuelta al flujo de la media query <= 1439px, donde position:
+           static anula estos offsets). */
+        .menu-lateral-derecha {
+            left: auto;
+            right: 30px;
         }
 
         /* Misma entrada que fadeUp pero conservando el centrado vertical (translateY(-50%)) */
@@ -785,15 +796,42 @@
                 <h1>Coordinación de Estudios de Postgrado</h1>
             </div>
 
-            {{-- Enlaces de servicios públicos de la portada (sidebar fijo a la izquierda). --}}
+            {{-- Enlaces de servicios públicos de la portada: preinscripciones --}}
+            {{-- fijas al borde IZQUIERDO (el resto de servicios está en el      --}}
+            {{-- segundo nav, anclado a la derecha).                             --}}
             {{-- Va fuera de .hero-content: ese div conserva un transform tras la animación --}}
             {{-- fadeUp y rompería el anclaje position: fixed del menú a la ventana. --}}
             <nav class="menu-lateral" aria-label="Servicios de postgrado">
-                <a href="{{ route('preinscripcion.create') }}" class="menu-lateral-item">
-                    <i class="fa-solid fa-file-pen"></i>
-                    <span>Preinscripción</span>
-                </a>
+                @php
+                    // Postgrados con preinscripción abierta HOY (ventana de
+                    // alguna de sus cohortes): uno por botón en el menú.
+                    $postgradosAbiertos = \App\Models\Postgrado::conPreinscripcionAbierta();
+                @endphp
 
+                @if ($postgradosAbiertos->isEmpty())
+                    {{-- Sin procesos abiertos el botón queda inerte (con aviso
+                         visible) en lugar de mandar a un formulario inútil. --}}
+                    <span class="menu-lateral-item" style="opacity: 0.6; cursor: not-allowed;"
+                        title="No hay postgrados con preinscripciones abiertas actualmente">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>Preinscripción<br><small style="font-size: 0.8em; opacity: 0.85;">No hay procesos abiertos</small></span>
+                    </span>
+                @else
+                    @foreach ($postgradosAbiertos as $postgradoAbierto)
+                        <a href="{{ route('preinscripcion.create', ['postgrado' => $postgradoAbierto->id_postgrado]) }}" class="menu-lateral-item">
+                            <i class="fa-solid fa-file-pen"></i>
+                            <span>Preinscripción<br><small style="font-size: 0.8em; opacity: 0.85;">{{ $postgradoAbierto->nombre }}</small></span>
+                        </a>
+                    @endforeach
+                @endif
+            </nav>
+
+            {{-- Segundo bloque de servicios públicos: anclado al borde derecho
+                 de la pantalla (el de la izquierda queda solo para las
+                 preinscripciones). Va fuera de .hero-content por lo mismo que
+                 el menú izquierdo: su transform tras fadeUp rompería el
+                 anclaje position: fixed. --}}
+            <nav class="menu-lateral menu-lateral-derecha" aria-label="Información general de postgrado">
                 <a href="{{ route('postgrado.index') }}" class="menu-lateral-item">
                     <i class="fa-solid fa-graduation-cap"></i>
                     <span>Ver Postgrados</span>

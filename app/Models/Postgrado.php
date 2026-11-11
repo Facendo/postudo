@@ -56,6 +56,20 @@ class Postgrado extends Model
     }
 
     /**
+     * Postgrados con AL MENOS UNA cohorte cuya ventana de preinscripción
+     * contiene hoy: son los que muestran botón en la portada y aceptan el
+     * formulario público (2026-11-11).
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, Postgrado>
+     */
+    public static function conPreinscripcionAbierta()
+    {
+        return static::whereHas('cohortes', fn ($query) => $query->preinscripcionAbierta())
+            ->orderBy('nombre')
+            ->get();
+    }
+
+    /**
      * Coordinador de postgrado asignado (pivote con 'unique': UN coordinador
      * por postgrado, como máximo uno aquí).
      */

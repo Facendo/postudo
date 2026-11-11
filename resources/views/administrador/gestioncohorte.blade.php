@@ -40,6 +40,7 @@
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Fin</th>
                     <th>Número de Cohorte</th>
+                    <th>Preinscripción</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -52,6 +53,7 @@
                         <td>{{ \Carbon\Carbon::parse($cohorte->fecha_inicio)->format('d/m/Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($cohorte->fecha_fin)->format('d/m/Y') }}</td>
                         <td>{{ $cohorte->nro_de_cohorte }}</td>
+                        <td>{{ $cohorte->ventanaPreinscripcion() ?? '—' }}</td>
                         <td class="table-actions">
                             {{-- Botón de Editar --}}
                             <a href="{{ route('administrador.gestioncohorte.edit', $cohorte) }}" class="btn-table-action" title="Editar">
@@ -70,7 +72,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 20px;">
+                        <td colspan="8" style="text-align: center; padding: 20px;">
                             {{-- Mensaje según rol: al coordinador de postgrado sin
                                  asignación no se le invita a crear lo que no puede --}}
                             {{ Auth::user()->rol === 'coordinador_postgrado'

@@ -103,8 +103,22 @@ class CohorteController extends Controller
             'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')],
             'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
+            // Ventana de preinscripción: obligatoria (habilita el postgrado
+            // en la portada mientras hoy esté dentro del rango).
+            'preinscripcion_desde' => ['required', 'date'],
+            'preinscripcion_hasta' => ['required', 'date', 'after_or_equal:preinscripcion_desde'],
+            // Ventana de inscripción: registrada por ahora sin usarse (fase 2).
+            'inscripcion_desde' => ['nullable', 'date', 'required_with:inscripcion_hasta'],
+            'inscripcion_hasta' => ['nullable', 'date', 'after_or_equal:inscripcion_desde'],
             // Defensa: el número real se recalcula más abajo, nunca se toma del cliente.
             'nro_de_cohorte' => ['nullable', 'integer', 'min:1'],
+        ], [
+            'preinscripcion_desde.required' => 'Indica desde qué día se abre la preinscripción.',
+            'preinscripcion_desde.date' => 'La fecha «Preinscripción: desde» no es válida.',
+            'preinscripcion_hasta.required' => 'Indica hasta qué día se cierra la preinscripción.',
+            'preinscripcion_hasta.after_or_equal' => 'El cierre de preinscripción debe ser igual o posterior a la apertura.',
+            'inscripcion_desde.required' => 'Indica desde qué día se abre la inscripción (o deja ambos vacíos).',
+            'inscripcion_hasta.after_or_equal' => 'El cierre de inscripción debe ser igual o posterior a la apertura.',
         ]);
 
         $mencion = Mencion::findOrFail($datos['codigo_mencion']);
@@ -130,6 +144,11 @@ class CohorteController extends Controller
             $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
             $cohorte->fecha_inicio = $datos['fecha_inicio'];
             $cohorte->fecha_fin = Carbon::parse($datos['fecha_inicio'])->addYears(4); // duración fija
+            // Ventanas de proceso: preinscripción obligatoria; inscripción opcional.
+            $cohorte->preinscripcion_desde = $datos['preinscripcion_desde'];
+            $cohorte->preinscripcion_hasta = $datos['preinscripcion_hasta'];
+            $cohorte->inscripcion_desde = $datos['inscripcion_desde'] ?? null;
+            $cohorte->inscripcion_hasta = $datos['inscripcion_hasta'] ?? null;
             $cohorte->nro_de_cohorte = $siguiente;
             $cohorte->save();
 
@@ -210,12 +229,27 @@ class CohorteController extends Controller
             'codigo_cohorte' => ['required', 'string', 'max:255', Rule::unique('cohorte', 'codigo_cohorte')->ignore($cohorte->codigo_cohorte)],
             'codigo_mencion' => ['required', 'integer', $this->reglaMencionPropia()],
             'fecha_inicio' => ['required', 'date'],
+            // Ventana de preinscripción: obligatoria (es lo que habilita el
+            // postgrado en la portada; aquí es donde se editan las cohortes
+            // antiguas que nacieron sin fechas).
+            'preinscripcion_desde' => ['required', 'date'],
+            'preinscripcion_hasta' => ['required', 'date', 'after_or_equal:preinscripcion_desde'],
+            // Ventana de inscripción: registrada por ahora sin usarse (fase 2).
+            'inscripcion_desde' => ['nullable', 'date', 'required_with:inscripcion_hasta'],
+            'inscripcion_hasta' => ['nullable', 'date', 'after_or_equal:inscripcion_desde'],
             'nro_de_cohorte' => [
                 'required', 'integer', 'min:1',
                 Rule::unique('cohorte', 'nro_de_cohorte')
                     ->ignore($cohorte->codigo_cohorte, 'codigo_cohorte')
                     ->where('codigo_mencion', $request->codigo_mencion),
             ],
+        ], [
+            'preinscripcion_desde.required' => 'Indica desde qué día se abre la preinscripción.',
+            'preinscripcion_desde.date' => 'La fecha «Preinscripción: desde» no es válida.',
+            'preinscripcion_hasta.required' => 'Indica hasta qué día se cierra la preinscripción.',
+            'preinscripcion_hasta.after_or_equal' => 'El cierre de preinscripción debe ser igual o posterior a la apertura.',
+            'inscripcion_desde.required' => 'Indica desde qué día se abre la inscripción (o deja ambos vacíos).',
+            'inscripcion_hasta.after_or_equal' => 'El cierre de inscripción debe ser igual o posterior a la apertura.',
         ]);
 
         $mencion = Mencion::findOrFail($datos['codigo_mencion']);
@@ -225,6 +259,11 @@ class CohorteController extends Controller
         $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
         $cohorte->fecha_inicio = $datos['fecha_inicio'];
         $cohorte->fecha_fin = Carbon::parse($datos['fecha_inicio'])->addYears(4); // duración fija
+        // Ventanas de proceso: preinscripción obligatoria; inscripción opcional.
+        $cohorte->preinscripcion_desde = $datos['preinscripcion_desde'];
+        $cohorte->preinscripcion_hasta = $datos['preinscripcion_hasta'];
+        $cohorte->inscripcion_desde = $datos['inscripcion_desde'] ?? null;
+        $cohorte->inscripcion_hasta = $datos['inscripcion_hasta'] ?? null;
         $cohorte->nro_de_cohorte = $datos['nro_de_cohorte'];
         $cohorte->save();
 

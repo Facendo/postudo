@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
+use App\Models\Cohorte;
 use App\Models\Mencion;
 use App\Models\Postgrado;
 use App\Models\Preinscripcion;
@@ -30,14 +31,62 @@ class PreinscripcionController extends Controller
 
     /**
      * Formulario público de preinscripción (anónimo, sin sesión).
+     *
+     * Solo lista los postgrados con preinscripción ABIERTA hoy (que tengan
+     * alguna cohorte con la ventana desde/hasta vigente). Admite
+     * ?postgrado=COD — así llegan los botones por postgrado de la portada —
+     * que precarga el select; si ese postgrado no está habilitado, vuelve a
+     * la portada con aviso en vez de mostrar un formulario inútil.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $postgrados = Postgrado::with('menciones')->orderBy('nombre')->get();
+        $postgrados = Postgrado::with('menciones')
+            ->whereHas('cohortes', fn ($query) => $query->preinscripcionAbierta())
+            ->orderBy('nombre')
+            ->get();
+
+        $postgradoPreseleccionado = null;
+        $mencionPreseleccionada = null;
+        $ventanaPreinscripcion = null;
+
+        $solicitado = $request->query('postgrado');
+
+        if ($solicitado !== null) {
+            if (! $postgrados->contains('id_postgrado', $solicitado)) {
+                return redirect()
+                    ->route('inicio')
+                    ->with('error', 'Las preinscripciones de este postgrado no están abiertas actualmente.');
+            }
+
+            $postgradoPreseleccionado = $solicitado;
+
+            // Fecha límite (la mayor «hasta» entre las cohortes abiertas del
+            // postgrado) para el aviso de la ventana en el formulario.
+            $ventanaPreinscripcion = Cohorte::preinscripcionAbierta()
+                ->where('codigo_postgrado', $solicitado)
+                ->max('preinscripcion_hasta');
+
+            // Mención de las cohortes abiertas: si todas apuntan a la MISMA
+            // mención (caso típico: una sola cohorte creada), se precarga
+            // también; con varias menciones abiertas el visitante elige
+            // (preseleccionar una al azar en la planilla sería arriesgado).
+            $mencionesAbiertas = Cohorte::preinscripcionAbierta()
+                ->where('codigo_postgrado', $solicitado)
+                ->whereNotNull('codigo_mencion')
+                ->pluck('codigo_mencion')
+                ->unique();
+
+            $mencionPreseleccionada = $mencionesAbiertas->count() === 1
+                ? $mencionesAbiertas->first()
+                : null;
+        }
 
         return view('preinscripcion.create', [
             'postgrados' => $postgrados,
             'sedes' => Preinscripcion::SEDES,
+            'postgradoPreseleccionado' => $postgradoPreseleccionado,
+            'mencionPreseleccionada' => $mencionPreseleccionada,
+            'ventanaPreinscripcion' => $ventanaPreinscripcion,
         ]);
     }
 
@@ -56,6 +105,15 @@ class PreinscripcionController extends Controller
             && (string) $mencion->id_postgrado !== (string) $request->id_postgrado) {
             return back()
                 ->withErrors(['codigo_mencion' => 'La mención seleccionada no pertenece al postgrado elegido.'])
+                ->withInput();
+        }
+
+        // Revalidación de apertura (2026-11-11): el postgrado real es el de
+        // la mención elegida (nunca el del cliente) y debe tener la
+        // preinscripción abierta HOY — por URL directa no se cuela nadie.
+        if (! $this->preinscripcionAbiertaEn($mencion?->id_postgrado)) {
+            return back()
+                ->withErrors(['codigo_mencion' => 'Las preinscripciones de este postgrado no están abiertas actualmente.'])
                 ->withInput();
         }
 
@@ -280,6 +338,22 @@ class PreinscripcionController extends Controller
         }
 
         return $reglas;
+    }
+
+    /**
+     * ¿El postgrado tiene la preinscripción abierta hoy (alguna cohorte con
+     * la ventana vigente)? Devuelve false con null: sin mención no hay
+     * postgrado al que validar.
+     */
+    private function preinscripcionAbiertaEn(?string $idPostgrado): bool
+    {
+        if ($idPostgrado === null) {
+            return false;
+        }
+
+        return Cohorte::preinscripcionAbierta()
+            ->where('codigo_postgrado', $idPostgrado)
+            ->exists();
     }
 
     /**

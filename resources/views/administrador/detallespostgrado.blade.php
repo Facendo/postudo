@@ -105,6 +105,7 @@
                     <th>Mención</th>
                     <th>Fechas</th>
                     <th>Nro. de Cohorte</th>
+                    <th>Preinscripción</th>
                     <th>Ver Materias</th>
                     <th>Acciones</th>
                 </tr>
@@ -116,6 +117,7 @@
                         <td>{{ $cohorte->mencion?->nombre ?? '—' }}</td>
                         <td>{{ $cohorte->fecha_inicio }} - {{ $cohorte->fecha_fin }}</td>
                         <td>{{ $cohorte->nro_de_cohorte }}</td>
+                        <td>{{ $cohorte->ventanaPreinscripcion() ?? '—' }}</td>
                         <td>
                             <a href="{{ route('administrador.gestioncohorte.showdetalles', $cohorte->codigo_cohorte) }}" class="btn-table-action" title="Ver Detalles">
                                 <i class="fas fa-eye"></i>
@@ -139,7 +141,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">No hay cohortes registrados.</td>
+                        <td colspan="7" style="text-align: center; padding: 20px;">No hay cohortes registrados.</td>
                     </tr>
                 @endforelse
             </tbody>

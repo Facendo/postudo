@@ -139,6 +139,16 @@
                 {{-- ================================================ Programa de interés --}}
                 <div class="prein-seccion">
                     <h3><i class="fa-solid fa-graduation-cap"></i> Programa de interés</h3>
+
+                    {{-- Aviso de la ventana de preinscripción (solo al llegar
+                         desde el botón de un postgrado de la portada). --}}
+                    @if ($ventanaPreinscripcion)
+                        <p style="margin: 0 0 15px; padding: 10px 16px; border: 1px solid var(--borde); background: var(--superficie); border-radius: 8px; color: var(--texto);">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Este postgrado está con la preinscripción abierta hasta el
+                            <strong>{{ \Carbon\Carbon::parse($ventanaPreinscripcion)->format('d/m/Y') }}</strong>.
+                        </p>
+                    @endif
                     <div class="prein-grid">
                         <div class="form-group">
                             <label for="id_postgrado" class="form-label">Postgrado</label>
@@ -146,7 +156,7 @@
                                 <option value="">Selecciona un Postgrado</option>
                                 @foreach ($postgrados as $postgrado)
                                     <option value="{{ $postgrado->id_postgrado }}"
-                                        {{ old('id_postgrado') == $postgrado->id_postgrado ? 'selected' : '' }}>
+                                        {{ old('id_postgrado', $postgradoPreseleccionado) == $postgrado->id_postgrado ? 'selected' : '' }}>
                                         {{ $postgrado->nombre }}
                                     </option>
                                 @endforeach
@@ -632,16 +642,25 @@
             }
         });
 
-        // Restaurar la selección previa si la validación del servidor falló.
+        // Restaurar la selección previa si la validación del servidor falló
+        // (o aplicar la precarga ?postgrado=COD de los botones de la portada,
+        // que trae también la mención cuando es inequívoca).
         document.addEventListener('DOMContentLoaded', function () {
             const viejoPostgrado = @json(old('id_postgrado'));
             const viejaMencion = @json(old('codigo_mencion'));
+            const preseleccionPostgrado = @json($postgradoPreseleccionado);
+            const preseleccionMencion = @json($mencionPreseleccionada);
+            const postgradoInicial = viejoPostgrado || preseleccionPostgrado;
 
-            if (viejoPostgrado) {
-                postgradoSelect.value = viejoPostgrado;
-                poblarMenciones(viejoPostgrado);
-                if (viejaMencion) {
-                    mencionSelect.value = viejaMencion;
+            if (postgradoInicial) {
+                postgradoSelect.value = postgradoInicial;
+                poblarMenciones(postgradoInicial);
+
+                // Lo que el visitante ya había intentado enviar manda sobre
+                // la precarga; si no hay old(), vale la mención de la cohorte.
+                const mencionInicial = viejaMencion || preseleccionMencion;
+                if (mencionInicial) {
+                    mencionSelect.value = mencionInicial;
                 }
             }
         });
