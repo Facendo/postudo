@@ -106,19 +106,19 @@
             margin-bottom: 24px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.75);
+            color: var(--texto);
         }
 
         .egreso-tasa-badge i {
-            color: #f7941d;
+            color: var(--accent-orange-dark);
         }
 
         .egreso-tasa-badge strong {
-            color: #ffffff;
+            color: var(--texto);
         }
 
         .egreso-tasa-badge span {
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             font-size: 0.78rem;
         }
 
@@ -128,14 +128,14 @@
         }
 
         .egreso-tasa-badge--warn i {
-            color: #ffc107;
+            color: #b45309;
         }
 
         .egreso-monto-wrapper {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 12px;
             overflow: hidden;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -151,9 +151,9 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.05rem;
             font-weight: 600;
-            color: #f7941d;
+            color: var(--accent-orange-dark);
             background: rgba(247, 148, 29, 0.08);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid var(--borde);
             align-self: stretch;
             display: flex;
             align-items: center;
@@ -178,7 +178,7 @@
             margin-top: 6px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--texto-suave);
             line-height: 1.4;
         }
 
@@ -187,7 +187,7 @@
             margin-top: 6px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.78rem;
-            color: #ff6b6b;
+            color: var(--danger-red);
         }
     </style>
 

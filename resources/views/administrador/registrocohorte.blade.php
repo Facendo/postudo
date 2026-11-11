@@ -23,7 +23,7 @@
                 </div>
             @else
                 @if ($postgradoSel)
-                    <p style="color: white; margin-bottom: 15px; text-align: center;">
+                    <p style="color: var(--texto); margin-bottom: 15px; text-align: center;">
                         Postgrado: <strong>{{ $postgradoSel->nombre }}</strong>
                     </p>
                 @endif

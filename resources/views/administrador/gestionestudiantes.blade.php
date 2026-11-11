@@ -69,18 +69,16 @@
     </section>
 
     <style>
-        /* ===== PANEL GLASS (estética del programa: translúcido + blur + acento rojo) ===== */
+        /* ===== PANEL (tarjeta clara: fondo blanco + borde + sombra tenue) ===== */
         .page-content .panel-glass {
             width: 95%;
             max-width: 1200px;
             margin: 40px auto;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 20px;
             padding: 30px 35px 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
+            box-shadow: 0 2px 12px rgba(0, 18, 51, 0.08);
             animation: fadeInSlideUp 0.6s ease-out forwards;
         }
 
@@ -92,29 +90,26 @@
             justify-content: space-between;
             gap: 15px;
             padding-bottom: 22px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--borde);
         }
 
         .panel-glass-title {
             font-family: 'Outfit', sans-serif;
             font-size: 1.9rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--texto);
             margin: 0;
             letter-spacing: 0.2px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
         }
 
-        /* Botón glass con acento rojo al hover (consistente con admin-card) */
+        /* Botón secundario claro con acento naranja al hover */
         .btn-glass {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            color: #ffffff;
+            background: var(--superficie);
+            border: 1px solid var(--borde);
+            color: var(--primary-blue);
             padding: 10px 20px;
             border-radius: 12px;
             font-family: 'Outfit', sans-serif;
@@ -132,24 +127,22 @@
             box-shadow: 0 6px 18px rgba(247, 148, 29, 0.25);
         }
 
-        /* ===== TABLA GLASS ===== */
+        /* ===== TABLA (cabecera azul como el resto de tablas del panel) ===== */
         .tabla-glass {
             width: 100%;
             margin-top: 22px;
             border-collapse: separate;
             border-spacing: 0;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 15px;
             overflow: hidden;
             font-family: 'Outfit', sans-serif;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 18, 51, 0.06);
         }
 
         .tabla-glass thead {
-            background: rgba(255, 255, 255, 0.07);
+            background: var(--primary-blue);
         }
 
         .tabla-glass th {
@@ -159,12 +152,12 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .tabla-glass tbody tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--borde);
             transition: background-color 0.25s ease;
         }
 
@@ -173,31 +166,31 @@
         }
 
         .tabla-glass tbody tr:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 61, 165, 0.05);
             cursor: default;
         }
 
         .tabla-glass td {
             padding: 13px 20px;
             font-size: 0.95em;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--texto);
             vertical-align: middle;
         }
 
         /* La última columna (acciones) no hereda el estilo tenue global */
         .tabla-glass td:last-child {
             font-size: 0.95em;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--texto);
         }
 
         .tabla-glass-vacio {
             text-align: center;
             padding: 40px 20px !important;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             font-style: italic;
         }
 
-        /* ===== BOTONES DE ACCIÓN (iconos circulares glass) ===== */
+        /* ===== BOTONES DE ACCIÓN (iconos circulares) ===== */
         .acciones-glass {
             display: inline-flex;
             align-items: center;
@@ -211,9 +204,9 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.8);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
+            color: var(--texto);
             font-size: 0.82rem;
             cursor: pointer;
             text-decoration: none;
@@ -221,16 +214,16 @@
         }
 
         .btn-icono-glass:hover {
-            background: rgba(255, 255, 255, 0.14);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #ffffff;
+            background: rgba(0, 61, 165, 0.06);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
             transform: translateY(-2px);
         }
 
         .btn-icono-glass.peligro:hover {
             background: rgba(255, 77, 77, 0.18);
             border-color: rgba(255, 77, 77, 0.5);
-            color: #ff6b6b;
+            color: var(--danger-red);
         }
 
         .inline-form {

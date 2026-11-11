@@ -100,7 +100,7 @@
                 @error('asunto')
                     <span class="form-error-message">{{ $message }}</span>
                 @enderror
-                <p style="margin-top: 8px; font-family: 'Outfit'; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5);">
+                <p style="margin-top: 8px; font-family: 'Outfit'; font-size: 0.85rem; color: var(--texto-suave);">
                     <i class="fa-solid fa-circle-info"></i> Puedes verificar los costos actuales en la herramienta
                     "Costos de Trámites".
                 </p>

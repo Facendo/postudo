@@ -144,10 +144,11 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(0, 10, 32, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 16px;
             padding: 18px 20px;
+            box-shadow: 0 2px 10px rgba(0, 18, 51, 0.06);
         }
 
         .finanza-card i {
@@ -162,22 +163,22 @@
         }
 
         .finanza-card--ingreso i {
-            color: #5de98a;
+            color: #15803d;
             background: rgba(93, 233, 138, 0.12);
         }
 
         .finanza-card--egreso i {
-            color: #ff6b6b;
+            color: var(--danger-red);
             background: rgba(255, 107, 107, 0.12);
         }
 
         .finanza-card--positivo i {
-            color: #6dd5fa;
+            color: var(--primary-blue);
             background: rgba(109, 213, 250, 0.12);
         }
 
         .finanza-card--negativo i {
-            color: #ffc107;
+            color: #b45309;
             background: rgba(255, 193, 7, 0.12);
         }
 
@@ -189,7 +190,7 @@
         .finanza-label {
             font-family: 'Outfit', sans-serif;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
             letter-spacing: 0.3px;
         }
 
@@ -197,14 +198,14 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.35rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--texto);
             line-height: 1.2;
         }
 
         .finanza-sub {
             font-family: 'Outfit', sans-serif;
             font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--texto-suave);
         }
 
         /* ===== Toolbar con pestañas ===== */
@@ -222,8 +223,8 @@
         .finanzas-tabs {
             display: flex;
             gap: 8px;
-            background: rgba(0, 10, 32, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 12px;
             padding: 5px;
         }
@@ -239,13 +240,13 @@
             font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.55);
+            color: var(--texto-suave);
             cursor: pointer;
             transition: all 0.25s ease;
         }
 
         .finanzas-tab:hover {
-            color: #ffffff;
+            color: var(--texto);
         }
 
         /* Pestaña activa: texto blanco y color según el tipo de movimiento
@@ -278,13 +279,13 @@
         .monto-ingreso {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #5de98a;
+            color: #15803d;
         }
 
         .monto-egreso {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #ff6b6b;
+            color: var(--danger-red);
         }
 
         .badge-motivo {
@@ -295,7 +296,7 @@
             padding: 3px 12px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--texto);
         }
     </style>
 

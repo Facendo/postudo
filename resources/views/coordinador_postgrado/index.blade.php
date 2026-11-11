@@ -13,7 +13,7 @@
         {{-- Solo sus postgrados asignados: el filtrado lo hace el controller --}}
         @empty($postgradosAsignados)
             {{-- Aviso si perdió todos sus postgrados (p. ej. se eliminaron) --}}
-            <p style="text-align: center; margin: 0 0 22px; padding: 12px 18px; border: 1px solid rgba(255, 193, 7, 0.55); background: rgba(255, 193, 7, 0.12); border-radius: 8px; color: #ffc107;">
+            <p style="text-align: center; margin: 0 0 22px; padding: 12px 18px; border: 1px solid rgba(255, 193, 7, 0.55); background: rgba(255, 193, 7, 0.12); border-radius: 8px; color: #b45309;">
                 Actualmente no tienes postgrados asignados. Contacta con el coordinador general
                 para que te asigne uno o actualice tu cuenta.
             </p>

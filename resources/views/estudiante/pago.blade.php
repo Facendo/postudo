@@ -30,7 +30,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 20px; color: rgba(255,255,255,0.6);">
+                        <td colspan="7" style="text-align: center; padding: 20px; color: var(--texto-suave);">
                             No tiene pagos registrados.
                         </td>
                     </tr>

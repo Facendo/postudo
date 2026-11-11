@@ -152,14 +152,14 @@
         }
 
         table .flecha-fila {
-            color: rgba(255, 255, 255, 0.55);
+            color: var(--texto-suave);
             font-size: 0.8rem;
             margin-right: 9px;
             transition: color 0.2s ease;
         }
 
         table .fila-activa .flecha-fila {
-            color: #ff9f2e;
+            color: #e07b00;
         }
 
         table .fila-postgrado.fila-activa {
@@ -173,17 +173,17 @@
 
         table .nombre-postgrado {
             font-weight: 600;
-            color: #ffffff;
+            color: var(--texto);
         }
 
         /* Fila desplegable con las menciones del postgrado */
         table .fila-menciones td {
-            background: rgba(0, 0, 0, 0.18);
+            background: #f5f7fa;
             padding: 6px 25px 18px;
         }
 
         .caja-menciones {
-            border-top: 1px dashed rgba(255, 255, 255, 0.18);
+            border-top: 1px dashed var(--borde);
             padding-top: 16px;
         }
 
@@ -201,17 +201,17 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--texto);
         }
 
         .caja-menciones-titulo i {
             margin-right: 8px;
-            color: #ff9f2e;
+            color: #e07b00;
         }
 
         .sin-menciones {
             margin: 0 0 14px;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
             font-style: italic;
         }
 
@@ -228,7 +228,7 @@
             justify-content: space-between;
             gap: 8px 14px;
             padding: 11px 6px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--borde);
         }
 
         .lista-menciones li:last-child {
@@ -237,7 +237,7 @@
 
         .mencion-nombre {
             font-weight: 600;
-            color: #ffffff;
+            color: var(--texto);
         }
 
         /* Mini-formulario de nueva mención (mismo estilo fantasma que «Nuevo Postgrado») */
@@ -257,10 +257,10 @@
             align-items: center;
             gap: 7px;
             padding: 7px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(0, 61, 165, 0.45);
             border-radius: 10px;
             background: transparent;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--primary-blue);
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
             font-weight: 500;
@@ -271,7 +271,7 @@
         .btn-nueva-mencion:hover {
             background: rgba(247, 148, 29, 0.15);
             border-color: rgba(247, 148, 29, 0.5);
-            color: #ffffff;
+            color: var(--accent-orange-dark);
         }
 
         /* Aviso de validación del nombre de la mención */
@@ -281,7 +281,7 @@
             background: rgba(255, 77, 77, 0.12);
             border: 1px solid rgba(255, 77, 77, 0.4);
             border-radius: 8px;
-            color: #ffb3b3;
+            color: #b91c1c;
             font-size: 0.9rem;
         }
     </style>

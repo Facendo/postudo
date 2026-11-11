@@ -198,11 +198,11 @@
             padding: 8px 20px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
-            color: rgba(255, 255, 255, 0.75);
+            color: var(--texto);
         }
 
         .contador-vista i {
-            color: #f7941d;
+            color: var(--accent-orange-dark);
         }
 
         /* Tabla: ocupa todo el ancho disponible, sin caja propia */
@@ -212,14 +212,14 @@
 
         /* ===== FILAS DE ÁREA EXPANDIBLES ===== */
         table .flecha-fila {
-            color: rgba(255, 255, 255, 0.55);
+            color: var(--texto-suave);
             font-size: 0.8rem;
             margin-right: 9px;
             transition: color 0.2s ease;
         }
 
         table .fila-activa .flecha-fila {
-            color: #ff9f2e;
+            color: var(--accent-orange-dark);
         }
 
         table .fila-area.fila-activa {
@@ -233,34 +233,34 @@
 
         table .nombre-area {
             font-weight: 600;
-            color: #ffffff;
+            color: var(--texto);
         }
 
         table .descripcion-area {
-            color: rgba(255, 255, 255, 0.75);
+            color: var(--texto-suave);
             font-size: 0.92em;
         }
 
         table .contador-postgrados {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #ff9f2e;
+            color: var(--accent-orange-dark);
             font-size: 0.95rem;
         }
 
         table .contador-postgrados.contador-cero {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--texto-suave);
             font-weight: 400;
         }
 
-        /* Fila hija con los postgrados del área (banda sutil, sin cajas) */
+        /* Fila hija con los postgrados del área (banda azul tenue, sin cajas) */
         table .fila-postgrados td {
-            background: rgba(0, 0, 0, 0.18);
+            background: rgba(0, 61, 165, 0.05);
             padding: 6px 25px 18px;
         }
 
         .caja-postgrados {
-            border-top: 1px dashed rgba(255, 255, 255, 0.18);
+            border-top: 1px dashed var(--borde);
             padding-top: 16px;
         }
 
@@ -278,12 +278,12 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--texto);
         }
 
         .caja-postgrados-titulo i {
             margin-right: 8px;
-            color: #ff9f2e;
+            color: var(--accent-orange-dark);
         }
 
         /* Botón fantasma «Nuevo Postgrado» en la cabecera del área desplegada */
@@ -292,10 +292,10 @@
             align-items: center;
             gap: 7px;
             padding: 7px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(0, 61, 165, 0.35);
             border-radius: 10px;
             background: transparent;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--primary-blue);
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
             font-weight: 500;
@@ -307,12 +307,12 @@
         .btn-nuevo-postgrado:hover {
             background: rgba(247, 148, 29, 0.15);
             border-color: rgba(247, 148, 29, 0.5);
-            color: #ffffff;
+            color: var(--primary-blue);
         }
 
         .sin-postgrados {
             margin: 0;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
             font-style: italic;
         }
 
@@ -329,7 +329,7 @@
             align-items: baseline;
             gap: 4px 14px;
             padding: 11px 6px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--borde);
         }
 
         .lista-postgrados li:last-child {
@@ -338,18 +338,18 @@
 
         .post-nombre {
             font-weight: 600;
-            color: #ffffff;
+            color: var(--texto);
         }
 
         .post-id {
             font-size: 0.78rem;
-            color: rgba(255, 255, 255, 0.55);
+            color: var(--texto-suave);
         }
 
         .post-menciones {
             width: 100%;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.75);
+            color: var(--texto-suave);
         }
 
         /* ===== FORMULARIO (único cuadro de la vista cuando está abierto) ===== */
@@ -357,13 +357,11 @@
             width: 100%;
             max-width: 760px;
             margin: 30px auto;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 20px;
             padding: 30px 35px 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
+            box-shadow: 0 2px 12px rgba(0, 18, 51, 0.08);
             animation: fadeInSlideUp 0.6s ease-out forwards;
             box-sizing: border-box;
         }
@@ -375,27 +373,24 @@
             justify-content: space-between;
             gap: 15px;
             padding-bottom: 22px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--borde);
         }
 
         .panel-glass-title {
             font-family: 'Outfit', sans-serif;
             font-size: 1.6rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--texto);
             margin: 0;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
         }
 
         .btn-glass {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            color: #ffffff;
+            background: var(--superficie);
+            border: 1px solid var(--borde);
+            color: var(--primary-blue);
             padding: 10px 20px;
             border-radius: 12px;
             font-family: 'Outfit', sans-serif;
@@ -422,10 +417,8 @@
             padding: 14px 18px;
             background: rgba(224, 87, 87, 0.15);
             border: 1px solid rgba(224, 87, 87, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-radius: 12px;
-            color: #ffd9d9;
+            color: var(--danger-red);
             font-size: 0.9rem;
         }
 

@@ -98,7 +98,7 @@
             </form>
             @if ($sheetConfig)
                 <div class="sheet-config-status">
-                    <i class="fa-solid fa-circle-check" style="color: #5de98a;"></i>
+                    <i class="fa-solid fa-circle-check" style="color: #15803d;"></i>
                     <span>Sheet configurado el {{ $sheetConfig['fecha_configuracion'] ?? 'N/A' }}</span>
                 </div>
             @endif
@@ -182,9 +182,10 @@
             max-width: 1100px;
             margin: 20px auto;
             padding: 16px 20px;
-            background: rgba(0, 10, 32, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 18, 51, 0.06);
         }
 
         .pagos-filtros-forma {
@@ -197,8 +198,8 @@
         .pagos-estados {
             display: flex;
             gap: 6px;
-            background: rgba(0, 10, 32, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--fondo);
+            border: 1px solid var(--borde);
             border-radius: 11px;
             padding: 5px;
         }
@@ -214,13 +215,13 @@
             font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.55);
+            color: var(--texto-suave);
             cursor: pointer;
             transition: all 0.25s ease;
         }
 
         .pagos-estado:hover {
-            color: #ffffff;
+            color: var(--texto);
         }
 
         .pagos-estado--activo {
@@ -249,15 +250,15 @@
             gap: 6px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.82rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--texto-suave);
         }
 
         .pagos-filtro-control {
-            background: rgba(0, 10, 32, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 9px;
             padding: 9px 12px;
-            color: #ffffff;
+            color: var(--texto);
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
             min-height: 39px;
@@ -268,9 +269,8 @@
             border-color: var(--accent-orange, #f7941d);
         }
 
-        /* el datepicker nativo pinta texto oscuro sobre el fondo oscuro */
+        /* el indicador nativo ya es oscuro: encaja con el input en blanco */
         .pagos-filtro-control::-webkit-calendar-picker-indicator {
-            filter: invert(1);
             cursor: pointer;
         }
 
@@ -283,9 +283,9 @@
             align-items: center;
             gap: 6px;
             padding: 9px 14px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--borde);
             border-radius: 9px;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--primary-blue);
             font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
             text-decoration: none;
@@ -293,8 +293,8 @@
         }
 
         .pagos-filtro-limpiar:hover {
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.45);
+            background: rgba(0, 61, 165, 0.06);
+            border-color: var(--primary-blue);
         }
 
         .pagos-contador {
@@ -304,14 +304,14 @@
             gap: 16px;
             margin-top: 14px;
             padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid var(--borde);
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--texto-suave);
         }
 
         .pagos-contador strong {
-            color: #ffffff;
+            color: var(--texto);
         }
 
         .pagos-contador-rango {
@@ -322,12 +322,12 @@
             border: 1px solid rgba(247, 148, 29, 0.3);
             border-radius: 50px;
             padding: 4px 14px;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--texto);
             font-size: 0.85rem;
         }
 
         .pagos-contador-rango i {
-            color: #f7941d;
+            color: var(--accent-orange-dark);
         }
 
         /* ===== Configuración del Sheet ===== */
@@ -335,12 +335,12 @@
             width: 90%;
             max-width: 800px;
             margin: 20px auto;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 18, 51, 0.06);
         }
 
         .sheet-config-header {
@@ -352,18 +352,18 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--texto);
             transition: all 0.3s ease;
             user-select: none;
         }
 
         .sheet-config-header:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
+            background: rgba(0, 61, 165, 0.06);
+            color: var(--primary-blue);
         }
 
         .sheet-config-header i:first-child {
-            color: #f7941d;
+            color: var(--accent-orange-dark);
             font-size: 1.1rem;
         }
 
@@ -404,7 +404,7 @@
         .sheet-config-help {
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -416,15 +416,16 @@
             gap: 8px;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--borde);
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--texto-suave);
         }
 
         .btn-verificar-principal {
             background: linear-gradient(135deg, #001233, #003da5) !important;
             border-color: rgba(93, 148, 233, 0.3) !important;
+            color: #ffffff !important;
             font-size: 1.05rem !important;
             padding: 14px 30px !important;
         }

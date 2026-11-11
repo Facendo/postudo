@@ -7,7 +7,7 @@
 
         {{-- Sin «Duración»; el total de cohortes se cuenta de las cohortes
              reales ($cohortes), no del campo nro_cohortes (obsoleto). --}}
-        <p style="color: white; opacity: 0.8; text-align: center; margin-bottom: 10px;">
+        <p style="color: var(--texto); opacity: 0.8; text-align: center; margin-bottom: 10px;">
             Área: <strong>{{ $postgrado->area->nombre ?? 'Sin área' }}</strong> &nbsp;|&nbsp;
             Cohortes: <strong>{{ $cohortes->count() }}</strong>
         </p>
@@ -20,7 +20,7 @@
         </div>
 
         {{-- MENCIONES DEL POSTGRADO --}}
-        <h3 style="color: white; margin: 25px 0 12px;">Menciones</h3>
+        <h3 style="color: var(--texto); margin: 25px 0 12px;">Menciones</h3>
 
         @if ($errors->has('nombre'))
             <p class="error-message" style="margin-bottom: 12px;">{{ $errors->first('nombre') }}</p>
@@ -77,7 +77,7 @@
         </form>
 
         {{-- COHORTES DEL POSTGRADO --}}
-        <h3 style="color: white; margin: 30px 0 12px;">Cohortes</h3>
+        <h3 style="color: var(--texto); margin: 30px 0 12px;">Cohortes</h3>
         <table>
             <thead>
                 <tr>

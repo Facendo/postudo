@@ -53,13 +53,13 @@
             border-radius: 10px;
             padding: 12px 16px;
             margin-bottom: 20px;
-            color: rgba(255, 255, 255, .85);
+            color: var(--texto);
             font-size: .9rem;
             line-height: 1.6;
         }
 
         .formato-nota strong {
-            color: #ffd9b8;
+            color: var(--accent-orange-dark);
         }
 
         .formato-nota code {
@@ -72,9 +72,9 @@
         .enlace-portada {
             display: inline-block;
             padding: 12px 24px;
-            border: 1px solid rgba(255, 255, 255, .25);
+            border: 1px solid rgba(0, 61, 165, 0.35);
             border-radius: 30px;
-            color: #fff;
+            color: var(--primary-blue);
             font-weight: 600;
             font-size: 14px;
             text-decoration: none;
@@ -89,7 +89,7 @@
         .meta-actualizacion {
             margin-top: 14px;
             text-align: center;
-            color: rgba(255, 255, 255, .55);
+            color: var(--texto-suave);
             font-size: .85rem;
         }
     </style>

@@ -37,7 +37,7 @@
             </form>
             @if($sheetConfig)
                 <div class="sheet-config-status">
-                    <i class="fa-solid fa-circle-check" style="color: #5de98a;"></i>
+                    <i class="fa-solid fa-circle-check" style="color: #15803d;"></i>
                     <span>Sheet configurado el {{ $sheetConfig['fecha_configuracion'] ?? 'N/A' }}</span>
                 </div>
             @endif
@@ -107,12 +107,12 @@
             width: 90%;
             max-width: 800px;
             margin: 20px auto;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 18, 51, 0.06);
         }
 
         .sheet-config-header {
@@ -124,18 +124,18 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--texto);
             transition: all 0.3s ease;
             user-select: none;
         }
 
         .sheet-config-header:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
+            background: rgba(0, 61, 165, 0.06);
+            color: var(--primary-blue);
         }
 
         .sheet-config-header i:first-child {
-            color: #f7941d;
+            color: var(--accent-orange-dark);
             font-size: 1.1rem;
         }
 
@@ -176,7 +176,7 @@
         .sheet-config-help {
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -188,16 +188,17 @@
             gap: 8px;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--borde);
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--texto-suave);
         }
 
         /* Botón de verificar principal */
         .btn-verificar-principal {
             background: linear-gradient(135deg, #001233, #003da5) !important;
             border-color: rgba(93, 148, 233, 0.3) !important;
+            color: #ffffff !important;
             font-size: 1.05rem !important;
             padding: 14px 30px !important;
         }

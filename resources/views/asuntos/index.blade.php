@@ -60,7 +60,7 @@
                                     $ {{ number_format($asunto->valor_usd, 2, ',', '.') }}
                                 </span>
                             @else
-                                <span style="color:rgba(255,255,255,0.3); font-size:0.85rem;">—</span>
+                                <span style="color:var(--texto-suave); font-size:0.85rem;">—</span>
                             @endif
                         </td>
 
@@ -72,7 +72,7 @@
                                         Bs. {{ number_format($asunto->valor_usd * $tasaValor, 2, ',', '.') }}
                                     </span>
                                 @else
-                                    <span style="color:rgba(255,255,255,0.3); font-size:0.85rem;">—</span>
+                                    <span style="color:var(--texto-suave); font-size:0.85rem;">—</span>
                                 @endif
                             </td>
                         @endif
@@ -122,19 +122,19 @@
             margin-bottom: 20px;
             font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
-            color: rgba(255, 255, 255, 0.75);
+            color: var(--texto);
         }
 
         .tasa-badge i {
-            color: #f7941d;
+            color: var(--accent-orange-dark);
         }
 
         .tasa-badge strong {
-            color: #ffffff;
+            color: var(--texto);
         }
 
         .tasa-badge-fecha {
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             font-size: 0.8rem;
         }
 
@@ -144,20 +144,20 @@
         }
 
         .tasa-badge--warn i {
-            color: #ffc107;
+            color: #b45309;
         }
 
         .precio-usd {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #5de98a;
+            color: #15803d;
             font-size: 0.95rem;
         }
 
         .precio-bs {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #6dd5fa;
+            color: var(--primary-blue);
             font-size: 0.95rem;
         }
     </style>

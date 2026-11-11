@@ -13,19 +13,19 @@
         .estado-prein.pendiente {
             background: rgba(247, 148, 29, 0.15);
             border: 1px solid rgba(247, 148, 29, 0.45);
-            color: #f7941d;
+            color: var(--accent-orange-dark);
         }
 
         .estado-prein.aprobada {
             background: rgba(40, 167, 69, 0.15);
             border: 1px solid rgba(40, 167, 69, 0.45);
-            color: #4ac97b;
+            color: #15803d;
         }
 
         .estado-prein.rechazada {
             background: rgba(220, 53, 69, 0.15);
             border: 1px solid rgba(220, 53, 69, 0.45);
-            color: #f16c79;
+            color: var(--danger-red);
         }
 
         .acciones-prein {
@@ -52,7 +52,7 @@
             <label>Preinscripciones Recibidas</label>
         </div>
 
-        <div style="margin: 10px 0 25px; color: #9fb3d1; font-size: 0.92rem; text-align: center;">
+        <div style="margin: 10px 0 25px; color: var(--texto-suave); font-size: 0.92rem; text-align: center;">
             @if (Auth::user()->rol === 'coordinador_postgrado')
                 Preinscripciones del postgrado asignado. Aprobar una preinscripción
                 habilita al aspirante para su inscripción.
@@ -84,7 +84,7 @@
                             <td>
                                 @if ($preinscripcion->mencion)
                                     {{ $preinscripcion->mencion->nombre }}
-                                    <small style="color: #9fb3d1;">
+                                    <small style="color: var(--texto-suave);">
                                         ({{ $preinscripcion->mencion->postgrado?->nombre ?? 'Sin postgrado' }})
                                     </small>
                                 @else

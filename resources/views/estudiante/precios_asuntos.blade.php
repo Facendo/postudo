@@ -22,7 +22,7 @@
                     <span class="tasa-badge-fecha">({{ $tasaJson['fecha'] ?? '' }} · {{ $tasaJson['hora'] ?? '' }})</span>
                 </div>
                 <p
-                    style="text-align: center; color: rgba(255, 255, 255, 0.7); font-family: 'Outfit', sans-serif; font-size: 0.95rem; margin-top: -10px;">
+                    style="text-align: center; color: var(--texto); font-family: 'Outfit', sans-serif; font-size: 0.95rem; margin-top: -10px;">
                     El monto en bolívares se congelará utilizando la tasa vigente del día en que realices tu transferencia
                     bancaria.
                 </p>
@@ -49,7 +49,7 @@
                 @forelse ($asuntos as $asunto)
                     <tr>
                         <td style="font-weight: 600;">{{ $asunto->nombre }}</td>
-                        <td style="color: rgba(255, 255, 255, 0.8);">{{ $asunto->descripcion ?: 'Sin descripción' }}</td>
+                        <td style="color: var(--texto);">{{ $asunto->descripcion ?: 'Sin descripción' }}</td>
 
                         <td style="text-align:center;">
                             @if($asunto->valor_usd && $asunto->valor_usd > 0)
@@ -57,7 +57,7 @@
                                     $ {{ number_format($asunto->valor_usd, 2, ',', '.') }}
                                 </span>
                             @else
-                                <span style="color:rgba(255,255,255,0.3); font-size:0.85rem;">Gratuito / No definido</span>
+                                <span style="color:var(--texto-suave); font-size:0.85rem;">Gratuito / No definido</span>
                             @endif
                         </td>
 
@@ -68,7 +68,7 @@
                                         Bs. {{ number_format($asunto->valor_usd * $tasaValor, 2, ',', '.') }}
                                     </span>
                                 @else
-                                    <span style="color:rgba(255,255,255,0.3); font-size:0.85rem;">—</span>
+                                    <span style="color:var(--texto-suave); font-size:0.85rem;">—</span>
                                 @endif
                             </td>
                         @endif
@@ -76,7 +76,7 @@
                 @empty
                     <tr>
                         <td colspan="{{ $tasaValor ? 4 : 3 }}"
-                            style="text-align: center; padding: 30px; color: rgba(255, 255, 255, 0.5);">
+                            style="text-align: center; padding: 30px; color: var(--texto-suave);">
                             No hay información de trámites disponible por el momento.
                         </td>
                     </tr>
@@ -109,22 +109,22 @@
             padding: 10px 25px;
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--texto);
             box-shadow: 0 4px 15px rgba(93, 233, 138, 0.1);
         }
 
         .tasa-badge i {
-            color: #5de98a;
+            color: #15803d;
             font-size: 1.1rem;
         }
 
         .tasa-badge strong {
-            color: #ffffff;
+            color: var(--texto);
             font-weight: 700;
         }
 
         .tasa-badge-fecha {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
             font-size: 0.85rem;
             margin-left: 5px;
         }
@@ -135,13 +135,13 @@
         }
 
         .tasa-badge--warn i {
-            color: #ffc107;
+            color: #b45309;
         }
 
         .precio-usd {
             font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            color: #ffd9b8;
+            color: var(--accent-orange-dark);
             font-size: 1rem;
             background: rgba(247, 148, 29, 0.1);
             padding: 4px 10px;
@@ -151,8 +151,7 @@
         .precio-bs {
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            color: #5de98a;
-            text-shadow: 0 0 10px rgba(93, 233, 138, 0.2);
+            color: #15803d;
         }
 
         .table td {

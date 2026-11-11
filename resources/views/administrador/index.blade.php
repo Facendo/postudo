@@ -94,14 +94,12 @@
             bottom: 30px;
             right: 30px;
             width: 280px;
-            background: rgba(0, 10, 32, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(247, 148, 29, 0.25);
+            background: var(--superficie);
+            border: 1px solid rgba(247, 148, 29, 0.45);
             border-radius: 20px;
             padding: 20px 22px;
             z-index: 999;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 18, 51, 0.18);
             animation: slideInWidget 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -123,12 +121,12 @@
             gap: 12px;
             margin-bottom: 14px;
             padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--borde);
         }
 
         .tasa-icon {
             font-size: 1.4rem;
-            color: #f7941d;
+            color: var(--accent-orange-dark);
             background: rgba(247, 148, 29, 0.12);
             width: 38px;
             height: 38px;
@@ -144,7 +142,7 @@
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--texto);
             letter-spacing: 0.3px;
             line-height: 1.2;
         }
@@ -153,7 +151,7 @@
             display: block;
             font-family: 'Outfit', sans-serif;
             font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             margin-top: 2px;
         }
 
@@ -169,7 +167,7 @@
         .tasa-moneda {
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
             font-weight: 400;
         }
 
@@ -177,20 +175,20 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.8rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--texto);
             line-height: 1;
         }
 
         .tasa-por {
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
         }
 
         .tasa-sin-valor {
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--texto-suave);
             font-style: italic;
         }
 
@@ -204,8 +202,8 @@
         .tasa-input-group {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: var(--fondo);
+            border: 1px solid var(--borde);
             border-radius: 12px;
             overflow: hidden;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -220,7 +218,7 @@
         .tasa-suffix {
             font-family: 'Outfit', sans-serif;
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--texto-suave);
             padding: 0 8px;
             white-space: nowrap;
             user-select: none;
@@ -231,7 +229,7 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #ffffff;
+            color: var(--texto);
             font-family: 'Outfit', sans-serif;
             font-size: 1rem;
             font-weight: 500;
@@ -247,7 +245,7 @@
         }
 
         .tasa-input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--texto-suave);
         }
 
         .tasa-btn-guardar {
@@ -255,7 +253,7 @@
             align-items: center;
             justify-content: center;
             gap: 7px;
-            background: linear-gradient(135deg, #003da5, #001a4d);
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-orange-dark));
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -265,13 +263,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0, 61, 165, 0.3);
+            box-shadow: 0 4px 15px rgba(247, 148, 29, 0.35);
             letter-spacing: 0.2px;
         }
 
         .tasa-btn-guardar:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 61, 165, 0.45);
+            box-shadow: 0 8px 20px rgba(247, 148, 29, 0.5);
         }
 
         .tasa-btn-guardar:active {
@@ -289,15 +287,15 @@
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.35);
         }
 
-        /* Botón secundario: sincronizar con BCV */
+        /* Botón secundario: sincronizar con BCV (azul UDO sobre tarjeta blanca) */
         .tasa-btn-bcv {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 7px;
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
             border-radius: 12px;
             padding: 9px 16px;
             font-family: 'Outfit', sans-serif;
@@ -308,8 +306,8 @@
         }
 
         .tasa-btn-bcv:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(0, 61, 165, 0.06);
+            border-color: var(--primary-blue);
             transform: translateY(-1px);
         }
 
@@ -326,7 +324,7 @@
         .tasa-btn-bcv.success {
             background: rgba(40, 167, 69, 0.15);
             border-color: rgba(40, 167, 69, 0.5);
-            color: #5de98a;
+            color: #1a7a3a;
         }
 
         /* Feedback */
@@ -340,11 +338,11 @@
         }
 
         .tasa-feedback.ok {
-            color: #5de98a;
+            color: #1a7a3a;
         }
 
         .tasa-feedback.err {
-            color: #ff6b6b;
+            color: #b91c1c;
         }
     </style>
 

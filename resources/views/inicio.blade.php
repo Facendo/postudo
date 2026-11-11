@@ -21,17 +21,21 @@
             --udo-naranja: #f7941d;
             --udo-naranja-suave: #ffd9b8;
 
-            --bg-dark: #001233;
-            --bg-grad-1: #001a4d;
-            --bg-grad-2: #003da5;
+            /* Fondos del tema claro (antes: degradado azul oscuro) */
+            --fondo: #f5f7fa;
+            --superficie: #ffffff;
+            --borde: #e3e8ef;
             --accent: #f7941d;
             --accent-hover: #ff9f2e;
             --accent-soft: #ffd9b8;
-            --text-main: #f2f5f9;
-            --text-muted: #9fb3d1;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --text-main: #001233;
+            /* Texto principal: azul marino */
+            --text-muted: #5b6b85;
+            /* Texto secundario: gris azulado */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            /* Superficie blanca translúcida */
+            --glass-border: #e3e8ef;
+            --glass-shadow: 0 8px 32px 0 rgba(0, 18, 51, 0.10);
 
             /* Espacio reservado al menú lateral fijo (ancho aprox. del menú + margen).
                El hero usa este valor por IZQUIERDA y DERECHA → el título queda
@@ -48,10 +52,10 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
             color: var(--text-main);
             overflow-x: hidden;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-grad-1) 50%, var(--bg-grad-2) 100%);
+            /* Degradado sutil sobre fondo claro (tema claro 2026-11-10) */
+            background: linear-gradient(135deg, #ffffff 0%, var(--fondo) 50%, #eef3fb 100%);
             background-attachment: fixed;
             min-height: 100vh;
         }
@@ -70,7 +74,8 @@
             border-radius: 50%;
             filter: blur(120px);
             z-index: -1;
-            opacity: 0.5;
+            opacity: 0.10;
+            /* Luces tenues sobre fondo claro */
             animation: float 10s ease-in-out infinite;
         }
 
@@ -79,7 +84,7 @@
             left: -10%;
             width: 500px;
             height: 500px;
-            background: #2563eb;
+            background: #003da5;
         }
 
         .light-2 {
@@ -87,7 +92,7 @@
             right: -10%;
             width: 600px;
             height: 600px;
-            background: #0a3d91;
+            background: #0056b3;
             animation-delay: -5s;
         }
 
@@ -114,7 +119,7 @@
         }
 
         .bottom-copyright p {
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
             font-size: 0.95em;
             margin: 0;
             font-weight: 300;
@@ -156,7 +161,7 @@
             font-size: 26px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            background: linear-gradient(to right, #fff, var(--accent-soft));
+            background: linear-gradient(to right, var(--text-main), var(--udo-azul));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -180,11 +185,10 @@
         }
 
         .nav-link:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
+            color: var(--udo-azul);
+            background: rgba(0, 61, 165, 0.08);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0, 18, 51, 0.12);
         }
 
         .btn-primary {
@@ -228,13 +232,13 @@
 
         .btn-outline {
             background: transparent;
-            color: #fff;
+            color: var(--udo-azul);
             padding: 11px 27px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
-            border: 2px solid var(--glass-border);
+            border: 2px solid rgba(0, 61, 165, 0.5);
             transition: all 0.3s ease;
         }
 
@@ -278,10 +282,10 @@
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 25px;
-            background: linear-gradient(to right, #fff, var(--accent-soft), var(--accent));
+            background: linear-gradient(to right, var(--text-main) 0%, var(--udo-azul) 30%, var(--accent) 80%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-shadow: none;
         }
 
         .hero p {
@@ -303,13 +307,12 @@
 
         /* Footer */
         footer {
-            background: rgba(0, 10, 32, 0.92);
-            border-top: 1px solid var(--glass-border);
+            background: var(--superficie);
+            border-top: 1px solid var(--borde);
             padding: 40px 20px;
             text-align: center;
             color: var(--text-muted);
             font-size: 0.95rem;
-            backdrop-filter: blur(10px);
         }
 
         /* Flash Messages */
@@ -326,25 +329,25 @@
         .alert {
             padding: 15px 25px;
             border-radius: 12px;
-            backdrop-filter: blur(10px);
-            color: #fff;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 18, 51, 0.12);
             animation: slideIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
         }
 
         .alert-success {
-            background: rgba(40, 167, 69, 0.2);
-            border: 1px solid rgba(40, 167, 69, 0.4);
-            border-left: 4px solid #28a745;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-left: 4px solid #16a34a;
+            color: #14532d;
         }
 
         .alert-error {
-            background: rgba(220, 53, 69, 0.2);
-            border: 1px solid rgba(220, 53, 69, 0.4);
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             border-left: 4px solid #dc3545;
+            color: #7f1d1d;
         }
 
         @keyframes slideIn {
@@ -476,7 +479,7 @@
         .modal-info-fondo {
             position: fixed;
             inset: 0;
-            background: rgba(0, 6, 20, 0.75);
+            background: rgba(0, 18, 51, 0.55);
             backdrop-filter: blur(4px);
             display: none;
             align-items: center;
@@ -486,7 +489,7 @@
         }
 
         .modal-info-caja {
-            background: var(--bg-grad-1);
+            background: var(--superficie);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
             max-width: 640px;
@@ -507,7 +510,7 @@
         }
 
         .modal-info-caja h3 {
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 0;
         }
 
@@ -558,7 +561,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #fff;
+            color: var(--text-main);
             font-size: 1rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -584,7 +587,7 @@
             align-items: baseline;
             gap: 15px;
             padding: 8px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+            border-bottom: 1px dashed var(--borde);
             color: var(--text-main);
             font-size: 0.95rem;
         }
@@ -632,8 +635,8 @@
 
         .modal-info-cerrar {
             background: transparent;
-            border: 1px solid var(--glass-border);
-            color: #fff;
+            border: 1px solid rgba(0, 61, 165, 0.5);
+            color: var(--udo-azul);
             font-family: 'Outfit', sans-serif;
             padding: 10px 30px;
             border-radius: 30px;
@@ -669,9 +672,10 @@
     width: 450px;
     height: 450px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.6) 0%, rgba(10, 47, 120, 0.25) 50%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(0, 61, 165, 0.30) 0%, rgba(0, 86, 179, 0.12) 50%, rgba(0, 0, 0, 0) 70%);
     filter: blur(80px); /* Crea el efecto difuminado suave */
-    opacity: 0.8;
+    opacity: 0.15;
+    /* Luces tenues sobre fondo claro */
 }
 
 /* Luz 1: Esquina superior izquierda */

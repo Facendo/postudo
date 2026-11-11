@@ -184,9 +184,8 @@
         }
 
         .resumen-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 16px;
             padding: 20px 30px;
             text-align: center;
@@ -200,7 +199,7 @@
 
         .resumen-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 18px rgba(0, 18, 51, 0.10);
         }
 
         .resumen-card i {
@@ -211,13 +210,13 @@
             font-family: 'Outfit', sans-serif;
             font-size: 2.2rem;
             font-weight: 700;
-            color: #fff;
+            color: var(--texto);
         }
 
         .resumen-label {
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--texto-suave);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -227,7 +226,7 @@
         }
 
         .resumen-verificado i {
-            color: #5de98a;
+            color: #15803d;
         }
 
         .resumen-parcial {
@@ -235,7 +234,7 @@
         }
 
         .resumen-parcial i {
-            color: #ffc107;
+            color: #b45309;
         }
 
         .resumen-no-encontrado {
@@ -243,7 +242,7 @@
         }
 
         .resumen-no-encontrado i {
-            color: #ff4d4d;
+            color: var(--danger-red);
         }
 
         /* Acciones */
@@ -266,6 +265,7 @@
         .btn-confirmar-accion {
             background: linear-gradient(135deg, #1a5c2e, #2d8a4e) !important;
             border-color: rgba(93, 233, 138, 0.3) !important;
+            color: #ffffff !important;
         }
 
         .btn-confirmar-accion:hover {
@@ -327,40 +327,40 @@
 
         .badge-ok {
             background: rgba(93, 233, 138, 0.15);
-            color: #5de98a;
+            color: #15803d;
             border: 1px solid rgba(93, 233, 138, 0.3);
         }
 
         .badge-warn {
             background: rgba(255, 193, 7, 0.15);
-            color: #ffc107;
+            color: #b45309;
             border: 1px solid rgba(255, 193, 7, 0.3);
         }
 
         .badge-error {
             background: rgba(255, 77, 77, 0.15);
-            color: #ff4d4d;
+            color: var(--danger-red);
             border: 1px solid rgba(255, 77, 77, 0.3);
         }
 
         /* Textos de estado */
         .text-ok {
-            color: #5de98a;
+            color: #15803d;
             font-weight: 600;
         }
 
         .text-warn {
-            color: #ffc107;
+            color: #b45309;
             font-weight: 600;
         }
 
         .text-error {
-            color: #ff4d4d;
+            color: var(--danger-red);
             font-weight: 600;
         }
 
         .text-muted-light {
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--texto-suave);
         }
 
         .celda-referencia {
@@ -384,7 +384,7 @@
         .verificacion-vacio {
             text-align: center;
             padding: 60px 20px;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--texto-suave);
         }
 
         .verificacion-vacio i {

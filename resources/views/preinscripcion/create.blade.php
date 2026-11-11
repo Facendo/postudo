@@ -5,15 +5,13 @@
             width: 95%;
             max-width: 980px;
             margin: 30px auto;
-            /* Texto heredado en blanco: el body global pinta el gris oscuro
-               (--dark-gray) sobre este fondo azul marino y no se distingue. */
-            color: #ffffff;
+            /* Texto en azul marino sobre el fondo claro del tema */
+            color: var(--texto);
         }
 
-        /* Las etiquetas las pinta .registration-form de gris (#343a40/#555);
-           aquí se fuerzan a blanco con mayor especificidad que esas reglas. */
+        /* Etiquetas en azul marino (mismo tono que el resto del tema claro) */
         .prein-form .registration-form .form-label {
-            color: #ffffff;
+            color: var(--texto);
         }
 
         .prein-seccion {
@@ -26,7 +24,7 @@
             font-weight: 600;
             margin-bottom: 14px;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid var(--borde);
         }
 
         .prein-seccion h3 i {
@@ -75,7 +73,7 @@
             gap: 18px;
             padding: 8px 12px;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--fondo);
         }
 
         .prein-documento span {
@@ -95,7 +93,7 @@
         <div class="registration-form" style="max-width: none;">
             <h2 class="registration-form-title">Planilla de Preinscripción para el Postgrado</h2>
 
-            <p style="color: #ffffff; text-align: center; margin-bottom: 25px; line-height: 1.6;">
+            <p style="color: var(--texto); text-align: center; margin-bottom: 25px; line-height: 1.6;">
                 Completa todos los campos como aparecen en tu documento de identidad. Al enviar la
                 planilla se guardará tu preinscripción y se descargará el archivo
                 <strong>.docx</strong> relleno: imprímelo, fírmalo y preséntalo junto con la

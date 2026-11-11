@@ -7,15 +7,13 @@
             <label style="font-size: 2rem; margin-bottom: 0;">Filtrar Estudiantes por Postgrado</label>
         </div>
 
-        {{-- Cuadro glass del filtro --}}
+        {{-- Cuadro del filtro --}}
         <div style="
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--superficie);
+            border: 1px solid var(--borde);
             border-radius: 20px;
             padding: 35px 45px;
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 12px rgba(0, 18, 51, 0.08);
             width: 100%;
             max-width: 550px;
         ">
@@ -37,7 +35,7 @@
         {{-- Resultados del postgrado seleccionado --}}
         @if ($selectedPostgrado)
             <div style="width: 100%;">
-                <h3 style="color: white; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: var(--texto); margin-bottom: 20px; text-align: center;">
                     Estudiantes del postgrado: <strong>{{ $selectedPostgradoNombre }}</strong>
                 </h3>
                 <table class="table">
@@ -72,7 +70,7 @@
 
         {{-- Estudiantes sin mención (por lo tanto, sin postgrado) asignado --}}
         <div style="width: 100%;">
-            <h3 style="color: white; margin-bottom: 20px; text-align: center;">
+            <h3 style="color: var(--texto); margin-bottom: 20px; text-align: center;">
                 Sin postgrado asignado
                 <span style="font-size: 0.9rem; font-weight: normal; opacity: 0.75;">
                     (estudiantes que aún no tienen mención)
