@@ -6,9 +6,11 @@ use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Cohorte;
 use App\Models\Mencion;
 use App\Models\Postgrado;
+use App\Models\SolicitudAperturaCohorte;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
 
@@ -29,7 +31,13 @@ class CohorteController extends Controller
             ->when($permitidos, fn ($query) => $query->whereIn('codigo_postgrado', $permitidos))
             ->get();
 
-        return view('administrador.gestioncohorte', compact('cohortes'));
+        // Cupos de apertura disponibles: informativo solo para el rol
+        // coordinador_postgrado (admin y coordinador general crean libre).
+        $cuposDisponibles = Auth::user()->rol === 'coordinador_postgrado'
+            ? SolicitudAperturaCohorte::cuposDisponiblesEn($permitidos?->all() ?? [])
+            : null;
+
+        return view('administrador.gestioncohorte', compact('cohortes', 'cuposDisponibles'));
     }
 
     /**
@@ -57,6 +65,16 @@ class CohorteController extends Controller
         // (null = sin filtro para admin y coordinador general).
         $permitidos = $this->idsPostgradosPermitidos($usuario);
 
+        // Gate de apertura (2026-11-11): sin cupos aprobados el formulario
+        // ni siquiera se abre. El chequeo definitivo está en store(), aquí
+        // solo es UX (admin y coordinador general crean libre).
+        if ($usuario->rol === 'coordinador_postgrado'
+            && SolicitudAperturaCohorte::cuposDisponiblesEn($permitidos?->all() ?? []) < 1) {
+            return redirect()
+                ->route('administrador.gestioncohorte')
+                ->with('error', 'No tienes cupos de apertura disponibles. Solicita la apertura al coordinador general desde «Apertura de Cohortes».');
+        }
+
         $menciones = Mencion::with('postgrado')
             ->when($permitidos, fn ($query) => $query->whereIn('id_postgrado', $permitidos))
             ->orderBy('id_postgrado')
@@ -73,6 +91,11 @@ class CohorteController extends Controller
      * cohorte: se autoincrementa con el máximo existente en la mención.
      * La fecha de fin tampoco viene del cliente: duración fija de 4 años
      * calculada en el servidor a partir de fecha_inicio.
+     *
+     * Apertura de cohortes (2026-11-11): si la sesión es coordinador de
+     * postgrado, exige y consume UN cupo aprobado para el postgrado de la
+     * mención, dentro de la misma transacción que crea la cohorte. Los
+     * demás roles (admin, coordinador general) crean sin cupo.
      */
     public function store(Request $request)
     {
@@ -85,20 +108,39 @@ class CohorteController extends Controller
         ]);
 
         $mencion = Mencion::findOrFail($datos['codigo_mencion']);
+        $esCoordinador = Auth::user()->rol === 'coordinador_postgrado';
 
-        // Número de cohorte siguiente DENTRO de la mención (contador por mención):
-        // la primera cohorte de la mención es la 1, la siguiente la 2, y así sucesivamente.
-        $siguiente = (int) Cohorte::where('codigo_mencion', $mencion->id_mencion)
-            ->max('nro_de_cohorte') + 1;
+        // Transacción: el cupo de apertura y la cohorte nacen juntos o no lo
+        // hace ninguno (si la cohorte falla, el cupo no se consume).
+        $cohorte = DB::transaction(function () use ($datos, $mencion, $esCoordinador) {
+            // Sin cupo aprobado no hay cohorte (el gate es por la mención
+            // elegida, cuyo postgrado sale de la BD, nunca del formulario).
+            if ($esCoordinador && ! SolicitudAperturaCohorte::consumirCupo($mencion->id_postgrado)) {
+                return null;
+            }
 
-        $cohorte = new Cohorte;
-        $cohorte->codigo_cohorte = $datos['codigo_cohorte'];
-        $cohorte->codigo_mencion = $mencion->id_mencion;
-        $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
-        $cohorte->fecha_inicio = $datos['fecha_inicio'];
-        $cohorte->fecha_fin = Carbon::parse($datos['fecha_inicio'])->addYears(4); // duración fija
-        $cohorte->nro_de_cohorte = $siguiente;
-        $cohorte->save();
+            // Número de cohorte siguiente DENTRO de la mención (contador por mención):
+            // la primera cohorte de la mención es la 1, la siguiente la 2, y así sucesivamente.
+            $siguiente = (int) Cohorte::where('codigo_mencion', $mencion->id_mencion)
+                ->max('nro_de_cohorte') + 1;
+
+            $cohorte = new Cohorte;
+            $cohorte->codigo_cohorte = $datos['codigo_cohorte'];
+            $cohorte->codigo_mencion = $mencion->id_mencion;
+            $cohorte->codigo_postgrado = $mencion->id_postgrado; // espejo derivado de la mención
+            $cohorte->fecha_inicio = $datos['fecha_inicio'];
+            $cohorte->fecha_fin = Carbon::parse($datos['fecha_inicio'])->addYears(4); // duración fija
+            $cohorte->nro_de_cohorte = $siguiente;
+            $cohorte->save();
+
+            return $cohorte;
+        });
+
+        if ($cohorte === null) {
+            return back()
+                ->with('error', 'No puedes crear cohortes en este postgrado: no tienes cupos de apertura disponibles. Solicítalos al coordinador general desde «Apertura de Cohortes».')
+                ->withInput();
+        }
 
         return redirect()
             ->route('administrador.gestion_postgrado.showdetalles', $mencion->id_postgrado)

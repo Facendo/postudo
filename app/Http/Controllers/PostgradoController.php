@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Area;
 use App\Models\Cohorte;
 use App\Models\Postgrado;
+use App\Models\SolicitudAperturaCohorte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -105,7 +106,13 @@ class PostgradoController extends Controller
         $postgrado = Postgrado::with('menciones')->findOrFail($id);
         $cohortes = Cohorte::where('codigo_postgrado', $id)->get();
 
-        return view('administrador.detallespostgrado', compact('postgrado', 'cohortes'));
+        // Cupos de apertura disponibles en ESTE postgrado: informativo solo
+        // para el coordinador de postgrado (admin y general crean libre).
+        $cuposDisponibles = Auth::user()->rol === 'coordinador_postgrado'
+            ? SolicitudAperturaCohorte::cuposDisponibles($id)
+            : null;
+
+        return view('administrador.detallespostgrado', compact('postgrado', 'cohortes', 'cuposDisponibles'));
     }
 
     /**

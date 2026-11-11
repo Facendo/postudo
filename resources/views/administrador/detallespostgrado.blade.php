@@ -12,11 +12,31 @@
             Cohortes: <strong>{{ $cohortes->count() }}</strong>
         </p>
 
+        {{-- Apertura de cohortes: cupos de ESTE postgrado (solo informativo
+             para el coordinador de postgrado; el gate real está en store()) --}}
+        @if (Auth::user()->rol === 'coordinador_postgrado')
+            <p style="margin: 0 0 10px; padding: 6px 16px; border: 1px solid var(--borde); background: var(--superficie); border-radius: 999px; color: var(--texto);">
+                Cupos de apertura disponibles: <strong>{{ $cuposDisponibles }}</strong>
+            </p>
+            @if ($cuposDisponibles < 1)
+                <p style="margin: 0 0 12px; padding: 10px 16px; border: 1px solid rgba(255, 193, 7, 0.55); background: rgba(255, 193, 7, 0.12); border-radius: 8px; color: #b45309; text-align: center;">
+                    No puedes crear cohortes en este postgrado: solicita la apertura de cupos
+                    al coordinador general desde «Apertura de Cohortes» en tu panel.
+                </p>
+            @endif
+        @endif
+
         {{-- Botón para crear un nuevo cohorte --}}
         <div class="action-buttons-container">
-            <a href="{{ route('administrador.gestioncohorte.create', $postgrado->id_postgrado) }}" class="button_body">
-                <i class="fa-solid fa-plus icon-left"></i> Nuevo Cohorte
-            </a>
+            @if (Auth::user()->rol === 'coordinador_postgrado' && $cuposDisponibles < 1)
+                <span class="button_body" style="opacity: 0.55; cursor: not-allowed;" title="Sin cupos de apertura: solicítalos al coordinador general">
+                    <i class="fa-solid fa-plus icon-left"></i> Nuevo Cohorte
+                </span>
+            @else
+                <a href="{{ route('administrador.gestioncohorte.create', $postgrado->id_postgrado) }}" class="button_body">
+                    <i class="fa-solid fa-plus icon-left"></i> Nuevo Cohorte
+                </a>
+            @endif
         </div>
 
         {{-- MENCIONES DEL POSTGRADO --}}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoordinadorGeneral;
+use App\Models\SolicitudAperturaCohorte;
 use Illuminate\Http\Request;
 
 class CoordinadorGeneralController extends Controller
@@ -12,7 +13,10 @@ class CoordinadorGeneralController extends Controller
      */
     public function index()
     {
-        return view('coordinador.index');
+        // Badge de pendientes en la tarjeta «Apertura de Cohortes».
+        $solicitudesPendientes = SolicitudAperturaCohorte::where('estado', SolicitudAperturaCohorte::ESTADO_PENDIENTE)->count();
+
+        return view('coordinador.index', compact('solicitudesPendientes'));
     }
 
     /**

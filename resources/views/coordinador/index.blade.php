@@ -35,6 +35,15 @@
                 <i class="fa-solid fa-user-tie"></i>
                 <span>Coordinadores de Postgrado</span>
             </a>
+            <a href="{{ route('coordinador.apertura.bandeja') }}" class="admin-card">
+                <i class="fa-solid fa-door-open"></i>
+                <span>Aperturas de Cohortes</span>
+                @if ($solicitudesPendientes > 0)
+                    <small style="margin-top: 10px; background: var(--accent-orange); color: #fff; padding: 3px 14px; border-radius: 999px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600;">
+                        {{ $solicitudesPendientes }} {{ $solicitudesPendientes === 1 ? 'pendiente' : 'pendientes' }}
+                    </small>
+                @endif
+            </a>
             <a href="{{ route('notificacion.comunicar') }}" class="admin-card">
                 <i class="fa-solid fa-bullhorn"></i>
                 <span>Comunicados</span>

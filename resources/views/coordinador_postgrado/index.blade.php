@@ -32,6 +32,10 @@
                 <i class="fa-solid fa-clipboard-user"></i>
                 <span>Preinscripciones</span>
             </a>
+            <a href="{{ route('coordinador.apertura.index') }}" class="admin-card">
+                <i class="fa-solid fa-door-open"></i>
+                <span>Apertura de Cohortes</span>
+            </a>
         </div>
     </div>
 

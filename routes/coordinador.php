@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\AperturaCohorteController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CoordinadorGeneralController;
 use App\Http\Controllers\CoordinadorPostgradoController;
@@ -49,10 +50,23 @@ Route::middleware(['auth', 'role:coordinador_general'])->group(function () {
     Route::get('/coordinador/coordinadores_postgrado/create', [CoordinadorPostgradoController::class, 'create'])->name('coordinador.coordinador_postgrado.create'); // Formulario de registro
     Route::post('/coordinador/coordinadores_postgrado', [CoordinadorPostgradoController::class, 'store'])->name('coordinador.coordinador_postgrado.store'); // Guardar coordinador con sus postgrados
     Route::delete('/coordinador/coordinadores_postgrado/{coordinador}', [CoordinadorPostgradoController::class, 'destroy'])->name('coordinador.coordinador_postgrado.destroy'); // Eliminar coordinador (sus postgrados quedan sin coordinador)
+
+    // Apertura de cohortes (2026-11-11): el coordinador general revisa las
+    // solicitudes de los coordinadores de postgrado. Aprobar = crear los
+    // cupos (tal cual lo pedido, sin ajustar la cantidad).
+    Route::get('/coordinador/aperturas', [AperturaCohorteController::class, 'bandeja'])->name('coordinador.apertura.bandeja'); // Bandeja: pendientes + historial
+    Route::post('/coordinador/aperturas/{solicitud}/aprobar', [AperturaCohorteController::class, 'aprobar'])->name('coordinador.apertura.aprobar'); // Aprobar solicitud (crea cupos)
+    Route::post('/coordinador/aperturas/{solicitud}/rechazar', [AperturaCohorteController::class, 'rechazar'])->name('coordinador.apertura.rechazar'); // Rechazar solicitud (motivo obligatorio)
 });
 
 // Panel del coordinador de postgrado: solo ve SUS postgrados asignados
 // (el filtrado por rol vive en el trait FiltrablePorCoordinador).
 Route::middleware(['auth', 'role:coordinador_postgrado'])->group(function () {
     Route::get('/coordinador_postgrado', [CoordinadorPostgradoController::class, 'panel'])->name('coordinador_postgrado.index'); // Panel principal del coordinador de postgrado
+
+    // Apertura de cohortes (2026-11-11): solicita cupos para SUS postgrados
+    // y sigue el estado; sin cupo aprobado no puede crear cohortes.
+    Route::get('/coordinador_postgrado/aperturas', [AperturaCohorteController::class, 'index'])->name('coordinador.apertura.index'); // Sus solicitudes + formulario
+    Route::post('/coordinador_postgrado/aperturas', [AperturaCohorteController::class, 'store'])->name('coordinador.apertura.store'); // Enviar solicitud
+    Route::delete('/coordinador_postgrado/aperturas/{solicitud}', [AperturaCohorteController::class, 'destroy'])->name('coordinador.apertura.destroy'); // Cancelar solicitud pendiente
 });

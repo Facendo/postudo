@@ -7,6 +7,7 @@ use App\Models\Estudiante;
 use App\Models\Mencion;
 use App\Models\Notificacion;
 use App\Models\Pagos;
+use App\Models\SolicitudAperturaCohorte;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -20,6 +21,8 @@ use Illuminate\Support\Collection;
  *  - Estado (pago verificado) -> de vuelta al estudiante que lo registró.
  *  - Comunicados (administrador / coordinador general) -> todos los
  *    estudiantes + todos los coordinadores de postgrado.
+ *  - Apertura de cohortes: solicitud creada -> todos los coordinadores
+ *    generales; respuesta (aprobada/rechazada) -> de vuelta al solicitante.
  *
  * El fan-out es de una fila por destinatario en la tabla `notificacion`.
  * Casos tolerados: estudiante sin mención, postgrado sin coordinador,
@@ -124,6 +127,81 @@ class NotificacionService
             'coordinadores' => $coordinadores,
             'total' => $estudiantes + $coordinadores,
         ];
+    }
+
+    /**
+     * Nueva solicitud de apertura de cohortes (coordinador de postgrado)
+     * -> todos los coordinadores generales, que son quienes deciden.
+     * Devuelve el nº de destinatarios a los que se le notificó.
+     */
+    public function solicitudAperturaCreada(SolicitudAperturaCohorte $solicitud, ?User $emisor = null): int
+    {
+        $destinatarios = User::where('rol', 'coordinador_general')->get();
+
+        $mensaje = sprintf(
+            '%s solicitó %d cupo(s) de cohorte para el postgrado «%s».',
+            $solicitud->solicitante?->name ?? 'Un coordinador de postgrado',
+            $solicitud->cupos,
+            $solicitud->postgrado?->nombre ?? $solicitud->codigo_postgrado
+        );
+
+        if ($solicitud->justificacion !== null && $solicitud->justificacion !== '') {
+            $mensaje .= ' Justificación: '.$solicitud->justificacion;
+        }
+
+        return $this->emitir(
+            $destinatarios,
+            tipo: 'solicitud',
+            titulo: 'Solicitud de apertura de cohortes',
+            mensaje: $mensaje,
+            // El emisor es el propio solicitante (rol distinto: no hay autonotificación).
+            emisor: $emisor ?? $solicitud->solicitante,
+            // La bandeja de solicitudes es de coordinador general: todos los
+            // destinatarios de este envío pueden abrirla.
+            enlace: fn () => route('coordinador.apertura.bandeja')
+        );
+    }
+
+    /**
+     * El coordinador general respondió la solicitud de apertura: aviso de
+     * vuelta al solicitante (aprobada = ya tiene cupos; rechazada = con motivo).
+     */
+    public function solicitudAperturaRespondida(SolicitudAperturaCohorte $solicitud, ?User $emisor = null): int
+    {
+        $solicitante = $solicitud->solicitante;
+
+        if (! $solicitante) {
+            return 0; // su cuenta ya no existe: no hay a quién notificarle
+        }
+
+        $aprobada = $solicitud->estado === SolicitudAperturaCohorte::ESTADO_APROBADA;
+        $nombrePostgrado = $solicitud->postgrado?->nombre ?? $solicitud->codigo_postgrado;
+
+        $mensaje = $aprobada
+            ? sprintf(
+                'Tu solicitud de %d cupo(s) de cohorte para «%s» fue APROBADA: ya puedes crear las cohortes.',
+                $solicitud->cupos,
+                $nombrePostgrado
+            )
+            : sprintf(
+                'Tu solicitud de %d cupo(s) de cohorte para «%s» fue RECHAZADA. Motivo: %s',
+                $solicitud->cupos,
+                $nombrePostgrado,
+                $solicitud->motivo_rechazo
+            );
+
+        return $this->emitir(
+            collect([$solicitante]),
+            tipo: 'estado',
+            titulo: $aprobada ? 'Apertura de cohortes aprobada' : 'Apertura de cohortes rechazada',
+            mensaje: $mensaje,
+            emisor: $emisor,
+            // Su propia página de solicitudes solo existe para ese rol
+            // (mismo criterio defensivo que en pagoVerificado).
+            enlace: fn (User $destinatario) => $destinatario->rol === 'coordinador_postgrado'
+                ? route('coordinador.apertura.index')
+                : null
+        );
     }
 
     /**
