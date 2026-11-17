@@ -49,6 +49,26 @@ class GeneradorPlanillaPreinscripcion
     ];
 
     /**
+     * Tipos de postgrado conocidos → artículo con el que la planilla nombra
+     * el programa (formato mixto del título, decisión 2026-11-11): si el
+     * nombre de la BD empieza por uno de estos, se usa tal cual en
+     * mayúsculas con SU artículo («LA ESPECIALIZACIÓN EN X», «EL DIPLOMADO
+     * EN X»); si no, se antepone «LA MAESTRÍA EN».
+     */
+    private const TIPOS_POSTGRADO = [
+        'maestria' => 'LA',
+        'especializacion' => 'LA',
+        'diplomado' => 'EL',
+        'doctorado' => 'EL',
+    ];
+
+    /**
+     * Título de reserva cuando la preinscripción quedó sin mención/postgrado
+     * (era el texto fijo que traía la plantilla antes del cambio dinámico).
+     */
+    private const TITULO_DEFECTO = 'LA MAESTRÍA EN CIENCIAS ADMINISTRATIVAS';
+
+    /**
      * Genera el .docx relleno y devuelve su ruta absoluta. El archivo se crea
      * en storage/app/private/preinscripcion/generadas y el caller es quien lo
      * borra (response()->download(...)->deleteFileAfterSend(true)).
@@ -121,6 +141,11 @@ class GeneradorPlanillaPreinscripcion
             }
         }
 
+        // Columnas «PROGRAMA DE POSTGRADO» de la cabecera: las menciones del
+        // postgrado en el MISMO orden de la matriz del .doc (celdas vacías
+        // si hay menos de 3; la matriz solo tiene 3 columnas).
+        $programas = $postgrado ? $this->mencionesOrdenadas($postgrado) : collect();
+
         return [
             'voucher_nro' => (string) ($p->voucher_nro ?? ''),
             'voucher_fecha' => $this->fechaPlanilla($p->voucher_fecha),
@@ -128,6 +153,12 @@ class GeneradorPlanillaPreinscripcion
             'menciones' => $titulos['menciones'],
             'anio' => $titulos['anio'],
             'menciones_extra' => $titulos['menciones_extra'],
+            // Título dinámico (formato mixto) y celda ESCUELA/DPTO (2026-11-11).
+            'titulo_postgrado' => $this->tituloPostgrado($postgrado),
+            'escuela' => $this->nombreSinTipo($postgrado),
+            'programa_1' => (string) $programas->get(0, ''),
+            'programa_2' => (string) $programas->get(1, ''),
+            'programa_3' => (string) $programas->get(2, ''),
             'cas_bcn' => $p->sede === 'Barcelona' ? 'X' : '',
             'cas_can' => $p->sede === 'Cantaura' ? 'X' : '',
         ] + $casillas;
@@ -291,18 +322,7 @@ class GeneradorPlanillaPreinscripcion
      */
     private function titulosEncabezado(Postgrado $postgrado): array
     {
-        $columnas = array_keys(self::COLUMNAS_MENCION);
-
-        $lista = $postgrado->menciones
-            ->sortBy('id_mencion')
-            ->sortBy(function ($mencion) use ($columnas) {
-                $columna = $this->columnaDeMencion($mencion->nombre);
-
-                return $columna === null
-                    ? count($columnas)
-                    : (int) array_search($columna, $columnas);
-            })
-            ->pluck('nombre')
+        $lista = $this->mencionesOrdenadas($postgrado)
             ->map(fn ($nombre) => mb_strtoupper($nombre));
 
         $excede = $lista->count() > 2;
@@ -315,6 +335,80 @@ class GeneradorPlanillaPreinscripcion
             'anio' => date('Y'),
             'menciones_extra' => $excede ? $lista->skip(2)->implode(', ').'   ' : '',
         ];
+    }
+
+    /**
+     * Menciones del postgrado ordenadas como las columnas de la matriz del
+     * .doc (primero las que casan con cas_gg/cas_fin/cas_rrhh, después por
+     * id): sirve para la línea «MENCIÓN …» (aquí se pasan a mayúsculas) y
+     * para las celdas «PROGRAMA DE POSTGRADO» de la cabecera (tal cual
+     * vienen de la BD, decisión 2026-11-11). Devuelve la lista reindexada.
+     *
+     * @return \Illuminate\Support\Collection<int, string>
+     */
+    private function mencionesOrdenadas(Postgrado $postgrado)
+    {
+        $columnas = array_keys(self::COLUMNAS_MENCION);
+
+        return $postgrado->menciones
+            ->sortBy('id_mencion')
+            ->sortBy(function ($mencion) use ($columnas) {
+                $columna = $this->columnaDeMencion($mencion->nombre);
+
+                return $columna === null
+                    ? count($columnas)
+                    : (int) array_search($columna, $columnas);
+            })
+            ->pluck('nombre')
+            ->values();
+    }
+
+    /**
+     * Título del programa para la línea «PLANILLA DE PREINSCRIPCIÓN PARA»
+     * de la planilla (formato mixto, decisión 2026-11-11): si el nombre de
+     * la BD empieza por un tipo conocido se usa tal cual en mayúsculas con
+     * SU artículo («LA ESPECIALIZACIÓN EN PETROLEO»); si no, se antepone
+     * «LA MAESTRÍA EN». El artículo va dentro del placeholder porque la
+     * plantilla ya no lo fija (así un «Diplomado» no queda «PARA LA
+     * DIPLOMADO»). Sin postgrado (mención borrada), texto de reserva.
+     */
+    private function tituloPostgrado(?Postgrado $postgrado): string
+    {
+        if ($postgrado === null || trim((string) $postgrado->nombre) === '') {
+            return self::TITULO_DEFECTO;
+        }
+
+        $nombre = trim($postgrado->nombre);
+        $normal = $this->sinAcentos(mb_strtolower($nombre));
+
+        foreach (self::TIPOS_POSTGRADO as $prefijo => $articulo) {
+            if (str_starts_with($normal, $prefijo)) {
+                return $articulo.' '.mb_strtoupper($nombre);
+            }
+        }
+
+        return 'LA MAESTRÍA EN '.mb_strtoupper($nombre);
+    }
+
+    /**
+     * Nombre del postgrado sin el tipo para la celda «ESCUELA/DPTO» de la
+     * cabecera («Especialización en Informatica Gerencial» → «Informatica
+     * Gerencial»; si no empieza por un tipo conocido, el nombre tal cual).
+     */
+    private function nombreSinTipo(?Postgrado $postgrado): string
+    {
+        if ($postgrado === null) {
+            return '';
+        }
+
+        $nombre = trim((string) $postgrado->nombre);
+        $sinTipo = preg_replace(
+            '/^(maestr[ií]a|especializaci[oó]n|diplomado|doctorado)(\s+en)?\s+/iu',
+            '',
+            $nombre
+        );
+
+        return ($sinTipo !== null && $sinTipo !== '') ? $sinTipo : $nombre;
     }
 
     /**
