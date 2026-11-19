@@ -8,6 +8,7 @@ use App\Models\Mencion;
 use App\Models\Postgrado;
 use App\Models\Preinscripcion;
 use App\Services\GeneradorPlanillaPreinscripcion;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,22 @@ use Illuminate\Support\Facades\Auth;
 class PreinscripcionController extends Controller
 {
     use FiltrablePorCoordinador;
+
+    /**
+     * Formatos compartidos con la vista (create.blade.php): teléfono móvil
+     * 04xx o fijo 02xx con separadores opcionales y +58 opcional; cédula con
+     * prefijo V/E/P/J/G opcional; fecha de grado en dd-mm-aaaa.
+     */
+    private const REGEX_TELEFONO = '/^(?:\+?58[\s.-]*)?0(?:4\d{2}|2\d{2})[\s.-]*\d{7}$/';
+
+    private const REGEX_CEDULA = '/^(?:[VEPJG][\s.-]*)?\d+(?:[.\s-]\d+)*$/i';
+
+    private const REGEX_GRADO_FECHA = '/^(0[1-9]|[12]\d|3[01])[-\/](0[1-9]|1[0-2])[-\/]\d{4}$/';
+
+    /** Mensajes compartidos de las reglas «solo letras»/«solo números». */
+    private const MENSAJE_SOLO_LETRAS = 'Solo se permiten letras, espacios, guiones y apóstrofos.';
+
+    private const MENSAJE_SOLO_NUMEROS = 'Solo se permiten números.';
 
     public function __construct(private GeneradorPlanillaPreinscripcion $generador) {}
 
@@ -95,7 +112,7 @@ class PreinscripcionController extends Controller
      */
     public function store(Request $request)
     {
-        $datos = $request->validate($this->reglas());
+        $datos = $request->validate($this->reglas($request), $this->mensajes());
 
         // La mención elegida debe pertenecer al postgrado seleccionado en el
         // formulario (el postgrado no se guarda: se deriva de la mención).
@@ -115,6 +132,22 @@ class PreinscripcionController extends Controller
             return back()
                 ->withErrors(['codigo_mencion' => 'Las preinscripciones de este postgrado no están abiertas actualmente.'])
                 ->withInput();
+        }
+
+        // Bloque laboral: si no trabaja, todo el bloque se limpia (los campos
+        // están ocultos en la vista, así que no deben guardar datos aunque
+        // lleguen manipulados por POST).
+        if ($datos['trabaja'] === 'no') {
+            foreach (['ocupacion', 'cargo', 'tiempo_cargo', 'empresa', 'direccion_empresa', 'supervisor', 'telefono_supervisor', 'correo_supervisor'] as $campoLaboral) {
+                $datos[$campoLaboral] = null;
+            }
+        }
+
+        // doc3 (libreta militar) solo aplica a varones: si es mujer y no vino
+        // marcado (viene deshabilitado y no se envía), queda «No» para que
+        // construirDocumentos no acceda a un índice inexistente.
+        if ($datos['sexo'] !== 'M') {
+            $datos['doc3'] = $datos['doc3'] ?? 'no';
         }
 
         $preinscripcion = Preinscripcion::create([
@@ -256,13 +289,17 @@ class PreinscripcionController extends Controller
 
     /**
      * Reglas de validación del formulario completo (réplica de la planilla).
+     *
+     * Recibe el request porque varias reglas dependen de otros campos: el
+     * bloque laboral (si trabaja), doc3 (solo varones) y las referencias,
+     * que no pueden repetir el teléfono ni el correo del titular.
      */
-    private function reglas(): array
+    private function reglas(Request $request): array
     {
         $reglas = [
             // Voucher del depósito
-            'voucher_nro' => ['nullable', 'string', 'max:50'],
-            'voucher_fecha' => ['nullable', 'date'],
+            'voucher_nro' => ['nullable', 'string', 'max:50', $this->soloNumeros()],
+            'voucher_fecha' => ['nullable', 'date', 'before_or_equal:today'],
             'voucher_banco' => ['nullable', 'string', 'max:100'],
 
             // Interés académico
@@ -271,9 +308,9 @@ class PreinscripcionController extends Controller
             'sede' => ['required', 'string', 'in:'.implode(',', Preinscripcion::SEDES)],
 
             // Datos personales
-            'apellidos' => ['required', 'string', 'max:100'],
-            'nombres' => ['required', 'string', 'max:100'],
-            'cedula' => ['required', 'string', 'max:20', 'regex:/^[0-9.\-]+$/', 'unique:preinscripcion,cedula'],
+            'apellidos' => ['required', 'string', 'max:100', $this->soloLetras()],
+            'nombres' => ['required', 'string', 'max:100', $this->soloLetras()],
+            'cedula' => ['required', 'string', 'max:20', $this->cedulaValida(), 'unique:preinscripcion,cedula'],
             'edad' => ['required', 'integer', 'min:18', 'max:99'],
             'sexo' => ['required', 'in:M,F'],
             'estado_civil' => ['required', 'in:Soltero(a),Casado(a),Divorciado(a),Viudo(a),Unión libre'],
@@ -281,26 +318,27 @@ class PreinscripcionController extends Controller
             'lugar_nacimiento' => ['required', 'string', 'max:150'],
             'etnia' => ['nullable', 'string', 'max:50'],
             'direccion_permanente' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:30'],
+            'telefono' => ['required', 'string', 'max:30', $this->telefonoValido()],
             'correo' => ['required', 'email', 'max:150'],
             'direccion_otra' => ['nullable', 'string', 'max:255'],
-            'telefono_otro' => ['nullable', 'string', 'max:30'],
+            'telefono_otro' => ['nullable', 'string', 'max:30', $this->telefonoValido()],
             'correo_otro' => ['nullable', 'email', 'max:150'],
 
             // Formación de pregrado
             'titulo_pregrado' => ['required', 'string', 'max:150'],
             'institucion_pregrado' => ['required', 'string', 'max:150'],
-            'anio_grado' => ['required', 'integer', 'min:1900', 'max:'.(date('Y') + 1)],
+            'anio_grado' => ['required', 'integer', 'min:1900', 'max:'.date('Y')],
 
-            // Situación laboral
+            // Situación laboral (los tres obligatorios condicionales se
+            // añaden más abajo cuando trabaja ≠ «no»)
             'trabaja' => ['required', 'in:dependiente,cuenta_propia,libre_ejercicio,no'],
             'ocupacion' => ['nullable', 'string', 'max:150'],
             'cargo' => ['nullable', 'string', 'max:150'],
             'tiempo_cargo' => ['nullable', 'string', 'max:50'],
             'empresa' => ['nullable', 'string', 'max:255'],
             'direccion_empresa' => ['nullable', 'string', 'max:255'],
-            'supervisor' => ['nullable', 'string', 'max:150'],
-            'telefono_supervisor' => ['nullable', 'string', 'max:30'],
+            'supervisor' => ['nullable', 'string', 'max:150', $this->soloLetras()],
+            'telefono_supervisor' => ['nullable', 'string', 'max:30', $this->telefonoValido()],
             'correo_supervisor' => ['nullable', 'email', 'max:150'],
 
             // Financiamiento y textos libres
@@ -309,35 +347,205 @@ class PreinscripcionController extends Controller
             'experiencia_laboral' => ['nullable', 'string', 'max:5000'],
         ];
 
+        // Trabaja (≠ «no»): ocupación, cargo y empresa pasan a ser
+        // obligatorios (bloque «básico»); con «no» store() limpia el bloque.
+        if (in_array($request->input('trabaja'), ['dependiente', 'cuenta_propia', 'libre_ejercicio'], true)) {
+            $reglas['ocupacion'] = ['required', 'string', 'max:150'];
+            $reglas['cargo'] = ['required', 'string', 'max:150'];
+            $reglas['empresa'] = ['required', 'string', 'max:255'];
+        }
+
         // Tabla de grados (3 filas fijas por tipo) y referencias (2 personas).
         foreach (['universitario', 'postgrado', 'otros'] as $tipo) {
             $reglas["grado_{$tipo}_institucion"] = ['nullable', 'string', 'max:150'];
             $reglas["grado_{$tipo}_titulo"] = ['nullable', 'string', 'max:150'];
-            $reglas["grado_{$tipo}_anos"] = ['nullable', 'string', 'max:20'];
-            $reglas["grado_{$tipo}_pais"] = ['nullable', 'string', 'max:80'];
-            $reglas["grado_{$tipo}_fecha"] = ['nullable', 'string', 'max:30'];
+            $reglas["grado_{$tipo}_anos"] = ['nullable', 'string', 'max:20', $this->soloNumeros()];
+            $reglas["grado_{$tipo}_pais"] = ['nullable', 'string', 'max:80', $this->soloLetras()];
+            $reglas["grado_{$tipo}_fecha"] = ['nullable', 'string', 'max:30', $this->fechaGradoValida()];
         }
 
         foreach ([1, 2] as $numero) {
-            $reglas["ref{$numero}_nombre"] = ['required', 'string', 'max:150'];
+            $reglas["ref{$numero}_nombre"] = ['required', 'string', 'max:150', $this->soloLetras()];
             $reglas["ref{$numero}_edad"] = ['required', 'integer', 'min:1', 'max:110'];
             $reglas["ref{$numero}_direccion"] = ['required', 'string', 'max:255'];
-            $reglas["ref{$numero}_telefono"] = ['required', 'string', 'max:30'];
-            $reglas["ref{$numero}_email"] = ['required', 'email', 'max:150'];
+            $reglas["ref{$numero}_telefono"] = [
+                'required',
+                'string',
+                'max:30',
+                $this->telefonoValido(),
+                // Referencia ≠ titular (comparación normalizada: dígitos sin +58).
+                function (string $atributo, mixed $valor, Closure $fallar) use ($request): void {
+                    $digitos = $this->normalizarTelefono((string) $valor);
+                    if ($digitos !== '' && $digitos === $this->normalizarTelefono((string) $request->input('telefono'))) {
+                        $fallar('El teléfono de la referencia no puede ser igual al teléfono del titular.');
+                    }
+                },
+            ];
+            $reglas["ref{$numero}_email"] = [
+                'required',
+                'email',
+                'max:150',
+                // Referencia ≠ titular (comparación sin distinguir mayúsculas).
+                function (string $atributo, mixed $valor, Closure $fallar) use ($request): void {
+                    $correo = mb_strtolower(trim((string) $valor));
+                    if ($correo !== '' && $correo === mb_strtolower(trim((string) $request->input('correo')))) {
+                        $fallar('El correo de la referencia no puede ser igual al correo del titular.');
+                    }
+                },
+            ];
             $reglas["ref{$numero}_ocupacion"] = ['required', 'string', 'max:150'];
             $reglas["ref{$numero}_cargo"] = ['required', 'string', 'max:150'];
             $reglas["ref{$numero}_empresa"] = ['required', 'string', 'max:150'];
-            $reglas["ref{$numero}_telefono_trabajo"] = ['nullable', 'string', 'max:30'];
+            $reglas["ref{$numero}_telefono_trabajo"] = ['nullable', 'string', 'max:30', $this->telefonoValido()];
             $reglas["ref{$numero}_email_trabajo"] = ['nullable', 'email', 'max:150'];
             $reglas["ref{$numero}_direccion_trabajo"] = ['nullable', 'string', 'max:255'];
         }
 
-        // Checklist de documentación (7 casillas SI/NO del .doc).
+        // Checklist de documentación (7 casillas SI/NO del .doc); doc3 es la
+        // libreta militar y solo es obligatoria para varones.
         foreach (range(1, 7) as $numero) {
-            $reglas["doc{$numero}"] = ['required', 'in:si,no'];
+            $reglas["doc{$numero}"] = $numero === 3 && $request->input('sexo') !== 'M'
+                ? ['nullable', 'in:si,no']
+                : ['required', 'in:si,no'];
         }
 
         return $reglas;
+    }
+
+    /**
+     * Mensajes en español para las reglas nuevas (el proyecto no tiene
+     * carpeta lang/: el resto de mensajes siguen en inglés por defecto).
+     */
+    private function mensajes(): array
+    {
+        return [
+            'cedula.unique' => 'Ya existe una preinscripción registrada con esta cédula.',
+            'voucher_fecha.date' => 'La fecha del voucher no es una fecha válida.',
+            'voucher_fecha.before_or_equal' => 'La fecha del voucher no puede ser futura.',
+            'anio_grado.min' => 'El año de grado debe ser 1900 o posterior.',
+            'anio_grado.max' => 'El año de grado no puede ser posterior al año actual.',
+            'ocupacion.required' => 'La ocupación es obligatoria cuando indicó que trabaja.',
+            'cargo.required' => 'El cargo es obligatorio cuando indicó que trabaja.',
+            'empresa.required' => 'La empresa es obligatoria cuando indicó que trabaja.',
+            'doc3.required' => 'Debe indicar si presenta la libreta militar (solo varones).',
+        ];
+    }
+
+    /**
+     * Formato de teléfono (idéntico al de la vista): móvil 04xx o fijo 02xx,
+     * 7 dígitos, guion/espacio opcional y +58 opcional. Los campos
+     * opcionales se envían vacíos: se acepta ''.
+     */
+    private function telefonoValido(): Closure
+    {
+        return function (string $atributo, mixed $valor, Closure $fallar): void {
+            $telefono = trim((string) $valor);
+            if ($telefono === '') {
+                return;
+            }
+            if (! preg_match(self::REGEX_TELEFONO, $telefono)) {
+                $fallar('El teléfono debe ser formato 0414-1234567 (también 0212-8765432 o +58-0414-1234567).');
+            }
+        };
+    }
+
+    /**
+     * Cédula: forma libre con prefijo opcional (V/E/P/J/G) y entre 5 y 10
+     * dígitos en total (se ignoran puntos y guiones como separadores).
+     */
+    private function cedulaValida(): Closure
+    {
+        return function (string $atributo, mixed $valor, Closure $fallar): void {
+            $cedula = trim((string) $valor);
+            if ($cedula === '') {
+                return;
+            }
+            if (! preg_match(self::REGEX_CEDULA, $cedula)) {
+                $fallar('El formato de la cédula no es válido (ejemplos: 30123456, V-30.123.456).');
+
+                return;
+            }
+            $digitos = (string) preg_replace('/\D/', '', (string) preg_replace('/^[VEPJG]/i', '', $cedula));
+            if (strlen($digitos) < 5 || strlen($digitos) > 10) {
+                $fallar('La cédula debe tener entre 5 y 10 dígitos.');
+            }
+        };
+    }
+
+    /**
+     * Fecha de la tabla de grados: dd-mm-aaaa (también con /), fecha real
+     * válida y no posterior al año en curso.
+     */
+    private function fechaGradoValida(): Closure
+    {
+        return function (string $atributo, mixed $valor, Closure $fallar): void {
+            $fecha = trim((string) $valor);
+            if ($fecha === '') {
+                return;
+            }
+            if (! preg_match(self::REGEX_GRADO_FECHA, $fecha)) {
+                $fallar('La fecha de grado debe tener el formato dd-mm-aaaa (ej.: 15-07-2025).');
+
+                return;
+            }
+            [$dia, $mes, $anio] = array_map('intval', explode('-', str_replace('/', '-', $fecha)));
+            if (! checkdate($mes, $dia, $anio)) {
+                $fallar('La fecha de grado no es una fecha válida.');
+
+                return;
+            }
+            if ($anio > (int) date('Y')) {
+                $fallar('La fecha de grado no puede ser futura.');
+            }
+        };
+    }
+
+    /**
+     * Teléfono normalizado para compararlo con el de una referencia: solo
+     * dígitos y sin el prefijo 58 inicial.
+     */
+    private function normalizarTelefono(string $telefono): string
+    {
+        $digitos = (string) preg_replace('/\D/', '', $telefono);
+        if (strlen($digitos) > 11 && str_starts_with($digitos, '58')) {
+            $digitos = substr($digitos, 2);
+        }
+
+        return $digitos;
+    }
+
+    /**
+     * Solo letras (con acentos y Ñ), espacios, guion y apóstrofo: nombres
+     * de personas (titular, referencias, supervisor) y países. Admite
+     * vacío para los campos opcionales.
+     */
+    private function soloLetras(): Closure
+    {
+        return function (string $atributo, mixed $valor, Closure $fallar): void {
+            $texto = trim((string) $valor);
+            if ($texto === '') {
+                return;
+            }
+            if (! preg_match('/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\'-]+$/u', $texto)) {
+                $fallar(self::MENSAJE_SOLO_LETRAS);
+            }
+        };
+    }
+
+    /**
+     * Solo dígitos: nº de voucher y años cursados. Admite vacío.
+     */
+    private function soloNumeros(): Closure
+    {
+        return function (string $atributo, mixed $valor, Closure $fallar): void {
+            $texto = trim((string) $valor);
+            if ($texto === '') {
+                return;
+            }
+            if (! preg_match('/^\d+$/', $texto)) {
+                $fallar(self::MENSAJE_SOLO_NUMEROS);
+            }
+        };
     }
 
     /**
