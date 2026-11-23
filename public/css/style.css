@@ -2106,3 +2106,86 @@ tr.notificacion-fila--nueva {
         padding: 20px 16px;
     }
 }
+
+/* ============================================================
+   Entrada fluida al cargar (2026-11-21)
+   ------------------------------------------------------------
+   Misma coreografía que la portada: la barra baja desde arriba,
+   el contenido y el pie suben desde abajo, escalonados.
+   CLAVE: `animation-fill-mode: both` + keyframes que terminan en
+   `transform: none`. Así, al terminar la animación el contenedor
+   NO conserva transform (no queda como containing block) y los
+   elementos position: fixed DENTRO del contenido —el widget de
+   tasa de administrador/index y el modal de profile/edit— vuelven
+   a anclarse al viewport. Con `forwards` y un `translateY(0)`
+   final, ese transform quedaría retenido y los rompería.
+   ============================================================ */
+@keyframes fadeDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        transform: translateY(24px);
+        opacity: 0;
+    }
+
+    to {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+/* Paneles (<x-layout>): barra → contenido → pie */
+header.main-header {
+    animation: fadeDown 0.6s ease-out 0s both;
+}
+
+main.main-content {
+    animation: fadeUp 0.6s ease-out 0.1s both;
+}
+
+.bottom-copyright {
+    animation: fadeUp 0.6s ease-out 0.2s both;
+}
+
+/* Login y registro (vistas standalone que cargan este mismo CSS).
+   Se anima el FORMULARIO, no el contenedor: el contenedor es el último
+   elemento de la página y termina a ~7px del borde del viewport (barra
+   ~83px + min-height calc(100vh - 90px)), así que su translateY(24px)
+   desbordaba el área de scroll —un transform SÍ genera desbordamiento—
+   y creaba una barra de scroll que aparecía durante la animación (en ese
+   momento el formulario estaba en opacity: 0, por eso no se notaba) y
+   desaparecía al terminar → toda la página se recolocaba de golpe.
+   El formulario está centrado con ≥37px de aire debajo (normalmente
+   ~200px), así que su traslado nunca llega al borde; además el
+   contenedor es transparente → el resultado visual es idéntico. */
+.barra-inicio {
+    animation: fadeDown 0.6s ease-out 0s both;
+}
+
+.login-form,
+.registration-form {
+    animation: fadeUp 0.6s ease-out 0.1s both;
+}
+
+/* Accesibilidad: sin movimiento si el usuario lo pide en el sistema */
+@media (prefers-reduced-motion: reduce) {
+
+    header.main-header,
+    main.main-content,
+    .bottom-copyright,
+    .barra-inicio,
+    .login-form,
+    .registration-form {
+        animation: none;
+    }
+}

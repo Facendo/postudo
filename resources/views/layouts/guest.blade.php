@@ -13,6 +13,53 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Entrada fluida al cargar (2026-11-21): el logo baja desde
+             arriba y la tarjeta sube desde abajo, como en el resto de la
+             app. En línea para no tocar el bundle de Vite (sin npm run
+             build). `both` + `to { transform: none }` evita dejar un
+             transform retenido en los contenedores. --}}
+        <style>
+            @keyframes fadeDown {
+                from {
+                    transform: translateY(-20px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: none;
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeUp {
+                from {
+                    transform: translateY(24px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: none;
+                    opacity: 1;
+                }
+            }
+
+            .min-h-screen>div:first-child {
+                animation: fadeDown 0.6s ease-out 0s both;
+            }
+
+            .min-h-screen>div:last-child {
+                animation: fadeUp 0.6s ease-out 0.1s both;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+
+                .min-h-screen>div:first-child,
+                .min-h-screen>div:last-child {
+                    animation: none;
+                }
+            }
+        </style>
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-brand-soft dark:bg-gray-900">

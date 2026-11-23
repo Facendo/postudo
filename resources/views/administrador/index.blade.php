@@ -100,7 +100,11 @@
             padding: 20px 22px;
             z-index: 999;
             box-shadow: 0 10px 30px rgba(0, 18, 51, 0.18);
-            animation: slideInWidget 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            /* Delay 0.7s: entra DESPUÉS de terminar la entrada del panel
+               (main.main-content = delay 0.1s + 0.6s = 0.7s). Mientras
+               tanto queda invisible (fill `both`) y así el widget nunca se
+               ancla al contenedor transformado ni salta de posición. */
+            animation: slideInWidget 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.7s both;
         }
 
         @keyframes slideInWidget {

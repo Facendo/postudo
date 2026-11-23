@@ -138,6 +138,8 @@
             padding: 30px 60px;
             box-sizing: border-box;
             z-index: 10;
+            /* Primera en aparecer (delay 0) al cargar la portada */
+            animation: fadeDown 0.7s ease-out 0s both;
         }
 
         .nav-left {
@@ -259,22 +261,12 @@
         }
 
         .hero-content {
+            --delay-entrada: 0.15s;
             max-width: 900px;
             z-index: 10;
-            animation: fadeUp 1s ease-out forwards;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 8px 16px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--accent-soft);
-            margin-bottom: 25px;
-            backdrop-filter: blur(10px);
+            /* `both` conserva el estado inicial (opacity 0) durante el delay:
+               sin él el título se vería de golpe y luego "saltaría" */
+            animation: fadeUp 1s ease-out var(--delay-entrada) both;
         }
 
         .hero h1 {
@@ -286,33 +278,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: none;
-        }
-
-        .hero p {
-            font-size: clamp(1.1rem, 2vw, 1.3rem);
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-inline: auto;
-            line-height: 1.6;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-
-
-        /* Footer */
-        footer {
-            background: var(--superficie);
-            border-top: 1px solid var(--borde);
-            padding: 40px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.95rem;
         }
 
         /* Flash Messages */
@@ -374,6 +339,19 @@
             }
         }
 
+        /* Entrada de la barra superior: cae desde arriba */
+        @keyframes fadeDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .top-elements {
@@ -390,6 +368,7 @@
            servicios (Ver Postgrados, Contacto, Aranceles) a la derecha; en
            pantallas <= 1439px ambos vuelven al flujo bajo el título. */
         .menu-lateral {
+            --delay-entrada: 0.35s;
             position: fixed;
             left: 30px;
             top: 50%;
@@ -401,7 +380,8 @@
             gap: 14px;
             text-align: left;
             z-index: 100;
-            animation: fadeUpLateral 1s ease-out forwards;
+            /* `both` mantiene opacity 0 mientras espera su delay */
+            animation: fadeUpLateral 1s ease-out var(--delay-entrada) both;
         }
 
         /* Segundo bloque anclado al borde derecho (mismas reglas que el
@@ -409,6 +389,7 @@
            la vuelta al flujo de la media query <= 1439px, donde position:
            static anula estos offsets). */
         .menu-lateral-derecha {
+            --delay-entrada: 0.5s;
             left: auto;
             right: 30px;
         }
@@ -438,7 +419,9 @@
                 max-width: 460px;
                 margin: 40px auto 0;
                 transform: none;
-                animation: fadeUp 1s ease-out forwards;
+                /* Conserva el delay propio de cada bloque (variable heredada
+                   de la regla base) al cambiar a fadeUp */
+                animation: fadeUp 1s ease-out var(--delay-entrada) both;
             }
         }
 
@@ -492,11 +475,21 @@
             inset: 0;
             background: rgba(0, 18, 51, 0.55);
             backdrop-filter: blur(4px);
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             padding: 20px;
+            /* Se oculta con opacity/visibility (no display:none) para poder
+               transicionar la aparición; añade/quita la clase .visible el JS */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .modal-info-fondo.visible {
+            opacity: 1;
+            visibility: visible;
         }
 
         .modal-info-caja {
@@ -511,6 +504,13 @@
             padding: 0;
             box-shadow: var(--glass-shadow);
             text-align: left;
+            /* Entra ligeramente reducido y desplazado hacia abajo */
+            transform: scale(0.96) translateY(8px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-info-fondo.visible .modal-info-caja {
+            transform: scale(1) translateY(0);
         }
 
         .modal-info-cabecera {
@@ -731,6 +731,28 @@
 
 
 
+    /* Accesibilidad: con la preferencia «reducir movimiento» del sistema no  */
+    /* se anima nada al cargar. Los elementos quedan visibles porque sus      */
+    /* reglas base no fijan opacity 0 (solo lo hacen los keyframes, que aquí  */
+    /* no se ejecutan) y el menú lateral conserva su centrado translateY(-50%). */
+    @media (prefers-reduced-motion: reduce) {
+
+        .top-elements,
+        .hero-content,
+        .menu-lateral,
+        .alert,
+        .ambient-light,
+        .glow-light {
+            animation: none;
+        }
+
+        /* El modal de Aranceles aparece casi instantáneo */
+        .modal-info-fondo,
+        .modal-info-caja {
+            transition-duration: 0.01s;
+        }
+    }
+
     </style>
 </head>
 
@@ -754,10 +776,26 @@
 
         <div class="nav-links">
             @auth
-                <a href="{{ url('/perfil') }}" class="nav-link">Mi Perfil</a>
-                <a href="{{ url('/dashboard') }}" class="nav-link">Panel</a>
+                <a href="{{ route('profile.edit') }}" class="nav-link">Mi Perfil</a>
+
+                {{-- «Panel»: mismo mapeo rol→panel que usa el login --}}
+                {{-- (AuthenticatedSessionController::store). Si el rol no está --}}
+                {{-- reconocido, el enlace no se muestra.                       --}}
+                @php
+                    $panelesPorRol = [
+                        'estudiante' => 'estudiante.index',
+                        'administrador' => 'administrador.index',
+                        'coordinador_general' => 'coordinador.index',
+                        'coordinador_postgrado' => 'coordinador_postgrado.index',
+                    ];
+                    $rutaPanel = $panelesPorRol[Auth::user()->rol] ?? null;
+                @endphp
+
+                @if ($rutaPanel)
+                    <a href="{{ route($rutaPanel) }}" class="nav-link">Panel</a>
+                @endif
+
                 <form action="{{ url('/logout') }}" method="POST" style="display: inline;">
-                    {}
                     @csrf
                     <button type="submit" class="btn-primary" style="padding: 10px 20px; font-size: 14px;">Cerrar Sesión <i
                             class="fa-solid fa-arrow-right-from-bracket ml-2"></i></button>
@@ -922,17 +960,18 @@
 
     <script>
         // Apertura y cierre del modal «Aranceles» (el contenido lo pinta
-        // el servidor desde aranceles.json; esto solo maneja el display).
+        // el servidor desde aranceles.json; esto solo alterna la clase
+        // .visible que dispara la transición de aparición).
         const modalInfo = document.getElementById('modalInfo');
         document.getElementById('btnModalInfo').addEventListener('click', function () {
-            modalInfo.style.display = 'flex';
+            modalInfo.classList.add('visible');
         });
         document.getElementById('btnCerrarModalInfo').addEventListener('click', function () {
-            modalInfo.style.display = 'none';
+            modalInfo.classList.remove('visible');
         });
         modalInfo.addEventListener('click', function (evento) {
             if (evento.target === modalInfo) {
-                modalInfo.style.display = 'none';
+                modalInfo.classList.remove('visible');
             }
         });
     </script>
