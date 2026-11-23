@@ -71,6 +71,28 @@ class Preinscripcion extends Model
     public const SEDES = ['Barcelona', 'Cantaura'];
 
     /**
+     * Bancos desde los que el aspirante puede pagar el voucher
+     * (desplegable obligatorio de /preinscripcion; mismos valores que
+     * los selects de banco de registropago del estudiante).
+     */
+    public const BANCOS = [
+        'Banco de Venezuela',
+        'Banesco',
+        'Mercantil',
+        'BBVA Provincial',
+        'Banco Nacional de Crédito',
+        'Banco Activo',
+        'Banco Bicentenario del Pueblo',
+        'Banco del Tesoro',
+        'Banco Exterior',
+        'Banco Fondo Común',
+        'Banco Caroní',
+        'Banplus',
+        'Venezolano de Crédito',
+        'Banco Plaza',
+    ];
+
+    /**
      * Mención de interés del aspirante (nullable con 'set null').
      */
     public function mencion()

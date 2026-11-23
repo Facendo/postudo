@@ -11,6 +11,7 @@ use App\Services\GeneradorPlanillaPreinscripcion;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 /**
  * Preinscripción de estudiantes: formulario público que replica la planilla
@@ -314,7 +315,7 @@ class PreinscripcionController extends Controller
             // Voucher del depósito
             'voucher_nro' => ['nullable', 'string', 'max:50', $this->soloNumeros()],
             'voucher_fecha' => ['nullable', 'date', 'before_or_equal:today'],
-            'voucher_banco' => ['nullable', 'string', 'max:100'],
+            'voucher_banco' => ['required', 'string', 'max:100', Rule::in(Preinscripcion::BANCOS)],
 
             // Interés académico
             'id_postgrado' => ['nullable', 'string', 'max:20'],
@@ -436,6 +437,8 @@ class PreinscripcionController extends Controller
             'cedula.unique' => 'Ya existe una preinscripción registrada con esta cédula.',
             'voucher_fecha.date' => 'La fecha del voucher no es una fecha válida.',
             'voucher_fecha.before_or_equal' => 'La fecha del voucher no puede ser futura.',
+            'voucher_banco.required' => 'Debe seleccionar el banco desde el cual se realizó el pago.',
+            'voucher_banco.in' => 'El banco seleccionado no es válido.',
             'anio_grado.min' => 'El año de grado debe ser 1900 o posterior.',
             'anio_grado.max' => 'El año de grado no puede ser posterior al año actual.',
             'ocupacion.required' => 'La ocupación es obligatoria cuando indicó que trabaja.',

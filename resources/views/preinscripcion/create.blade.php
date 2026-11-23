@@ -142,8 +142,14 @@
 
                         <div class="form-group">
                             <label for="voucher_banco" class="form-label">Banco</label>
-                            <input type="text" id="voucher_banco" name="voucher_banco" class="form-input"
-                                value="{{ old('voucher_banco') }}" maxlength="100">
+                            <select id="voucher_banco" name="voucher_banco" class="form-input form-select" required>
+                                <option value="">Selecciona un banco</option>
+                                @foreach (\App\Models\Preinscripcion::BANCOS as $banco)
+                                    <option value="{{ $banco }}" {{ old('voucher_banco') == $banco ? 'selected' : '' }}>
+                                        {{ $banco }}
+                                    </option>
+                                @endforeach
+                            </select>
                             @error('voucher_banco')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
