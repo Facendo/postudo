@@ -52,6 +52,18 @@
                 animation: fadeUp 0.6s ease-out 0.1s both;
             }
 
+            /* La tarjeta (`div:last-child`) es el último elemento del
+               documento: su translateY(24px) desbordaba el área de scroll
+               cuando el contenido llegaba o superaba el viewport → la
+               barra aparecía durante la animación y desaparecía al
+               terminar, y la página saltaba. `overflow-y: clip` recorta
+               ese desbordamiento SIN cambiar el layout (no puede meter
+               una scrollbar permanente); los hijos `fixed` no se
+               recortan porque clip no crea containing block. */
+            .min-h-screen {
+                overflow-y: clip;
+            }
+
             @media (prefers-reduced-motion: reduce) {
 
                 .min-h-screen>div:first-child,

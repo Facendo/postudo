@@ -17,7 +17,6 @@ Route::middleware(['auth', 'role:coordinador_general'])->group(function () {
     Route::get('/coordinador', [CoordinadorGeneralController::class, 'index'])->name('coordinador.index');
 
     // Gestión de Estudiantes (trasladada desde el panel del administrador, 2026-10-14)
-    Route::get('/coordinador/gestionestudiantes', [EstudianteController::class, 'list'])->name('administrador.gestionestudiantes'); // Lista de estudiantes
     Route::get('/coordinador/gestion_estudiante', [EstudianteController::class, 'list'])->name('estudiante.list'); // Otra ruta para listar estudiantes
     Route::get('/coordinador/registro_estudiante', [EstudianteController::class, 'create'])->name('registro_estudiante.index'); // Formulario de registro de estudiante
     Route::post('/coordinador/registro_estudiante', [EstudianteController::class, 'store'])->name('estudiante.store'); // Guardar nuevo estudiante
@@ -58,6 +57,14 @@ Route::middleware(['auth', 'role:coordinador_general'])->group(function () {
     Route::get('/coordinador/aperturas', [AperturaCohorteController::class, 'bandeja'])->name('coordinador.apertura.bandeja'); // Bandeja: pendientes + historial
     Route::post('/coordinador/aperturas/{solicitud}/aprobar', [AperturaCohorteController::class, 'aprobar'])->name('coordinador.apertura.aprobar'); // Aprobar solicitud (crea cupos)
     Route::post('/coordinador/aperturas/{solicitud}/rechazar', [AperturaCohorteController::class, 'rechazar'])->name('coordinador.apertura.rechazar'); // Rechazar solicitud (motivo obligatorio)
+});
+
+// Listado de estudiantes (2026-11-23): el coordinador general ve todos;
+// el coordinador de postgrado solo los de SUS postgrados (el filtrado lo
+// hace EstudianteController::list con FiltrablePorCoordinador). Su panel
+// enlaza aquí con la tarjeta «Estudiantes».
+Route::middleware(['auth', 'role:coordinador_general|coordinador_postgrado'])->group(function () {
+    Route::get('/coordinador/gestionestudiantes', [EstudianteController::class, 'list'])->name('administrador.gestionestudiantes'); // Lista de estudiantes
 });
 
 // Panel del coordinador de postgrado: solo ve SUS postgrados asignados

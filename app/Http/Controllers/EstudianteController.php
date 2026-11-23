@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
 use App\Models\Area;
 use App\Models\Estudiante;
 use App\Models\Inscripcion;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class EstudianteController extends Controller
 {
+    use FiltrablePorCoordinador;
+
     /**
      * Display a listing of the resource.
      */
@@ -73,11 +76,28 @@ class EstudianteController extends Controller
         return view('administrador.gestionestudiantes', compact('user', 'estudiantes'));
     }
 
+    /**
+     * Listado de estudiantes (2026-11-23, con tarjeta en el panel del
+     * coordinador de postgrado).
+     *
+     * El coordinador general ve todos (sin filtro, como siempre); el
+     * coordinador de postgrado solo los de SUS postgrados, a través de
+     * su mención — los que no tienen mención no están asociados a ningún
+     * postgrado y quedan fuera del listado.
+     */
     public function list()
     {
-        $estudiantes = Estudiante::all();
+        $permitidos = $this->idsPostgradosPermitidos(Auth::user());
 
-        return view('administrador.gestionestudiantes', compact('estudiantes'));
+        $estudiantes = Estudiante::when($permitidos, fn ($query) => $query->whereHas(
+            'mencion',
+            fn ($mencion) => $mencion->whereIn('id_postgrado', $permitidos)
+        ))->get();
+
+        return view('administrador.gestionestudiantes', [
+            'estudiantes' => $estudiantes,
+            'sinPostgradosAsignados' => $permitidos !== null && $permitidos->isEmpty(),
+        ]);
     }
 
     /**

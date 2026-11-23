@@ -15,10 +15,6 @@
                 <i class="fa-solid fa-users"></i>
                 <span>Estudiantes</span>
             </a>
-            <a href="{{ route('registro_estudiante.index') }}" class="admin-card">
-                <i class="fa-solid fa-user-plus"></i>
-                <span>Registrar Estudiante</span>
-            </a>
             <a href="{{ route('administrador.creacion.index') }}" class="admin-card">
                 <i class="fa-solid fa-layer-group"></i>
                 <span>Áreas</span>

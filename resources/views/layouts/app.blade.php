@@ -54,6 +54,20 @@
                 animation: fadeUp 0.6s ease-out 0.1s both;
             }
 
+            /* `main` es el último hijo de este contenedor: su
+               translateY(24px) desbordaba el área de scroll cuando el
+               contenido llegaba o superaba el viewport → la barra de
+               scroll aparecía durante la animación y desaparecía al
+               terminar, y toda la página saltaba. `overflow-y: clip`
+               recorta ese desbordamiento SIN cambiar el layout (a
+               diferencia del padding, no puede meter una scrollbar
+               permanente); los hijos `fixed` (el modal de borrar
+               cuenta) no se recortan porque clip no crea containing
+               block. */
+            .min-h-screen {
+                overflow-y: clip;
+            }
+
             @media (prefers-reduced-motion: reduce) {
 
                 .min-h-screen>nav,
