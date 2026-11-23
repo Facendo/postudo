@@ -232,23 +232,6 @@
             left: 100%;
         }
 
-        .btn-outline {
-            background: transparent;
-            color: var(--udo-azul);
-            padding: 11px 27px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            border: 2px solid rgba(0, 61, 165, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent);
-            background: rgba(247, 148, 29, 0.12);
-        }
-
         /* Hero Section */
         .hero {
             min-height: 100vh;

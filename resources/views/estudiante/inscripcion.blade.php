@@ -1,110 +1,139 @@
-<x-layout title='PostUDO || Registro de Estudiante'>
+<x-layout title='PostUDO || Mi Inscripción'>
+    <style>
+        /* Estilos locales de la consulta de inscripción (solo esta página) */
+        .estado-insc {
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            margin-bottom: 14px;
+        }
+
+        .estado-insc.pendiente {
+            background: rgba(247, 148, 29, 0.15);
+            border: 1px solid rgba(247, 148, 29, 0.45);
+            color: var(--accent-orange-dark);
+        }
+
+        .estado-insc.aprobada {
+            background: rgba(0, 61, 165, 0.12);
+            border: 1px solid rgba(0, 61, 165, 0.4);
+            color: var(--primary-blue);
+        }
+
+        .estado-insc.rechazada {
+            background: rgba(220, 53, 69, 0.15);
+            border: 1px solid rgba(220, 53, 69, 0.45);
+            color: var(--danger-red);
+        }
+
+        .estado-insc.inscrita {
+            background: rgba(40, 167, 69, 0.15);
+            border: 1px solid rgba(40, 167, 69, 0.45);
+            color: #15803d;
+        }
+
+        .texto-estado {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--texto-oscuro, #333);
+            text-align: center;
+        }
+
+        .ficha-inscripcion {
+            margin-top: 18px;
+            padding: 14px 18px;
+            border: 1px solid var(--borde-suave, rgba(0, 0, 0, 0.1));
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.03);
+            text-align: left;
+            font-size: 0.88rem;
+            line-height: 1.8;
+        }
+
+        .ficha-inscripcion p {
+            margin: 0;
+        }
+    </style>
+
     <section class="login-page-container">
         <div class="registration-form">
-            <h2 class="registration-form-title">Inscripción de Estudiante a Oferta Académica</h2>
+            <h2 class="registration-form-title">Estado de mi Inscripción</h2>
 
-            {{-- Formulario de inscripción a una cohorte --}}
-            {{-- NOTA: el envío (estudiante.inscribir) aún no está implementado; --}}
-            {{-- el rediseño completo del sistema de inscripción queda pendiente (ver MEMORY). --}}
-            <form action="{{ route('estudiante.inscribir') }}" method="POST">
-                @csrf
+            @php
+                // Mención/postgrado a mostrar: los del estudiante; si no
+                // tiene fila (o le faltan), los de la cohorte asignada.
+                $mencion = $estudiante?->mencion ?? $inscripcion?->cohorte?->mencion;
+                $postgrado = $mencion?->postgrado ?? $inscripcion?->cohorte?->postgrado;
+            @endphp
 
-                {{-- Campo para seleccionar el Postgrado --}}
-                <div class="form-group">
-                    <label for="id_postgrado" class="form-label">Postgrado</label>
-                    <select id="id_postgrado" name="id_postgrado" class="form-input" required>
-                        <option value="">Selecciona un Postgrado</option>
-                        @forelse($postgrados as $postgrado)
-                            <option value="{{ $postgrado->id_postgrado }}" {{ old('id_postgrado') == $postgrado->id_postgrado ? 'selected' : '' }}>
-                                {{ $postgrado->nombre }}
-                            </option>
-                        @empty
-                            <option value="" disabled>No hay Postgrados registrados.</option>
-                        @endforelse
-                    </select>
-                    @error('id_postgrado')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+            @if ($inscripcion === null)
+                {{-- Sin fila en 'inscripcion' = sin proceso gestionado aún --}}
+                <div style="text-align: center;">
+                    <span class="estado-insc pendiente">Sin proceso</span>
+                    <p class="texto-estado">
+                        Aún no tienes un proceso de inscripción.
+                        @if ($estudiante)
+                            Si acabas de enviar tu preinscripción, espera a que la coordinación
+                            de tu postgrado la revise; el coordinador es quien te inscribe en
+                            una cohorte.
+                        @else
+                            Contacta con la coordinación de tu postgrado para más información.
+                        @endif
+                    </p>
                 </div>
-
-                {{-- Campo para seleccionar la Cohorte --}}
-                <div class="form-group">
-                    <label for="codigo_cohorte" class="form-label">Cohorte</label>
-                    <select id="codigo_cohorte" name="codigo_cohorte" class="form-input" required disabled>
-                        <option value="">Selecciona una Cohorte</option>
-                    </select>
-                    @error('codigo_cohorte')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+            @elseif ($inscripcion->estado === 'inscrita')
+                <div style="text-align: center;">
+                    <span class="estado-insc inscrita">Inscrita</span>
+                    <p class="texto-estado">
+                        Estás inscrito(a) en la cohorte
+                        <strong>{{ $inscripcion->codigo_cohorte }}</strong>
+                        @if ($inscripcion->cohorte?->fecha_inicio)
+                            (desde el {{ \Carbon\Carbon::parse($inscripcion->cohorte->fecha_inicio)->format('d/m/Y') }}
+                            @if ($inscripcion->cohorte?->fecha_fin)
+                                hasta el {{ \Carbon\Carbon::parse($inscripcion->cohorte->fecha_fin)->format('d/m/Y') }}
+                            @endif)
+                        @endif
+                        @if ($mencion)
+                            de la mención <strong>{{ $mencion->nombre }}</strong>
+                            @if ($postgrado)
+                                del postgrado <strong>{{ $postgrado->nombre }}</strong>
+                            @endif
+                        @endif
+                        .
+                    </p>
                 </div>
-
-                <div class="form-actions" style="justify-content: center;">
-                    <button type="submit" class="submit-button">Inscribirse</button>
+            @elseif ($inscripcion->estado === 'aprobada')
+                <div style="text-align: center;">
+                    <span class="estado-insc aprobada">Aprobada</span>
+                    <p class="texto-estado">
+                        Tu preinscripción fue aprobada. El coordinador de tu postgrado
+                        te inscribirá en una cohorte de tu mención; vuelve a consultar
+                        para ver el detalle cuando esté completa.
+                    </p>
                 </div>
-            </form>
+            @elseif ($inscripcion->estado === 'rechazada')
+                <div style="text-align: center;">
+                    <span class="estado-insc rechazada">Rechazada</span>
+                    <p class="texto-estado">
+                        Tu inscripción fue rechazada por la coordinación de tu postgrado.
+                        Si tienes dudas, contacta directamente con ella.
+                    </p>
+                </div>
+            @endif
+
+            @if ($estudiante)
+                <div class="ficha-inscripcion">
+                    <p><strong>Estudiante:</strong>
+                        {{ trim(($estudiante->nombre ?? '').' '.($estudiante->apellido ?? '')) }}</p>
+                    <p><strong>Mención:</strong>
+                        {{ $mencion?->nombre ?? 'Sin mención asignada' }}</p>
+                    <p><strong>Postgrado:</strong>
+                        {{ $postgrado?->nombre ?? '—' }}</p>
+                </div>
+            @endif
         </div>
     </section>
-
-    <script>
-        // Datos pasados desde el controlador: postgrados y cohortes.
-        // Cascado simple postgrado -> cohorte (materias y secciones ya no existen).
-        const allPostgrados = @json($postgrados ?? []);
-        const allCohortes = @json($cohortes ?? []);
-
-        // Elementos del DOM
-        const postgradoSelect = document.getElementById('id_postgrado');
-        const cohorteSelect = document.getElementById('codigo_cohorte');
-
-        // Función para resetear y deshabilitar un select
-        function resetAndDisableSelect(selectElement, defaultText) {
-            selectElement.innerHTML = `<option value="">${defaultText}</option>`;
-            selectElement.disabled = true;
-        }
-
-        // Función para poblar un select
-        function populateSelect(selectElement, items, idKey, nameKey, defaultText) {
-            selectElement.innerHTML = `<option value="">${defaultText}</option>`;
-            if (items.length > 0) {
-                items.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item[idKey];
-                    option.textContent = item[nameKey];
-                    selectElement.appendChild(option);
-                });
-                selectElement.disabled = false;
-            } else {
-                selectElement.innerHTML = `<option value="" disabled>No hay ${defaultText.toLowerCase().replace('selecciona una ', '')} disponibles.</option>`;
-                selectElement.disabled = true;
-            }
-        }
-
-        // Event Listener para Postgrado: filtra las cohortes del postgrado elegido.
-        postgradoSelect.addEventListener('change', function() {
-            const selectedPostgradoId = this.value;
-
-            resetAndDisableSelect(cohorteSelect, 'Selecciona una Cohorte');
-
-            if (selectedPostgradoId) {
-                const filteredCohortes = allCohortes.filter(cohorte => cohorte.codigo_postgrado == selectedPostgradoId);
-                populateSelect(cohorteSelect, filteredCohortes, 'codigo_cohorte', 'codigo_cohorte', 'Selecciona una Cohorte');
-            }
-        });
-
-        // Re-selección de valores antiguos si la validación falla.
-        document.addEventListener('DOMContentLoaded', () => {
-            const oldPostgradoId = "{{ old('id_postgrado') }}";
-            const oldCohorteId = "{{ old('codigo_cohorte') }}";
-
-            if (oldPostgradoId) {
-                postgradoSelect.value = oldPostgradoId;
-                postgradoSelect.dispatchEvent(new Event('change'));
-
-                setTimeout(() => {
-                    if (oldCohorteId) {
-                        cohorteSelect.value = oldCohorteId;
-                    }
-                }, 100);
-            }
-        });
-    </script>
 </x-layout>

@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Preinscripción de un aspirante a un postgrado (planilla .doc de la
- * coordinación). Una fila por cédula; al aprobarla habilita al estudiante
- * para la planilla de inscripción (validación futura), pero NO lo da de
- * alta en 'estudiantes'.
+ * coordinación). Una fila por cédula; al aprobarla el aspirante pasa al
+ * apartado de Inscripciones del coordinador de postgrado, que es quien
+ * lo da de alta en 'estudiantes' y lo inscribe en una cohorte
+ * (2026-11-23). Aprobar o rechazar la preinscripción por sí solo no
+ * crea estudiantes.
  */
 class Preinscripcion extends Model
 {

@@ -6,6 +6,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CoordinadorGeneralController;
 use App\Http\Controllers\CoordinadorPostgradoController;
 use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\MencionController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,4 +70,13 @@ Route::middleware(['auth', 'role:coordinador_postgrado'])->group(function () {
     Route::get('/coordinador_postgrado/aperturas', [AperturaCohorteController::class, 'index'])->name('coordinador.apertura.index'); // Sus solicitudes + formulario
     Route::post('/coordinador_postgrado/aperturas', [AperturaCohorteController::class, 'store'])->name('coordinador.apertura.store'); // Enviar solicitud
     Route::delete('/coordinador_postgrado/aperturas/{solicitud}', [AperturaCohorteController::class, 'destroy'])->name('coordinador.apertura.destroy'); // Cancelar solicitud pendiente
+
+    // Apartado de Inscripciones (2026-11-23): las preinscripciones
+    // aprobadas de SUS postgrados pasan aquí; el coordinador aprueba o
+    // rechaza al aspirante (al aprobar se crea la fila en 'estudiantes')
+    // y luego lo inscribe en una cohorte de SU mención. Solo este rol.
+    Route::get('/coordinador_postgrado/inscripciones', [InscripcionController::class, 'index'])->name('coordinador.inscripciones.index'); // Listado con estados y acciones
+    Route::post('/coordinador_postgrado/inscripciones/{preinscripcion}/aprobar', [InscripcionController::class, 'aprobar'])->name('coordinador.inscripciones.aprobar'); // Paso 1: aprobar (crea estudiantes)
+    Route::post('/coordinador_postgrado/inscripciones/{preinscripcion}/rechazar', [InscripcionController::class, 'rechazar'])->name('coordinador.inscripciones.rechazar'); // Paso 1: rechazar
+    Route::post('/coordinador_postgrado/inscripciones/{preinscripcion}/inscribir', [InscripcionController::class, 'inscribir'])->name('coordinador.inscripciones.inscribir'); // Paso 2: elegir cohorte
 });

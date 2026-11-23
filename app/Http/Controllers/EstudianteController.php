@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
-use App\Models\Cohorte;
 use App\Models\Estudiante;
+use App\Models\Inscripcion;
 use App\Models\Mencion;
-use App\Models\Pagos;
 use App\Models\Postgrado;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -153,47 +152,29 @@ class EstudianteController extends Controller
     }
 
     /**
-     * Oferta académica para inscribirse.
+     * Consulta del estado de inscripción (solo lectura, 2026-11-23).
      *
-     * Si el estudiante tiene mención asignada solo ve el postgrado de esa
-     * mención; si no tiene (estudiantes antiguos) ve todos los postgrados.
+     * Quien inscribe es el coordinador de postgrado (apartado de
+     * Inscripciones); aquí el estudiante solo ve su estado: sin proceso,
+     * aprobado esperando cohorte, inscrita en una cohorte o rechazada.
+     * Sin gate de pago: la integración de pagos queda pendiente.
      */
     public function inscripcion()
     {
         $user = Auth::user();
-        $estudiante = Estudiante::where('cedula', $user->cedula)->first();
 
-        $mencion = $estudiante && $estudiante->codigo_mencion
-            ? Mencion::find($estudiante->codigo_mencion)
-            : null;
+        // La cédula del usuario tiene la forma normalizada (así se crea
+        // la fila en 'estudiantes' al registrarse), igual que
+        // 'inscripcion.cedula'.
+        $estudiante = Estudiante::with('mencion.postgrado')
+            ->where('cedula', $user->cedula)
+            ->first();
 
-        $postgrados = $mencion
-            ? Postgrado::where('id_postgrado', $mencion->id_postgrado)->get()
-            : Postgrado::orderBy('nombre')->get();
+        $inscripcion = Inscripcion::with('cohorte')
+            ->where('cedula', $user->cedula)
+            ->first();
 
-        // Cohortes de esos postgrados; si el estudiante tiene mención, solo
-        // las de SU mención (más las antiguas "sin mención", por robustez).
-        // El JS de la vista además filtra por postgrado al cascada.
-        $cohortes = Cohorte::whereIn('codigo_postgrado', $postgrados->pluck('id_postgrado'))
-            ->when($mencion, function ($query) use ($estudiante) {
-                $query->where(function ($sub) use ($estudiante) {
-                    $sub->where('codigo_mencion', $estudiante->codigo_mencion)
-                        ->orWhereNull('codigo_mencion');
-                });
-            })
-            ->get();
-
-        // Se requiere un pago de inscripción que no esté pendiente.
-        $pagos = Pagos::where('cedula', $user->cedula)->get();
-        $verificacion_pago = $pagos->contains(
-            fn ($pago) => $pago->asunto === 'Inscripción' && $pago->estado !== 'Pendiente'
-        );
-
-        if (! $verificacion_pago) {
-            return redirect()->route('estudiante.index')->with('error', 'No se ha procesado el pago de inscripción.');
-        }
-
-        return view('estudiante.inscripcion', compact('user', 'postgrados', 'cohortes'));
+        return view('estudiante.inscripcion', compact('user', 'estudiante', 'inscripcion'));
     }
 
     public function update(Request $request, Estudiante $estudiante)

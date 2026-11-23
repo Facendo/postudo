@@ -36,6 +36,13 @@
                     @endif
                 @endif
 
+                {{-- «Mi Inscripción»: consulta del estado del estudiante.
+                     Va fuera del bloque de «Inicio» para mostrarse también
+                     en el índice del panel (no es el propio índice). --}}
+                @if (Auth::user()->rol == 'estudiante')
+                    <a href="{{ route('estudiante.inscripcion') }}" class="button_barra">Mi Inscripción</a>
+                @endif
+
                 {{-- Campanita de notificaciones: visible en los 4 roles.
                      El badge lo refresca el polling de abajo cada 30 s. --}}
                 @php

@@ -8,4 +8,5 @@ Route::get('/estudiante/perfil', [EstudianteController::class, 'showPerfil'])->m
 Route::get('/estudiante/perfil/editar', [EstudianteController::class, 'editPerfil'])->middleware('auth', 'role:estudiante')->name('estudiante.perfil.edit');
 Route::put('/estudiante/perfil/editar', [EstudianteController::class, 'update_Perfil_estudiante'])->middleware('auth', 'role:estudiante')->name('estudiante.perfil_update');
 Route::get('/estudiante/inscripcion', [EstudianteController::class, 'inscripcion'])->middleware('auth', 'role:estudiante')->name('estudiante.inscripcion');
-Route::put('/estudiante/inscripcion', [EstudianteController::class, 'inscribir'])->middleware('auth', 'role:estudiante')->name('estudiante.inscribir');
+// El PUT estudiante.inscribir se eliminó el 2026-11-23: quien inscribe es el
+// coordinador de postgrado (apartado de Inscripciones); el estudiante solo consulta.

@@ -54,8 +54,10 @@
 
         <div style="margin: 10px 0 25px; color: var(--texto-suave); font-size: 0.92rem; text-align: center;">
             @if (Auth::user()->rol === 'coordinador_postgrado')
-                Preinscripciones del postgrado asignado. Aprobar una preinscripción
-                habilita al aspirante para su inscripción.
+                Aprobar una preinscripción la envía al apartado de
+                <a href="{{ route('coordinador.inscripciones.index') }}"
+                    style="color: var(--primary-blue); font-weight: 600;">Inscripciones</a>,
+                donde apruebas o rechazas al aspirante y lo inscribes en una cohorte de su mención.
             @else
                 Aprobar una preinscripción habilita al aspirante para su inscripción.
             @endif

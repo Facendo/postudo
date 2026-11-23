@@ -223,7 +223,9 @@ class PreinscripcionController extends Controller
     }
 
     /**
-     * Aprueba la preinscripción (habilita al aspirante para la inscripción).
+     * Aprueba la preinscripción: el aspirante pasa al apartado de
+     * Inscripciones del coordinador de postgrado, que es quien lo da de
+     * alta en 'estudiantes' y lo inscribe en una cohorte (2026-11-23).
      */
     public function aprobar(Preinscripcion $preinscripcion)
     {
@@ -235,9 +237,21 @@ class PreinscripcionController extends Controller
 
         $preinscripcion->update(['estado' => 'aprobada']);
 
+        // El coordinador de postgrado continúa en el apartado de
+        // Inscripciones (ahí aprueba/rechaza al aspirante y lo inscribe en
+        // una cohorte); los demás roles vuelven al listado de preinscripciones.
+        $esCoordinadorDePostgrado = Auth::user()->rol === 'coordinador_postgrado';
+
         return redirect()
-            ->route('administrador.preinscripciones.index')
-            ->with('success', 'Preinscripción aprobada. El aspirante queda habilitado para su inscripción.');
+            ->route($esCoordinadorDePostgrado
+                ? 'coordinador.inscripciones.index'
+                : 'administrador.preinscripciones.index')
+            ->with(
+                'success',
+                $esCoordinadorDePostgrado
+                    ? 'Preinscripción aprobada. Continúa en Inscripciones para aprobar al aspirante e inscribirlo en una cohorte.'
+                    : 'Preinscripción aprobada. El coordinador del postgrado gestionará su inscripción desde su apartado de Inscripciones.'
+            );
     }
 
     /**
