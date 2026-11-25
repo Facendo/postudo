@@ -113,7 +113,15 @@ Al crear o ajustar vistas en este proyecto, se debe respetar su arquitectura fro
 
 ---
 
-## 5. Checklist de Revisión de Diseño
+## 5. Guías de Referencia Detalladas
+
+Para especificaciones numéricas exactas y recetas de implementación avanzada, consulta:
+- [Guía de Micro-UI y Pulido Visual](./references/micro_ui.md) (inspirada en `better-ui`): Radios de bordes anidados, sombras en 2 capas, alineación óptica de iconos y anillos de foco accesibles.
+- [Guía de Animación y Motion Design](./references/motion.md) (inspirada en `better-motion`): Duraciones por tipo de interacción, curvas easing, control de `containing block` y prevención de parpadeos de scroll.
+
+---
+
+## 6. Checklist de Revisión de Diseño
 
 Antes de dar por finalizada una vista o ajuste de interfaz, verificar:
 - [ ] ¿Se siente como una herramienta sólida y real para la universidad o parece una plantilla SaaS generada por IA?
