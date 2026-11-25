@@ -56,11 +56,13 @@ Para todo el modelado técnico del **Capítulo IV**, esta skill se apoya directa
 
 ---
 
-## 4. Guías de Referencia de Esta Skill
+## 4. Guías de Referencia y Documentos del Proyecto
 
 Consulta los archivos complementarios para ejecutar tareas específicas:
 - [Protocolo Code-to-Text](./references/code_to_text.md): Reglas para auditar e inspeccionar migraciones, modelos, controladores y rutas antes de redactar.
 - [Estructura Detallada de Capítulos](./references/estructura_capitulos.md): Índice analítico y contenido requerido para los capítulos I al V.
+- **Tesis Guía Oficial (Benchmark):** [docs/tesis/referencia/Tesis Guia.pdf](file:///c:/laragon/www/postudo/docs/tesis/referencia/Tesis%20Guia.pdf) *(OBLIGATORIA: Todo nuevo capítulo, diagrama, caso de uso o tabla de prueba debe seguir fielmente la estructura, granularidad y formato visual de esta tesis aprobada en la UDO)*.
+- **Borrador de Trabajo:** [docs/tesis/tesis.docx](file:///c:/laragon/www/postudo/docs/tesis/tesis.docx) *(Mantener siempre cerrado en Word antes de cualquier procesamiento)*.
 
 ---
 
