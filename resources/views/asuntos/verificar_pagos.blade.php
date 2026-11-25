@@ -160,8 +160,8 @@
         @endif
 
         <div class="verificacion-volver">
-            <a href="{{ route('pago.pendientes') }}" class="button_body">
-                <i class="fa-solid fa-arrow-left icon-left"></i> Volver a Pagos Pendientes
+            <a href="{{ route('pago.controlpagos') }}" class="button_body">
+                <i class="fa-solid fa-arrow-left icon-left"></i> Volver a Pagos
             </a>
         </div>
     </div>

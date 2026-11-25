@@ -91,20 +91,6 @@ class PagoController extends Controller
         ]);
     }
 
-    public function pagosActualizados()
-    {
-        $pagos = Pagos::with('estudiante')->where('estado', 'Actualizado')->get();
-
-        return view('asuntos.pagos_actualizados', compact('pagos'));
-    }
-
-    public function pagosPendientes()
-    {
-        $pagos = Pagos::with('estudiante')->where('estado', 'Pendiente')->get();
-
-        return view('asuntos.pagos_pendientes', compact('pagos'));
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -156,7 +142,14 @@ class PagoController extends Controller
     /**
      * Verificar pagos pendientes contra el Google Sheet publicado.
      */
-    public function verificarPagos()
+    /**
+     * Verificar pagos pendientes contra el Google Sheet publicado.
+     *
+     * Con error se vuelve a la lista de Pagos conservando los filtros
+     * (?estado=…&postgrado=…&semana=…, que el botón de controldepagos
+     * arrastra en la URL) — nunca a la vista vieja de pendientes.
+     */
+    public function verificarPagos(Request $request)
     {
         // Leer la URL del Google Sheet desde la configuración
         $sheetConfig = null;
@@ -165,7 +158,7 @@ class PagoController extends Controller
         }
 
         if (! $sheetConfig || empty($sheetConfig['url'])) {
-            return redirect()->route('pago.pendientes')
+            return redirect()->route('pago.controlpagos', $request->query())
                 ->with('error', 'No se ha configurado la URL del Google Sheet. Configure la URL primero.');
         }
 
@@ -174,7 +167,7 @@ class PagoController extends Controller
             $response = Http::timeout(15)->get($sheetConfig['url']);
 
             if (! $response->successful()) {
-                return redirect()->route('pago.pendientes')
+                return redirect()->route('pago.controlpagos', $request->query())
                     ->with('error', 'No se pudo conectar con el Google Sheet. Verifique la URL y que esté publicado.');
             }
 
@@ -182,7 +175,7 @@ class PagoController extends Controller
             // pero normalmente se actualiza rápido.
             $csvContent = $response->body();
         } catch (\Exception $e) {
-            return redirect()->route('pago.pendientes')
+            return redirect()->route('pago.controlpagos', $request->query())
                 ->with('error', 'Error al conectar con Google Sheets: '.$e->getMessage());
         }
 
@@ -327,7 +320,7 @@ class PagoController extends Controller
         $ids = $request->input('pago_ids', []);
 
         if (empty($ids)) {
-            return redirect()->route('pago.pendientes')
+            return redirect()->back()
                 ->with('error', 'No se seleccionaron pagos para actualizar.');
         }
 
@@ -358,7 +351,7 @@ class PagoController extends Controller
             }
         }
 
-        return redirect()->route('pago.pendientes')
+        return redirect()->route('pago.controlpagos')
             ->with('success', "Se actualizaron {$count} pago(s) exitosamente.");
     }
 
@@ -378,7 +371,9 @@ class PagoController extends Controller
 
         Storage::put('google_sheet_config.json', json_encode($config));
 
-        return redirect()->route('pago.pendientes')
+        // Volver a la lista de Pagos desde donde se configuró (back() = el
+        // último GET, con sus filtros) — nunca a la vista vieja de pendientes.
+        return redirect()->back()
             ->with('success', 'URL del Google Sheet configurada exitosamente.');
     }
 

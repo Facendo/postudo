@@ -108,7 +108,9 @@
     {{-- Botón de verificación contra la hoja --}}
     <div class="action-buttons-container">
         @if ($sheetConfig && !empty($sheetConfig['url']))
-            <a href="{{ route('pago.verificar') }}" class="button_body btn-verificar-principal">
+            {{-- Arrastra los filtros actuales (estado/postgrado/semana) para que
+                 verificarPagos pueda devolverlos si falla. --}}
+            <a href="{{ route('pago.verificar', request()->query()) }}" class="button_body btn-verificar-principal">
                 <i class="fa-solid fa-magnifying-glass-chart icon-left"></i> Verificar Pagos con Google Sheet
             </a>
         @else
