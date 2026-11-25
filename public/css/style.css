@@ -491,7 +491,8 @@ header.main-header {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.content_texto_bienvenida label {
+.content_texto_bienvenida label,
+.content_texto_bienvenida h1 {
     font-family: 'Outfit', sans-serif;
     font-size: 3rem;
     font-weight: 700;
@@ -499,6 +500,8 @@ header.main-header {
     line-height: 1.1;
     text-align: center;
     display: block;
+    margin-top: 0;
+    /* h1 trae margen por defecto del navegador */
     margin-bottom: 25px;
     text-shadow: none;
     letter-spacing: -0.2px;
@@ -1466,7 +1469,8 @@ table td:last-child {
         padding: 10px 20px;
     }
 
-    .content_texto_bienvenida label {
+    .content_texto_bienvenida label,
+    .content_texto_bienvenida h1 {
         font-size: 2.5em;
     }
 
@@ -1517,7 +1521,8 @@ table td:last-child {
         padding: 15px;
     }
 
-    .content_texto_bienvenida label {
+    .content_texto_bienvenida label,
+    .content_texto_bienvenida h1 {
         font-size: 2em;
         margin-bottom: 15px;
     }
@@ -1700,18 +1705,18 @@ table td:last-child {
 /* ============================================================
    Catálogo público de postgrados (/postgrado, vista postgrado/index)
    Acordeón Área -> Postgrados -> Menciones, todas abiertas por defecto.
-   Paleta UDO y fuentes del sistema (Outfit/Inter). Reemplaza a las
-   clases antiguas .info-section/.info-list/.area-link, que se borraron
-   por rotas: usaban var(--black) (variable inexistente), fuentes no
-   cargadas (Montserrat/Open Sans) y un bloque duplicado que pintaba
-   los enlaces de azul #003da5 sobre fondo azul marino.
+   Rediseño plano (2026-11-25, skill web-design): una sola tarjeta por
+   área, postgrados como filas con divisor (sin tarjeta anidada) y
+   menciones como chips. Naranja reservado a la interacción
+   (hover/focus/flecha/bookmark); iconos en azul institucional.
+   Paleta UDO; tipografía: hereda Outfit (body), la fuente del
+   proyecto — sin font-family propio en este bloque.
    ============================================================ */
 .catalogo-entrada {
     max-width: 700px;
     margin: 0 auto;
     padding: 0 20px;
     text-align: center;
-    font-family: 'Inter', sans-serif;
     font-size: 1.05em;
     color: var(--texto);
     line-height: 1.6;
@@ -1720,32 +1725,34 @@ table td:last-child {
 .catalogo {
     width: 90%;
     max-width: 1000px;
-    margin: 35px auto 60px;
+    margin: 30px auto 60px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
+/* Único nivel de tarjeta: borde 1px + sombra de contacto nítida
+   (la guía micro_ui desaconseja elevación difusa en reposo) */
 .catalogo-area {
     background: var(--superficie);
     border: 1px solid var(--borde);
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 18, 51, 0.06);
+    box-shadow: 0 1px 2px rgba(0, 18, 51, 0.06);
 }
 
 .catalogo-area-cabecera {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 18px 22px;
+    gap: 8px;
+    padding: 16px 22px;
     cursor: pointer;
     list-style: none;
     font-family: 'Outfit', sans-serif;
-    font-size: 1.2em;
-    font-weight: 600;
+    font-size: 1.3em;
+    font-weight: 700;
     color: var(--texto);
-    transition: background-color 0.25s ease;
+    transition: background-color 0.15s ease-out;
 }
 
 /* Oculta la flecha nativa de <summary> (Chrome/Safari y Firefox) */
@@ -1758,17 +1765,24 @@ table td:last-child {
 }
 
 .catalogo-area-cabecera:hover {
-    background: rgba(0, 61, 165, 0.06);
+    background: rgba(247, 148, 29, 0.08);
+}
+
+/* Foco visible en teclado (nunca eliminar el outline sin reemplazo) */
+.catalogo-area-cabecera:focus-visible {
+    outline: 2px solid var(--accent-orange);
+    outline-offset: -2px;
 }
 
 .catalogo-area[open] > .catalogo-area-cabecera {
-    background: rgba(247, 148, 29, 0.08);
     border-bottom: 1px solid var(--borde);
 }
 
+/* Iconos decorativos en azul institucional: el naranja queda para
+   la interacción (flecha, foco, hover y bookmarks de mención). */
 .catalogo-icono {
-    color: var(--accent-orange);
-    width: 26px;
+    color: var(--udo-azul);
+    width: 22px;
     text-align: center;
     flex-shrink: 0;
 }
@@ -1784,92 +1798,83 @@ table td:last-child {
 .catalogo-flecha {
     margin-left: auto;
     color: var(--accent-orange);
-    font-size: 0.85em;
+    font-size: 0.8em;
     flex-shrink: 0;
-    transition: transform 0.25s ease;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .catalogo-area[open] .catalogo-flecha {
     transform: rotate(180deg);
 }
 
-.catalogo-contador {
-    flex-shrink: 0;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72em;
-    font-weight: 500;
-    color: var(--accent-orange-dark);
-    background: rgba(247, 148, 29, 0.15);
-    border: 1px solid rgba(247, 148, 29, 0.35);
-    padding: 3px 10px;
-    border-radius: 999px;
-    white-space: nowrap;
-}
-
 .catalogo-area-cuerpo {
-    padding: 18px 22px 22px;
+    padding: 14px 22px 18px;
 }
 
 .catalogo-postgrados {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
 }
 
+/* Postgrado como fila plana con divisor: sin tarjeta anidada */
 .catalogo-postgrado {
-    background: var(--superficie);
-    border: 1px solid var(--borde);
-    border-left: 4px solid var(--accent-orange);
-    border-radius: 10px;
-    padding: 14px 18px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+.catalogo-postgrados .catalogo-postgrado:last-child {
+    border-bottom: none;
+    padding-bottom: 2px;
 }
 
 .catalogo-postgrado-cabecera {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
     font-size: 1.05em;
     color: var(--texto);
 }
 
-.catalogo-postgrado-cabecera .catalogo-contador {
-    margin-left: auto;
-}
-
+/* Chips de mención: micro-elementos planos, alineados bajo el nombre
+   del postgrado (icono 22px + gap 8px = 30px) */
 .catalogo-menciones {
     list-style: none;
-    margin: 12px 0 0;
-    padding: 2px 0 2px 14px;
-    border-left: 2px solid rgba(247, 148, 29, 0.35);
+    margin: 10px 0 0;
+    padding: 0 0 0 30px;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
 .catalogo-menciones li {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95em;
+    gap: 6px;
+    font-size: 0.88em;
     color: var(--texto);
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 4px 10px;
 }
 
 .catalogo-menciones li i {
     color: var(--accent-orange);
-    font-size: 0.8em;
+    font-size: 0.75em;
 }
 
 .catalogo-vacio {
-    font-family: 'Inter', sans-serif;
     font-style: italic;
     color: var(--texto-suave);
     padding: 4px 2px;
+}
+
+/* El aviso de «sin menciones» se alinea bajo el nombre del postgrado */
+.catalogo-postgrado .catalogo-vacio {
+    padding-left: 30px;
 }
 
 .catalogo-vacio-global {
@@ -1881,16 +1886,11 @@ table td:last-child {
 @media (max-width: 640px) {
     .catalogo-area-cabecera {
         flex-wrap: wrap;
-        font-size: 1.05em;
-        gap: 10px;
+        font-size: 1.1em;
     }
 
     .catalogo-postgrado-cabecera {
         flex-wrap: wrap;
-    }
-
-    .catalogo-postgrado-cabecera .catalogo-contador {
-        margin-left: 0;
     }
 }
 /* ============================================================
@@ -2225,5 +2225,11 @@ main.main-content {
     .login-form,
     .registration-form {
         animation: none;
+    }
+
+    /* Catálogo de postgrados: sin transiciones de acordeón ni hover */
+    .catalogo-area-cabecera,
+    .catalogo-flecha {
+        transition: none;
     }
 }

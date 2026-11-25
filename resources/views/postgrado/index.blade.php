@@ -1,7 +1,7 @@
 <x-layout title="PostUDO || Postgrado">
 
     <section class="content_texto_bienvenida">
-        <label>Bienvenido al Catálogo de Postgrados UDO</label>
+        <h1>Catálogo de Postgrados UDO</h1>
     </section>
 
     <p class="catalogo-entrada">
@@ -17,10 +17,6 @@
                 <summary class="catalogo-area-cabecera">
                     <i class="fa-solid fa-layer-group catalogo-icono"></i>
                     <span class="catalogo-area-nombre">{{ $area->nombre }}</span>
-                    <span class="catalogo-contador">
-                        {{ $area->postgrados->count() }}
-                        {{ $area->postgrados->count() === 1 ? 'postgrado' : 'postgrados' }}
-                    </span>
                     <i class="fa-solid fa-chevron-down catalogo-flecha"></i>
                 </summary>
 
@@ -34,10 +30,6 @@
                                     <div class="catalogo-postgrado-cabecera">
                                         <i class="fa-solid fa-graduation-cap catalogo-icono"></i>
                                         <span>{{ $postgrado->nombre }}</span>
-                                        <span class="catalogo-contador">
-                                            {{ $postgrado->menciones->count() }}
-                                            {{ $postgrado->menciones->count() === 1 ? 'mención' : 'menciones' }}
-                                        </span>
                                     </div>
 
                                     @if ($postgrado->menciones->isEmpty())
