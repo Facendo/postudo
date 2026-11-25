@@ -694,7 +694,10 @@
         // ============================================================
         const formPreinscripcion = document.getElementById('formPreinscripcion');
 
-        const TELEFONO_RE = /^(?:\+?58[\s.-]*)?0(?:4\d{2}|2\d{2})[\s.-]*\d{7}$/;
+        // Móviles: solo los6 prefijos admitidos (0415 no vale,2026-11-25);
+        // TELEFONO_EMPRESA_RE además admite fijos02xx (supervisor/trabajo).
+        const TELEFONO_RE = /^(?:\+?58[\s.-]*)?0(?:412|414|416|422|424|426)[\s.-]*\d{7}$/;
+        const TELEFONO_EMPRESA_RE = /^(?:\+?58[\s.-]*)?0(?:412|414|416|422|424|426|2\d{2})[\s.-]*\d{7}$/;
         const CEDULA_RE = /^(?:[VEPJG][\s.-]*)?\d+(?:[.\s-]\d+)*$/i;
         const FECHA_GRADO_RE = /^(0[1-9]|[12]\d|3[01])[-\/](0[1-9]|1[0-2])[-\/]\d{4}$/;
         const SOLO_LETRAS_RE = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s'-]+$/;
@@ -734,7 +737,14 @@
             if (TELEFONO_RE.test(valor)) {
                 return '';
             }
-            return 'El teléfono debe ser formato 0414-1234567 (también 0212-8765432 o +58-0414-1234567).';
+            return 'El teléfono debe empezar por 0412, 0414, 0416, 0422, 0424 o 0426 (ej.: 0414-1234567).';
+        }
+
+        function mensajeTelefonoEmpresa(valor) {
+            if (TELEFONO_EMPRESA_RE.test(valor)) {
+                return '';
+            }
+            return 'El teléfono de empresa debe ser un fijo 02xx o empezar por 0412, 0414, 0416, 0422, 0424 o 0426 (ej.: 0212-8765432).';
         }
 
         function mensajeCorreo(valor) {
@@ -812,11 +822,11 @@
             grado_otros_pais: mensajeSoloLetras,
             telefono: mensajeTelefono,
             telefono_otro: mensajeTelefono,
-            telefono_supervisor: mensajeTelefono,
+            telefono_supervisor: mensajeTelefonoEmpresa,
             ref1_telefono: function (valor) { return mensajeTelefono(valor) || refTelefonoDiferente(valor); },
             ref2_telefono: function (valor) { return mensajeTelefono(valor) || refTelefonoDiferente(valor); },
-            ref1_telefono_trabajo: mensajeTelefono,
-            ref2_telefono_trabajo: mensajeTelefono,
+            ref1_telefono_trabajo: mensajeTelefonoEmpresa,
+            ref2_telefono_trabajo: mensajeTelefonoEmpresa,
             ref1_email: function (valor) { return mensajeCorreo(valor) || refCorreoDiferente(valor); },
             ref2_email: function (valor) { return mensajeCorreo(valor) || refCorreoDiferente(valor); },
             ref1_email_trabajo: mensajeCorreo,

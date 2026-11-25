@@ -39,7 +39,10 @@ class PreinscripcionController extends Controller
      * 04xx o fijo 02xx con separadores opcionales y +58 opcional; cédula con
      * prefijo V/E/P/J/G opcional; fecha de grado en dd-mm-aaaa.
      */
-    private const REGEX_TELEFONO = '/^(?:\+?58[\s.-]*)?0(?:4\d{2}|2\d{2})[\s.-]*\d{7}$/';
+    private const REGEX_TELEFONO = '/^(?:\+?58[\s.-]*)?0(?:412|414|416|422|424|426)[\s.-]*\d{7}$/';
+
+    /** Como REGEX_TELEFONO pero además admite fijos 02xx (teléfonos de empresa). */
+    private const REGEX_TELEFONO_EMPRESA = '/^(?:\+?58[\s.-]*)?0(?:412|414|416|422|424|426|2\d{2})[\s.-]*\d{7}$/';
 
     private const REGEX_CEDULA = '/^(?:[VEPJG][\s.-]*)?\d+(?:[.\s-]\d+)*$/i';
 
@@ -49,6 +52,12 @@ class PreinscripcionController extends Controller
     private const MENSAJE_SOLO_LETRAS = 'Solo se permiten letras, espacios, guiones y apóstrofos.';
 
     private const MENSAJE_SOLO_NUMEROS = 'Solo se permiten números.';
+
+    /** Teléfonos personales: solo los6 prefijos móviles (2026-11-25). */
+    private const MENSAJE_TELEFONO = 'El teléfono debe empezar por 0412, 0414, 0416, 0422, 0424 o 0426 (ej.: 0414-1234567).';
+
+    /** Teléfonos de empresa (supervisor/trabajo): fijos02xx o móviles. */
+    private const MENSAJE_TELEFONO_EMPRESA = 'El teléfono de empresa debe ser un fijo 02xx o empezar por 0412, 0414, 0416, 0422, 0424 o 0426 (ej.: 0212-8765432).';
 
     public function __construct(private GeneradorPlanillaPreinscripcion $generador) {}
 
@@ -403,7 +412,7 @@ class PreinscripcionController extends Controller
             'empresa' => ['nullable', 'string', 'max:255'],
             'direccion_empresa' => ['nullable', 'string', 'max:255'],
             'supervisor' => ['nullable', 'string', 'max:150', $this->soloLetras()],
-            'telefono_supervisor' => ['nullable', 'string', 'max:30', $this->telefonoValido()],
+            'telefono_supervisor' => ['nullable', 'string', 'max:30', $this->telefonoValido(true)],
             'correo_supervisor' => ['nullable', 'email', 'max:150'],
 
             // Financiamiento y textos libres
@@ -461,7 +470,7 @@ class PreinscripcionController extends Controller
             $reglas["ref{$numero}_ocupacion"] = ['required', 'string', 'max:150'];
             $reglas["ref{$numero}_cargo"] = ['required', 'string', 'max:150'];
             $reglas["ref{$numero}_empresa"] = ['required', 'string', 'max:150'];
-            $reglas["ref{$numero}_telefono_trabajo"] = ['nullable', 'string', 'max:30', $this->telefonoValido()];
+            $reglas["ref{$numero}_telefono_trabajo"] = ['nullable', 'string', 'max:30', $this->telefonoValido(true)];
             $reglas["ref{$numero}_email_trabajo"] = ['nullable', 'email', 'max:150'];
             $reglas["ref{$numero}_direccion_trabajo"] = ['nullable', 'string', 'max:255'];
         }
@@ -501,19 +510,27 @@ class PreinscripcionController extends Controller
     }
 
     /**
-     * Formato de teléfono (idéntico al de la vista): móvil 04xx o fijo 02xx,
-     * 7 dígitos, guion/espacio opcional y +58 opcional. Los campos
-     * opcionales se envían vacíos: se acepta ''.
+     * Formato de teléfono (idéntico al de la vista): 7 dígitos, guion/
+     * espacio opcional y +58 opcional. Los campos opcionales se envían
+     * vacíos: se acepta ''.
+     *
+     * $empresa = false (teléfonos personales): solo los prefijos móviles
+     * 0412/0414/0416/0422/0424/0426. $empresa = true (teléfonos de
+     * empresa: supervisor del titular y trabajo de las referencias):
+     * además se admiten los fijos 02xx.
      */
-    private function telefonoValido(): Closure
+    private function telefonoValido(bool $empresa = false): Closure
     {
-        return function (string $atributo, mixed $valor, Closure $fallar): void {
+        $regex = $empresa ? self::REGEX_TELEFONO_EMPRESA : self::REGEX_TELEFONO;
+        $mensaje = $empresa ? self::MENSAJE_TELEFONO_EMPRESA : self::MENSAJE_TELEFONO;
+
+        return function (string $atributo, mixed $valor, Closure $fallar) use ($regex, $mensaje): void {
             $telefono = trim((string) $valor);
             if ($telefono === '') {
                 return;
             }
-            if (! preg_match(self::REGEX_TELEFONO, $telefono)) {
-                $fallar('El teléfono debe ser formato 0414-1234567 (también 0212-8765432 o +58-0414-1234567).');
+            if (! preg_match($regex, $telefono)) {
+                $fallar($mensaje);
             }
         };
     }
