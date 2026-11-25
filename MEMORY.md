@@ -2,6 +2,11 @@
 
 Memoria del proyecto entre sesiones.
 
+- **Documentación de Tesis Académica (Capítulos I, II, III actualizados 2026-11-25):** borrador de tesis en `docs/tesis/propia/` revisado contra `docs/tesis/referencia/tesis_guia.pdf` (estándar UDO Computación y Sistemas) y la arquitectura real de PostUDO (skill `thesis-docs`). Generada versión actualizada [tesis_actualizada.docx](file:///c:/laragon/www/postudo/docs/tesis/propia/tesis_actualizada.docx) (conservando el original intacto). Ajustes clave aplicados:
+  - **Capítulo I:** Erradicación de términos no canónicos («carreras y especialidades») por la estructura real **Áreas → Postgrados → Menciones y Cohortes**; inclusión formal de la subsección **1.1.1 Formulación del problema** con la pregunta de investigación requerida por el departamento.
+  - **Capítulo II:** Incorporación de bases teóricas de la arquitectura real: **Framework Laravel 12**, **Eloquent ORM**, **Control de Acceso Basado en Roles (RBAC)**, **Integración con Servicios Externos (APIs REST / Tasa BCV)** y **Formatos Abiertos (OpenXML / DOCX)**.
+  - **Capítulo III:** Armonización de las etapas del proyecto bajo las **4 fases oficiales de RUP** (Inicio, Elaboración, Construcción y Transición) con cronograma de 20 semanas; eliminación de la mención residual a «secciones y registros académicos» en la fase de construcción; unificación precisa del censo administrativo (3) y coordinadores (21: 1 general + 20 de postgrado); referencias bibliográficas ampliadas bajo normas APA/UDO.
+
 ## Estado actual
 
 - Laravel 12 monolito (Breeze) en Laragon/Windows, MySQL `postudo`, textos/comentarios/rutas en español.
