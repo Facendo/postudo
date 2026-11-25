@@ -257,10 +257,30 @@
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 25px;
-            background: linear-gradient(to right, var(--text-main) 0%, var(--udo-azul) 30%, var(--accent) 80%);
+            /* Cinta de color: degradado palíndromo (los extremos coinciden)
+               para que el bucle no salte; background-size 200% + recorrer
+               -200% de background-position = un período completo viajando
+               de izquierda a derecha. */
+            background: linear-gradient(to right, var(--text-main) 0%, var(--udo-azul) 30%, var(--accent) 50%, var(--udo-azul) 70%, var(--text-main) 100%);
+            background-size: 200% 100%;
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: none;
+            animation: cintaColores 5s linear infinite;
+        }
+
+        /* Cinta rodante del título: los colores avanzan de izquierda a
+           derecha; -200% avanza exactamente un período del degradado
+           (200%) → el bucle es continuo, sin corte. */
+        @keyframes cintaColores {
+            from {
+                background-position: 0% 50%;
+            }
+
+            to {
+                background-position: -200% 50%;
+            }
         }
 
         /* Flash Messages */
@@ -722,6 +742,7 @@
 
         .top-elements,
         .hero-content,
+        .hero h1,
         .menu-lateral,
         .alert,
         .ambient-light,
