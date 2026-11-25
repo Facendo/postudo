@@ -125,7 +125,7 @@
                         <div class="form-group">
                             <label for="voucher_nro" class="form-label">Nº de voucher</label>
                             <input type="text" id="voucher_nro" name="voucher_nro" class="form-input"
-                                value="{{ old('voucher_nro') }}" maxlength="50" inputmode="numeric">
+                                value="{{ old('voucher_nro') }}" maxlength="50" inputmode="numeric" required>
                             @error('voucher_nro')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
@@ -134,7 +134,7 @@
                         <div class="form-group">
                             <label for="voucher_fecha" class="form-label">Fecha del voucher</label>
                             <input type="date" id="voucher_fecha" name="voucher_fecha" class="form-input"
-                                value="{{ old('voucher_fecha') }}" max="{{ date('Y-m-d') }}">
+                                value="{{ old('voucher_fecha') }}" max="{{ date('Y-m-d') }}" required>
                             @error('voucher_fecha')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror

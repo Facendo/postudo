@@ -28,6 +28,34 @@
             color: var(--danger-red);
         }
 
+        /* Estado del pago del voucher (columna «Pago») */
+        .pago-prein {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .pago-prein.sin-registro {
+            background: rgba(108, 117, 125, 0.15);
+            border: 1px solid rgba(108, 117, 125, 0.45);
+            color: var(--texto-suave);
+        }
+
+        .pago-prein.pendiente {
+            background: rgba(247, 148, 29, 0.15);
+            border: 1px solid rgba(247, 148, 29, 0.45);
+            color: var(--accent-orange-dark);
+        }
+
+        .pago-prein.verificado {
+            background: rgba(40, 167, 69, 0.15);
+            border: 1px solid rgba(40, 167, 69, 0.45);
+            color: #15803d;
+        }
+
         .acciones-prein {
             display: flex;
             gap: 6px;
@@ -74,6 +102,7 @@
                         <th>Sede</th>
                         <th>Enviada</th>
                         <th>Estado</th>
+                        <th>Pago</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -99,6 +128,17 @@
                                 <span class="estado-prein {{ $preinscripcion->estado }}">
                                     {{ ucfirst($preinscripcion->estado) }}
                                 </span>
+                            </td>
+                            <td>
+                                {{-- Pago del voucher creado junto con la preinscripción. --}}
+                                @php($pagoVoucher = $pagosVoucher->get($preinscripcion->cedula))
+                                @if (! $pagoVoucher)
+                                    <span class="pago-prein sin-registro">Sin registro</span>
+                                @elseif ($pagoVoucher->estado === 'Actualizado')
+                                    <span class="pago-prein verificado">Verificado</span>
+                                @else
+                                    <span class="pago-prein pendiente">Pendiente</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="acciones-prein">

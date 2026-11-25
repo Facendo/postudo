@@ -47,26 +47,12 @@
 
             <div class="form-group">
                 <label for="banco_receptor" class="form-label">Banco Receptor</label>
-                <select id="banco_receptor" name="banco_receptor" class="form-input" required>
-                    <option value="">Seleccione un banco</option>
-                    <option value="Banco de Venezuela">Banco de Venezuela</option>
-                    <option value="Banesco">Banesco</option>
-                    <option value="Mercantil">Mercantil</option>
-                    <option value="BBVA Provincial">BBVA Provincial</option>
-                    <option value="Banco Nacional de Crédito">Banco Nacional de Crédito (BNC)</option>
-                    <option value="Banco Activo">Banco Activo</option>
-                    <option value="Banco Bicentenario del Pueblo">Banco Bicentenario del Pueblo</option>
-                    <option value="Banco del Tesoro">Banco del Tesoro</option>
-                    <option value="Banco Exterior">Banco Exterior</option>
-                    <option value="Banco Fondo Común">Banco Fondo Común (BFC)</option>
-                    <option value="Banco Caroní">Banco Caroní</option>
-                    <option value="Banplus">Banplus</option>
-                    <option value="Venezolano de Crédito">Venezolano de Crédito</option>
-                    <option value="Banco Plaza">Banco Plaza</option>
-                </select>
-                @error('banco_receptor')
-                    <span class="form-error-message">{{ $message }}</span>
-                @enderror
+                {{-- Banco fijo de la universidad: UDO solo opera en Banesco (2026-11-23). --}}
+                <input type="text" id="banco_receptor" class="form-input" value="Banesco" readonly disabled>
+                <input type="hidden" name="banco_receptor" value="Banesco">
+                <p style="margin-top: 8px; font-family: 'Outfit'; font-size: 0.85rem; color: var(--texto-suave);">
+                    <i class="fa-solid fa-circle-info"></i> La universidad recibe todos los pagos en Banesco.
+                </p>
             </div>
 
             <div class="form-group">

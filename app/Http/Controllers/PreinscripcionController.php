@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\FiltrablePorCoordinador;
+use App\Models\Asunto;
 use App\Models\Cohorte;
 use App\Models\Mencion;
+use App\Models\Pagos;
 use App\Models\Postgrado;
 use App\Models\Preinscripcion;
 use App\Services\GeneradorPlanillaPreinscripcion;
+use App\Services\NotificacionService;
+use App\Services\TasaCambioService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 /**
@@ -109,7 +114,8 @@ class PreinscripcionController extends Controller
     }
 
     /**
-     * Guarda la preinscripción y devuelve la planilla .docx rellena.
+     * Guarda la preinscripción (con el pago pendiente de su voucher, en la
+     * misma transacción) y devuelve la planilla .docx rellena.
      */
     public function store(Request $request)
     {
@@ -151,47 +157,82 @@ class PreinscripcionController extends Controller
             $datos['doc3'] = $datos['doc3'] ?? 'no';
         }
 
-        $preinscripcion = Preinscripcion::create([
-            'cedula' => $datos['cedula'],
-            'nombre' => $datos['nombres'],
-            'apellido' => $datos['apellidos'],
-            'correo' => $datos['correo'],
-            'telefono' => $datos['telefono'],
-            'edad' => $datos['edad'],
-            'sexo' => $datos['sexo'],
-            'estado_civil' => $datos['estado_civil'],
-            'nacionalidad' => $datos['nacionalidad'],
-            'lugar_nacimiento' => $datos['lugar_nacimiento'],
-            'etnia' => $datos['etnia'] ?? null,
-            'direccion_permanente' => $datos['direccion_permanente'],
-            'direccion_otra' => $datos['direccion_otra'] ?? null,
-            'telefono_otro' => $datos['telefono_otro'] ?? null,
-            'correo_otro' => $datos['correo_otro'] ?? null,
-            'titulo_pregrado' => $datos['titulo_pregrado'],
-            'institucion_pregrado' => $datos['institucion_pregrado'],
-            'anio_grado' => $datos['anio_grado'],
-            'trabaja' => $datos['trabaja'],
-            'ocupacion' => $datos['ocupacion'] ?? null,
-            'cargo' => $datos['cargo'] ?? null,
-            'tiempo_cargo' => $datos['tiempo_cargo'] ?? null,
-            'empresa' => $datos['empresa'] ?? null,
-            'direccion_empresa' => $datos['direccion_empresa'] ?? null,
-            'supervisor' => $datos['supervisor'] ?? null,
-            'telefono_supervisor' => $datos['telefono_supervisor'] ?? null,
-            'correo_supervisor' => $datos['correo_supervisor'] ?? null,
-            'fuente_financiamiento' => $datos['fuente_financiamiento'],
-            'historial_trabajos' => $datos['historial_trabajos'] ?? null,
-            'experiencia_laboral' => $datos['experiencia_laboral'] ?? null,
-            'grados' => $this->construirGrados($datos),
-            'referencias' => $this->construirReferencias($datos),
-            'documentos' => $this->construirDocumentos($datos),
-            'codigo_mencion' => $mencion?->id_mencion,
-            'sede' => $datos['sede'],
-            'voucher_nro' => $datos['voucher_nro'] ?? null,
-            'voucher_fecha' => $datos['voucher_fecha'] ?? null,
-            'voucher_banco' => $datos['voucher_banco'] ?? null,
-            'estado' => 'pendiente',
-        ]);
+        // Transacción (2026-11-23): la preinscripción y el pago de su
+        // voucher nacen juntos o ninguno — si el pago falla, no se guarda
+        // la preinscripción (y viceversa).
+        $preinscripcion = DB::transaction(function () use ($datos, $mencion) {
+            $preinscripcion = Preinscripcion::create([
+                'cedula' => $datos['cedula'],
+                'nombre' => $datos['nombres'],
+                'apellido' => $datos['apellidos'],
+                'correo' => $datos['correo'],
+                'telefono' => $datos['telefono'],
+                'edad' => $datos['edad'],
+                'sexo' => $datos['sexo'],
+                'estado_civil' => $datos['estado_civil'],
+                'nacionalidad' => $datos['nacionalidad'],
+                'lugar_nacimiento' => $datos['lugar_nacimiento'],
+                'etnia' => $datos['etnia'] ?? null,
+                'direccion_permanente' => $datos['direccion_permanente'],
+                'direccion_otra' => $datos['direccion_otra'] ?? null,
+                'telefono_otro' => $datos['telefono_otro'] ?? null,
+                'correo_otro' => $datos['correo_otro'] ?? null,
+                'titulo_pregrado' => $datos['titulo_pregrado'],
+                'institucion_pregrado' => $datos['institucion_pregrado'],
+                'anio_grado' => $datos['anio_grado'],
+                'trabaja' => $datos['trabaja'],
+                'ocupacion' => $datos['ocupacion'] ?? null,
+                'cargo' => $datos['cargo'] ?? null,
+                'tiempo_cargo' => $datos['tiempo_cargo'] ?? null,
+                'empresa' => $datos['empresa'] ?? null,
+                'direccion_empresa' => $datos['direccion_empresa'] ?? null,
+                'supervisor' => $datos['supervisor'] ?? null,
+                'telefono_supervisor' => $datos['telefono_supervisor'] ?? null,
+                'correo_supervisor' => $datos['correo_supervisor'] ?? null,
+                'fuente_financiamiento' => $datos['fuente_financiamiento'],
+                'historial_trabajos' => $datos['historial_trabajos'] ?? null,
+                'experiencia_laboral' => $datos['experiencia_laboral'] ?? null,
+                'grados' => $this->construirGrados($datos),
+                'referencias' => $this->construirReferencias($datos),
+                'documentos' => $this->construirDocumentos($datos),
+                'codigo_mencion' => $mencion?->id_mencion,
+                'sede' => $datos['sede'],
+                'voucher_nro' => $datos['voucher_nro'],
+                'voucher_fecha' => $datos['voucher_fecha'],
+                'voucher_banco' => $datos['voucher_banco'],
+                'estado' => 'pendiente',
+            ]);
+
+            // Pago pendiente del voucher: queda en «Pagos Pendientes» para
+            // cruzarlo con el Google Sheet (referencia + monto + fecha) y
+            // confirmar que el depósito existe. Monto = valor USD del
+            // arancel × tasa del día del voucher (misma captura que el
+            // pago del estudiante, vía TasaCambioService).
+            $tasa = app(TasaCambioService::class)->tasaParaFecha($datos['voucher_fecha']);
+            $arancel = Asunto::where('nombre', Preinscripcion::ASUNTO_PAGO)
+                ->whereNull('cedula_estudiante')
+                ->first();
+            $valorUsd = (float) ($arancel?->valor_usd ?? 0);
+
+            $pago = Pagos::create([
+                'cedula' => $datos['cedula'],
+                'nombre' => $datos['nombres'].' '.$datos['apellidos'],
+                'banco_emisor' => $datos['voucher_banco'],
+                'banco_receptor' => Preinscripcion::BANCO_RECEPTOR,
+                'referencia' => $this->normalizarReferencia($datos['voucher_nro']),
+                'monto' => round($valorUsd * $tasa, 2),
+                'tasa_momento' => $tasa,
+                'asunto' => Preinscripcion::ASUNTO_PAGO,
+                'fecha_pago' => $datos['voucher_fecha'],
+                'estado' => 'Pendiente',
+            ]);
+
+            // Notificación a los administradores: el aspirante aún no es
+            // usuario (emisor nulo) ni estudiante (el coordinador no entra).
+            app(NotificacionService::class)->pagoRegistrado($pago);
+
+            return $preinscripcion;
+        });
 
         return $this->descargarPlanilla($preinscripcion);
     }
@@ -216,8 +257,16 @@ class PreinscripcionController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
+        // Pago del voucher de cada preinscripción (se creó junto con ella)
+        // para la columna «Pago» del listado: Pendiente / Verificado.
+        $pagosVoucher = Pagos::whereIn('cedula', $preinscripciones->pluck('cedula'))
+            ->where('asunto', Preinscripcion::ASUNTO_PAGO)
+            ->get()
+            ->keyBy('cedula');
+
         return view('administrador.preinscripciones', [
             'preinscripciones' => $preinscripciones,
+            'pagosVoucher' => $pagosVoucher,
             // Para el aviso de estado vacío: coordinador sin postgrados vs. sin preinscripciones.
             'sinPostgradosAsignados' => $permitidos !== null && $permitidos->isEmpty(),
         ]);
@@ -312,9 +361,10 @@ class PreinscripcionController extends Controller
     private function reglas(Request $request): array
     {
         $reglas = [
-            // Voucher del depósito
-            'voucher_nro' => ['nullable', 'string', 'max:50', $this->soloNumeros()],
-            'voucher_fecha' => ['nullable', 'date', 'before_or_equal:today'],
+            // Voucher del depósito (obligatorio desde 2026-11-23: el nº es
+            // la referencia con la que se cruza el pago contra el Google Sheet)
+            'voucher_nro' => ['required', 'string', 'max:50', $this->soloNumeros(), $this->voucherUnico()],
+            'voucher_fecha' => ['required', 'date', 'before_or_equal:today'],
             'voucher_banco' => ['required', 'string', 'max:100', Rule::in(Preinscripcion::BANCOS)],
 
             // Interés académico
@@ -435,6 +485,8 @@ class PreinscripcionController extends Controller
     {
         return [
             'cedula.unique' => 'Ya existe una preinscripción registrada con esta cédula.',
+            'voucher_nro.required' => 'El número de voucher es obligatorio.',
+            'voucher_fecha.required' => 'La fecha del voucher es obligatoria.',
             'voucher_fecha.date' => 'La fecha del voucher no es una fecha válida.',
             'voucher_fecha.before_or_equal' => 'La fecha del voucher no puede ser futura.',
             'voucher_banco.required' => 'Debe seleccionar el banco desde el cual se realizó el pago.',
@@ -563,6 +615,41 @@ class PreinscripcionController extends Controller
                 $fallar(self::MENSAJE_SOLO_NUMEROS);
             }
         };
+    }
+
+    /**
+     * Nº de voucher sin reusar: se compara normalizado (sin caracteres
+     * especiales ni ceros iniciales) contra las referencias de TODOS los
+     * pagos — mismas reglas que PagoController::store — para que un mismo
+     * voucher no sirva dos veces, ni en preinscripción ni en registropago.
+     */
+    private function voucherUnico(): Closure
+    {
+        return function (string $atributo, mixed $valor, Closure $fallar): void {
+            $referencia = trim((string) $valor);
+            if ($referencia === '') {
+                return;
+            }
+
+            $normalizada = $this->normalizarReferencia($referencia);
+
+            $existe = Pagos::all()->first(function ($pago) use ($normalizada) {
+                return $this->normalizarReferencia((string) $pago->referencia) === $normalizada;
+            });
+
+            if ($existe) {
+                $fallar('Ya existe un pago registrado con esta referencia de voucher.');
+            }
+        };
+    }
+
+    /**
+     * Normaliza una referencia/voucher como en PagoController::store:
+     * sin caracteres especiales y sin ceros a la izquierda.
+     */
+    private function normalizarReferencia(string $referencia): string
+    {
+        return ltrim(preg_replace('/[^0-9a-zA-Z]/', '', trim($referencia)), '0') ?: '0';
     }
 
     /**

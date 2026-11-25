@@ -6,6 +6,7 @@ use App\Models\Asunto;
 use App\Models\Pagos;
 use App\Models\Postgrado;
 use App\Services\NotificacionService;
+use App\Services\TasaCambioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -127,28 +128,10 @@ class PagoController extends Controller
                 ->with('error', 'Ya existe un pago registrado con la referencia "'.$request->referencia.'". Verifique el número e intente de nuevo.');
         }
 
-        // Capturar la tasa de cambio de la fecha del pago (NO la de hoy)
-        $tasaAplicable = 0;
-        $fechaPago = \Carbon\Carbon::parse($request->fecha_pago)->format('Y-m-d');
-
-        if (Storage::exists('tasa_cambio_historial.json')) {
-            $history = json_decode(Storage::get('tasa_cambio_historial.json'), true) ?? [];
-            // Ordenamos las fechas de mayor a menor para encontrar la más cercana hacia atrás
-            krsort($history);
-            foreach ($history as $date => $rate) {
-                // Buscamos la tasa de ese mismo día o la última tasa registrada antes de ese día
-                if ($date <= $fechaPago) {
-                    $tasaAplicable = $rate;
-                    break;
-                }
-            }
-        }
-
-        // Fallback a la tasa actual si el historial está vacío (por ser la primera vez)
-        if ($tasaAplicable == 0 && Storage::exists('tasa_cambio.json')) {
-            $tasaJson = json_decode(Storage::get('tasa_cambio.json'), true);
-            $tasaAplicable = $tasaJson['valor'] ?? 0;
-        }
+        // Capturar la tasa de cambio de la fecha del pago (NO la de hoy):
+        // historial por fecha con fallback a la tasa actual — TasaCambioService.
+        $tasaAplicable = app(TasaCambioService::class)
+            ->tasaParaFecha(\Carbon\Carbon::parse($request->fecha_pago)->format('Y-m-d'));
 
         $pago = new Pagos;
         $pago->nombre = $user->name;

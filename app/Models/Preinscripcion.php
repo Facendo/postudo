@@ -71,6 +71,17 @@ class Preinscripcion extends Model
     public const SEDES = ['Barcelona', 'Cantaura'];
 
     /**
+     * Asunto del arancel de preinscripción (nombre exacto del
+     * ArancelesSeeder, valor_usd 10.00). Es el concepto que se registra
+     * como pago pendiente al crear la preinscripción, para que el cruce
+     * con el Google Sheet valide el voucher por referencia + monto + fecha.
+     */
+    public const ASUNTO_PAGO = 'Preinscripción y revisión de documentos';
+
+    /** Banco receptor fijo de la universidad (único banco que usa UDO). */
+    public const BANCO_RECEPTOR = 'Banesco';
+
+    /**
      * Bancos desde los que el aspirante puede pagar el voucher
      * (desplegable obligatorio de /preinscripcion; mismos valores que
      * los selects de banco de registropago del estudiante).

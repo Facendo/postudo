@@ -93,6 +93,38 @@ class TasaCambioService
     }
 
     /**
+     * Tasa aplicable a una fecha pasada (la del día del depósito): la del
+     * mismo día o la última registrada antes de ella en el historial.
+     * Fallback: la tasa actual almacenada; 0 si no hay nada.
+     *
+     * Usada por PagoController::store (pago del estudiante) y por
+     * PreinscripcionController::store (voucher de la preinscripción).
+     */
+    public function tasaParaFecha(string $fecha): float
+    {
+        $tasa = 0.0;
+
+        $historial = $this->obtenerHistorial();
+        if ($historial !== []) {
+            // Fechas de mayor a menor: se queda con la más cercana hacia atrás.
+            krsort($historial);
+            foreach ($historial as $fechaHistorial => $valor) {
+                if ($fechaHistorial <= $fecha) {
+                    $tasa = (float) $valor;
+                    break;
+                }
+            }
+        }
+
+        // Fallback a la tasa actual (por ser la primera vez, p. ej.).
+        if ($tasa == 0) {
+            $tasa = (float) ($this->obtenerTasaActual()['valor'] ?? 0);
+        }
+
+        return $tasa;
+    }
+
+    /**
      * Fallback perezoso: si la tasa almacenada no es de hoy (o tiene más de
      * HORAS_VIGENCIA_LOCAL horas), intenta sincronizarla con el BCV. Si la
      * sincronización falla, se conserva silenciosamente la última tasa buena.
